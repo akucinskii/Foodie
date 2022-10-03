@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Button from "../components/Button";
 import { McList } from "../utils/McList";
 
 type McListType = typeof McList;
@@ -7,6 +8,16 @@ type McListItemType = typeof McList[number];
 const Client = () => {
   const [McListState, setMcListState] = React.useState<McListType>(McList);
   const [order, setOrder] = React.useState<McListItemType[]>([]);
+  const [total, setTotal] = React.useState<number>(0);
+
+  useEffect(() => {
+    const initialValue = 0;
+    const value = order.reduce(
+      (prev, curr) => prev + curr.price * curr.quantity,
+      initialValue
+    );
+    setTotal(value);
+  }, [order]);
 
   const addToOrder = (item: McListItemType) => {
     const found = order.some((el) => el.name === item.name);
@@ -32,8 +43,6 @@ const Client = () => {
     } else {
       setOrder([...order, { ...item, quantity: 1 }]);
     }
-
-    console.log(order);
   };
 
   const removeFromOrder = (item: McListItemType) => {
@@ -72,26 +81,52 @@ const Client = () => {
 
   const Form = McListState.map((item) => {
     return (
-      <div key={item.id}>
-        <button
+      <div className="flex gap-2" key={item.id}>
+        <Button
           onClick={() => {
             addToOrder(item);
           }}
         >
           +
-        </button>
-        <button
+        </Button>
+        <Button
+          color="blue"
           onClick={() => {
             removeFromOrder(item);
           }}
         >
           -
-        </button>
+        </Button>
         {item.name} {item.quantity}
       </div>
     );
   });
-  return <div>{Form}</div>;
+  return (
+    <div className="grid gap-8 sm:grid-cols-2">
+      <div className="flex max-w-sm flex-col justify-center gap-2">
+        {Form}
+        <Button
+          color="blue"
+          onClick={() => {
+            console.log(order);
+          }}
+        >
+          Submit
+        </Button>
+      </div>
+      <div className="flex flex-col bg-slate-400 p-4">
+        {order.map((item) => {
+          return (
+            <div className="flex gap-2" key={item.id}>
+              {item.name} - {item.quantity}
+            </div>
+          );
+        })}
+        <div className="h-full" />
+        <div className="bg-slate-500">Total {total}</div>
+      </div>
+    </div>
+  );
 };
 
 export default Client;

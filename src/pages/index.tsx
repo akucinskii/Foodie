@@ -14,14 +14,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="text-4xl font-bold text-gray-700">Solve MC</h1>
-      <Link href="/Client">
-        <a className="underline">Client</a>
-      </Link>
-      <Link href="/Driver">
-        <a className="underline">Driver</a>
-      </Link>
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4"></main>
+      <h1>Welcome to SolveMc App</h1>
     </>
   );
 };

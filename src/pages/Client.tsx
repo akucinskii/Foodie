@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import Button from "../components/Button";
+import { useSubmitOrder } from "../hooks/useSubmitOrder";
 import { McList } from "../utils/McList";
 
-type McListType = typeof McList;
-type McListItemType = typeof McList[number];
+export type McListType = typeof McList;
+export type McListItemType = typeof McList[number];
 
 const Client = () => {
   const [McListState, setMcListState] = React.useState<McListType>(McList);
   const [order, setOrder] = React.useState<McListItemType[]>([]);
   const [total, setTotal] = React.useState<number>(0);
+
+  const submitOrder = useSubmitOrder();
 
   useEffect(() => {
     const initialValue = 0;
@@ -97,7 +100,7 @@ const Client = () => {
         >
           -
         </Button>
-        {item.name} {item.quantity}
+        {item.name} {item.price}pln
       </div>
     );
   });
@@ -108,7 +111,7 @@ const Client = () => {
         <Button
           color="blue"
           onClick={() => {
-            console.log(order);
+            submitOrder(order);
           }}
         >
           Submit

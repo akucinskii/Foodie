@@ -22,21 +22,19 @@ export const orderRouter = createRouter()
   })
   .query("getAllToday", {
     async resolve({ ctx }) {
-      const currentDate = moment(Date.now()).format("YYYY-MM-DD");
-
       return await ctx.prisma.order.findMany({
         where: {
-          createdAt: currentDate,
+          createdAt: new Date(),
         },
       });
     },
   })
-  .mutation("create", {
+  .mutation("createOrder", {
     input: z.object({
       details: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const currentDate = moment(Date.now()).format("YYYY-MM-DD");
+      const currentDate = new Date();
 
       return await ctx.prisma.order.create({
         data: {

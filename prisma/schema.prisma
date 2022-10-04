@@ -6,10 +6,12 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id String @id @default(cuid())
+model Order {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now()) @db.Date
+    details   Json
 }

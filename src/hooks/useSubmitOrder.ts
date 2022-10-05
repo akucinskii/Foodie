@@ -1,17 +1,18 @@
-import { McListType } from "../pages/Client";
 import { trpc } from "../utils/trpc";
 
 export const useSubmitOrder = () => {
   const mutation = trpc.useMutation(["order.createOrder"]);
 
-  return (order: McListType) => {
-    const orderAsJson = JSON.stringify(order);
+  return (name: string, author: string) => {
     try {
-      mutation.mutateAsync({
-        details: orderAsJson,
+      const response = mutation.mutateAsync({
+        name,
+        author,
       });
 
-      console.log("order submitted", orderAsJson);
+      console.log("order submitted");
+
+      return response;
     } catch (error) {
       console.error(error);
     }

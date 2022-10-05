@@ -11,7 +11,16 @@ datasource db {
 }
 
 model Order {
-    id        String   @id @default(uuid())
-    createdAt DateTime @default(now()) @db.Date
-    details   Json
+    id          String       @id @default(uuid())
+    author      String
+    name        String
+    createdAt   DateTime     @default(now()) @db.Date
+    orderSlices OrderSlice[]
+}
+
+model OrderSlice {
+    id      String @id @default(uuid())
+    details String
+    Order   Order  @relation(fields: [orderId], references: [id])
+    orderId String
 }

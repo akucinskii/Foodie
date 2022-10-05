@@ -1,7 +1,8 @@
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Button from "../components/Button";
-import { useSubmitOrder } from "../hooks/useSubmitOrder";
-import { McList } from "../utils/McList";
+import Button from "../../components/Button";
+import { useSubmitOrderSlice } from "../../hooks/useSubmitOrderSlice";
+import { McList } from "../../utils/McList";
 
 export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];
@@ -10,8 +11,10 @@ const Client = () => {
   const [McListState, setMcListState] = React.useState<McListType>(McList);
   const [order, setOrder] = React.useState<McListItemType[]>([]);
   const [total, setTotal] = React.useState<number>(0);
+  const router = useRouter();
+  const orderId = router.query.orderId as string;
 
-  const submitOrder = useSubmitOrder();
+  const submitOrder = useSubmitOrderSlice();
 
   useEffect(() => {
     const initialValue = 0;
@@ -111,7 +114,7 @@ const Client = () => {
         <Button
           color="blue"
           onClick={() => {
-            submitOrder(order);
+            submitOrder(order, orderId);
           }}
         >
           Submit

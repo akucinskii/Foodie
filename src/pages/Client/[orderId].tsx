@@ -115,6 +115,7 @@ const Client = () => {
           color="blue"
           onClick={() => {
             submitOrder(order, orderId);
+            router.push(`/Order/${orderId}`);
           }}
         >
           Submit

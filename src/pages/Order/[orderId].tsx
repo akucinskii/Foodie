@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import Button from "../../components/Button";
 import { trpc } from "../../utils/trpc";
 import { McListItemType, McListType } from "../Client/[orderId]";
 
@@ -26,7 +27,20 @@ const Panel = () => {
     );
   });
 
-  return <div>{renderOrder}</div>;
+  return (
+    <div>
+      <div>
+        <Button
+          onClick={() => {
+            router.push(`/Client/${orderId}`);
+          }}
+        >
+          Add your products
+        </Button>
+      </div>
+      {renderOrder}
+    </div>
+  );
 };
 
 export default Panel;

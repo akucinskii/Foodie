@@ -21,6 +21,17 @@ export const orderRouter = createRouter()
       return await ctx.prisma.order.findMany();
     },
   })
+  .query("getAllTodayOrders", {
+    async resolve({ ctx }) {
+      const today = new Date();
+
+      return await ctx.prisma.order.findMany({
+        where: {
+          createdAt: today,
+        },
+      });
+    },
+  })
   .query("getAllOrderSlices", {
     async resolve({ ctx }) {
       return await ctx.prisma.orderSlice.findMany();
@@ -87,6 +98,34 @@ export const orderRouter = createRouter()
       });
     },
   })
+  .mutation("updateOrderSlice", {
+    input: z.object({
+      id: z.string(),
+      details: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.orderSlice.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          details: input.details,
+        },
+      });
+    },
+  })
+  .mutation("deleteOrderSlice", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.orderSlice.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    },
+  })
   .mutation("createOrder", {
     input: z.object({
       name: z.string(),
@@ -100,6 +139,18 @@ export const orderRouter = createRouter()
           author: input.author,
           name: input.name,
           createdAt: currentDate,
+        },
+      });
+    },
+  })
+  .mutation("removeOrder", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.order.delete({
+        where: {
+          id: input.id,
         },
       });
     },

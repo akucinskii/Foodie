@@ -20,6 +20,7 @@ model Order {
 
 model OrderSlice {
     id      String @id @default(uuid())
+    author  String
     details String
     Order   Order  @relation(fields: [orderId], references: [id])
     orderId String

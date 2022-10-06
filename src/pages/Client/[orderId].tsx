@@ -14,7 +14,7 @@ const Client = () => {
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
-  const submitOrder = useSubmitOrderSlice();
+  const submitOrderSlice = useSubmitOrderSlice();
 
   useEffect(() => {
     const initialValue = 0;
@@ -114,7 +114,7 @@ const Client = () => {
         <Button
           color="blue"
           onClick={() => {
-            submitOrder(order, orderId);
+            submitOrderSlice(order, orderId, "test");
             router.push(`/Order/${orderId}`);
           }}
         >

@@ -88,12 +88,14 @@ export const orderRouter = createRouter()
     input: z.object({
       details: z.string(),
       orderId: z.string(),
+      author: z.string(),
     }),
     async resolve({ ctx, input }) {
       return await ctx.prisma.orderSlice.create({
         data: {
           details: input.details,
           orderId: input.orderId,
+          author: input.author,
         },
       });
     },

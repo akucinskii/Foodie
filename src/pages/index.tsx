@@ -14,31 +14,39 @@ const Home: NextPage = () => {
       <h1 className="absolute top-20 text-xl md:text-3xl">
         Welcome to solve<span className="text-yellow-500">M</span>c App
       </h1>
-      <h2 className="text-lg text-yellow-500">Tutorial</h2>
-      <h2 className="text-lg font-bold">
-        {" "}
-        You want Mcdonalds (You have to create the list)
-      </h2>
-      <h3>
-        <p>
-          1. Click on <span>New order</span>
-        </p>
-        <p>2. Enter your name and Name of your order list</p>
-        <p>3. Click on button to submit</p>
-        <p>
-          4. Done, your order has been created. follow next steps to add your
-          products
-        </p>
-      </h3>
-      <h2 className="text-lg font-bold">
-        You want your macdonalds (Today&apos;s List has been already created)
-      </h2>
-      <p>
-        1. Click on <span className="underline">All orders on the navbar</span>
-      </p>
-      <p>2. Select newest Order List</p>
-      <p>3. Add items you want</p>
-      <p>4. Click submit and you are done</p>
+      <div>
+        <h2 className="text-center text-lg font-bold text-yellow-500">
+          Tutorial
+        </h2>
+
+        <h2 className="text-center text-lg font-bold">
+          {" "}
+          You want Mcdonalds (You have to create the list)
+        </h2>
+        <ol className="list-decimal">
+          <li>
+            Click on <span className="underline">New order</span>
+          </li>
+          <li> Enter your name and Name of your order list</li>
+          <li> Click on button to submit</li>
+          <li>
+            Done, your order has been created.
+            <br /> follow next steps to add your products
+          </li>
+        </ol>
+        <h2 className="text-center text-lg font-bold">
+          You want your MacDonalds - <br />
+          (List has been already created)
+        </h2>
+        <ol className="list-decimal">
+          <li>
+            Click on <span className="underline">All orders</span> on the navbar
+          </li>
+          <li> Select newest Order List</li>
+          <li> Add items you want</li>
+          <li> Click submit and you are done</li>
+        </ol>
+      </div>
     </>
   );
 };

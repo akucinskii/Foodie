@@ -12,7 +12,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
       <Navbar />
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
+      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-20">
         <Component {...pageProps} />
       </main>
     </>

@@ -109,28 +109,44 @@ const Client = () => {
   });
   return (
     <div className="grid gap-8 sm:grid-cols-2">
-      <div className="flex max-w-sm flex-col justify-center gap-2">
-        {Form}
+      <div className="flex max-w-sm flex-col justify-center gap-2">{Form}</div>
+
+      <div className="flex flex-col gap-4">
+        <div className="h-full overflow-x-auto">
+          <table className="table-zebra table w-full">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {order.map((item) => {
+                return (
+                  <tr key={item.id}>
+                    <td className="flex gap-2">{item.name}</td>
+                    <td> {item.quantity}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div />
+        <input></input>
+        <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
+          Total: <span className="text-yellow-500">{total} pln</span>
+        </div>
         <Button
           color="blue"
           onClick={() => {
             submitOrderSlice(order, orderId, "test");
-            router.push(`/Order/${orderId}`);
+            router.push(`/Driver/${orderId}`);
           }}
         >
           Submit
         </Button>
-      </div>
-      <div className="flex flex-col bg-slate-400 p-4">
-        {order.map((item) => {
-          return (
-            <div className="flex gap-2" key={item.id}>
-              {item.name} - {item.quantity}
-            </div>
-          );
-        })}
-        <div className="h-full" />
-        <div className="bg-slate-500">Total {total}</div>
       </div>
     </div>
   );

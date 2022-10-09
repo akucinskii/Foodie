@@ -2,6 +2,7 @@ import { createRouter } from "./context";
 import { z } from "zod";
 import { McListItemType, McListType } from "../../pages/Client/[orderId]";
 import { OrderSlice } from "@prisma/client";
+import dayjs from "dayjs";
 
 export const orderRouter = createRouter()
   .query("hello", {
@@ -23,11 +24,15 @@ export const orderRouter = createRouter()
   })
   .query("getAllTodayOrders", {
     async resolve({ ctx }) {
-      const today = new Date();
+      const today = dayjs(new Date()).format("YYYY-MM-DD");
+      const tommorow = dayjs(new Date()).add(1, "day").format("YYYY-MM-DD");
 
       return await ctx.prisma.order.findMany({
         where: {
-          createdAt: today,
+          createdAt: {
+            gte: new Date(today),
+            lt: new Date(tommorow),
+          },
         },
       });
     },

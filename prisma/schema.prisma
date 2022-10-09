@@ -14,7 +14,7 @@ model Order {
     id          String       @id @default(uuid())
     author      String
     name        String
-    createdAt   DateTime     @default(now()) @db.Date
+    createdAt   DateTime     @default(now())
     orderSlices OrderSlice[]
 }
 

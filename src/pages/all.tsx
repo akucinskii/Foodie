@@ -30,7 +30,7 @@ const All = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-center text-xl">Todays orders</h1>
+      <h1 className="text-center text-xl">Today orders</h1>
       <div className="flex flex-col gap-2">{linkToTodayOrders}</div>
     </div>
   );

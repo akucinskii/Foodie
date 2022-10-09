@@ -34,6 +34,9 @@ export const orderRouter = createRouter()
             lt: new Date(tommorow),
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
     },
   })

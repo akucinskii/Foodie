@@ -36,7 +36,7 @@ const Home: NextPage = () => {
       <p>
         1. Click on <span className="underline">All orders on the navbar</span>
       </p>
-      <p>2. Select todays order</p>
+      <p>2. Select newest Order List</p>
       <p>3. Add items you want</p>
       <p>4. Click submit and you are done</p>
     </>

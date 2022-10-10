@@ -24,20 +24,17 @@ export const orderRouter = createRouter()
   })
   .query("getAllTodayOrders", {
     async resolve({ ctx }) {
-      const today = dayjs(new Date()).format("YYYY-MM-DD");
-      const tommorow = dayjs(new Date()).add(1, "day").format("YYYY-MM-DD");
+      let lastDay: string | number = Date.now() - 24 * 60 * 60 * 1000;
+      lastDay = new Date(lastDay).toISOString();
 
-      return await ctx.prisma.order.findMany({
+      const response = await ctx.prisma.order.findMany({
         where: {
           createdAt: {
-            gte: new Date(today),
-            lt: new Date(tommorow),
+            gte: lastDay,
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
       });
+      return response;
     },
   })
   .query("getAllOrderSlices", {

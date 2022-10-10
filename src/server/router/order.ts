@@ -92,6 +92,41 @@ export const orderRouter = createRouter()
       }
     },
   })
+  .query("getOrderSlicesAuthors", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      const response = await ctx.prisma.order.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          orderSlices: true,
+        },
+      });
+
+      if (response) {
+        const authors: { [key: string]: number } = {};
+        response.orderSlices.forEach((orderSlice) => {
+          const OrderSliceAccumulatedPrice = JSON.parse(
+            orderSlice.details
+          ).reduce(
+            (acc: number, curr: McListItemType) =>
+              acc + curr.quantity * curr.price,
+            0
+          );
+          if (authors[orderSlice.author]) {
+            authors[orderSlice.author] += OrderSliceAccumulatedPrice;
+          } else {
+            authors[orderSlice.author] = OrderSliceAccumulatedPrice;
+          }
+        });
+
+        return authors;
+      }
+    },
+  })
   .mutation("createOrderSlice", {
     input: z.object({
       details: z.string(),

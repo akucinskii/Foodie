@@ -8,6 +8,7 @@ export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];
 
 const Client = () => {
+  const [author, setAuthor] = React.useState<string>("");
   const [McListState, setMcListState] = React.useState<McListType>(McList);
   const [order, setOrder] = React.useState<McListItemType[]>([]);
   const [total, setTotal] = React.useState<number>(0);
@@ -96,7 +97,6 @@ const Client = () => {
           +
         </Button>
         <Button
-          color="blue"
           onClick={() => {
             removeFromOrder(item);
           }}
@@ -108,45 +108,59 @@ const Client = () => {
     );
   });
   return (
-    <div className="grid gap-8 sm:grid-cols-2">
-      <div className="flex max-w-sm flex-col justify-center gap-2">{Form}</div>
-
-      <div className="flex flex-col gap-4">
-        <div className="h-full overflow-x-auto">
-          <table className="table-zebra table w-full">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.map((item) => {
-                return (
-                  <tr key={item.id}>
-                    <td className="flex gap-2">{item.name}</td>
-                    <td> {item.quantity}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+    <div className="flex flex-col gap-2">
+      <input
+        className={
+          "h-10  rounded-lg border-2 border-gray-300 bg-white px-5 pr-16 text-sm focus:outline-none"
+        }
+        type="text"
+        required
+        placeholder="Author"
+        value={author}
+        onChange={(e) => setAuthor(e.target.value)}
+      />
+      <div className="grid gap-8 sm:grid-cols-2">
+        <div className="flex max-w-sm flex-col justify-center gap-2">
+          {Form}
         </div>
 
-        <div />
-        <input></input>
-        <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
-          Total: <span className="text-yellow-500">{total} pln</span>
+        <div className="flex flex-col gap-4">
+          <div className="h-full overflow-x-auto">
+            <table className="table-zebra table w-full">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {order.map((item) => {
+                  return (
+                    <tr key={item.id}>
+                      <td className="flex gap-2">{item.name}</td>
+                      <td> {item.quantity}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div />
+          <input></input>
+          <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
+            Total: <span className="text-yellow-500">{total} pln</span>
+          </div>
+          <Button
+            disabled={author.length < 3 || order.length === 0}
+            onClick={() => {
+              submitOrderSlice(order, orderId, author);
+              router.push(`/Driver/${orderId}`);
+            }}
+          >
+            Submit
+          </Button>
         </div>
-        <Button
-          color="blue"
-          onClick={() => {
-            submitOrderSlice(order, orderId, "test");
-            router.push(`/Driver/${orderId}`);
-          }}
-        >
-          Submit
-        </Button>
       </div>
     </div>
   );

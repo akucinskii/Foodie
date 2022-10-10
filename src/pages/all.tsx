@@ -30,8 +30,14 @@ const All = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-center text-xl">Today orders</h1>
-      <div className="flex flex-col gap-2">{linkToTodayOrders}</div>
+      <h1 className="text-center text-xl font-bold">Orders created today</h1>
+      <div className="flex flex-col gap-2">
+        {todayOrders.data && todayOrders.data?.length !== 0 ? (
+          linkToTodayOrders
+        ) : (
+          <p className="text-center">No orders found :(</p>
+        )}
+      </div>
     </div>
   );
 };

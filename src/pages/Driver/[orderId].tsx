@@ -6,19 +6,28 @@ import { McListItemType, McListType } from "../Client/[orderId]";
 
 const Panel = () => {
   const [orderDetails, setOrderDetails] = React.useState<McListType>([]);
+  const [authorList, setAuthorList] = React.useState<{
+    [key: string]: number;
+  }>({});
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
   const order = trpc.useQuery(["order.getOrderDetails", { id: orderId }]);
+  const authors = trpc.useQuery([
+    "order.getOrderSlicesAuthors",
+    { id: orderId },
+  ]);
 
   useEffect(() => {
     if (order.data) {
       setOrderDetails(order.data);
     }
-  }, [order.data, orderId]);
+    if (authors.data) {
+      setAuthorList(authors.data);
+    }
+  }, [order.data, orderId, authors.data]);
 
   const renderOrder = orderDetails.map((item: McListItemType) => {
-    console.log(item);
     return (
       <tr key={item.id}>
         <td>{item.name}</td>
@@ -29,6 +38,8 @@ const Panel = () => {
 
   return (
     <div className="flex flex-col gap-4">
+      <h1 className="text-center text-2xl font-bold">Driver panel</h1>
+      <h2 className="text-center text-xl font-bold">Order items</h2>
       <div className="overflow-x-auto">
         <table className="table-zebra table w-full">
           <thead>
@@ -59,9 +70,35 @@ const Panel = () => {
       >
         Add your products <br /> to this order!
       </Button>
+
       <p>
         If you dont see your products, just refresh (I still havent fixed it).
       </p>
+
+      <h2 className="text-center text-xl font-bold">Who pays how much?</h2>
+
+      <div className="flex flex-col gap-4">
+        <div className="overflow-x-auto">
+          <table className="table-zebra table w-full">
+            <thead>
+              <tr>
+                <th>Author</th>
+                <th>Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(authorList).map((author) => {
+                return (
+                  <tr key={author}>
+                    <td>{author}</td>
+                    <td>{authorList[author]}pln</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

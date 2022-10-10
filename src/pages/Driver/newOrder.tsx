@@ -16,7 +16,7 @@ const Driver = () => {
           <span className="label-text">Enter your name</span>
         </label>
         <input
-          className={"input input-bordered w-full"}
+          className="input input-bordered w-full"
           type="text"
           id="name"
           required
@@ -29,7 +29,7 @@ const Driver = () => {
           <span className="label-text">Enter your order name</span>
         </label>
         <input
-          className={"input input-bordered w-full"}
+          className="input input-bordered w-full"
           type="text"
           required
           placeholder="Author"

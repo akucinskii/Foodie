@@ -108,17 +108,23 @@ const Client = () => {
     );
   });
   return (
-    <div className="flex flex-col gap-2">
-      <input
-        className={
-          "h-10  rounded-lg border-2 border-gray-300 bg-white px-5 pr-16 text-sm focus:outline-none"
-        }
-        type="text"
-        required
-        placeholder="Author"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
-      />
+    <div className="flex flex-col gap-4">
+      <div>
+        <label className="label">
+          <span className="label-text">Enter your name</span>
+        </label>
+        <input
+          className="input input-bordered w-full"
+          type="text"
+          required
+          placeholder="Author"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+        />
+      </div>
+
+      <div class="h-px flex-grow bg-gray-200"></div>
+
       <div className="grid gap-8 sm:grid-cols-2">
         <div className="flex max-w-sm flex-col justify-center gap-2">
           {Form}
@@ -146,8 +152,6 @@ const Client = () => {
             </table>
           </div>
 
-          <div />
-          <input></input>
           <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
             Total: <span className="text-yellow-500">{total} pln</span>
           </div>

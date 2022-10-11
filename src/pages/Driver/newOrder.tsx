@@ -39,7 +39,9 @@ const Driver = () => {
       </div>
 
       <Button
-        disabled={name === "" || author === ""}
+        disabled={
+          name === "" || author === "" || author.length > 20 || name.length > 20
+        }
         onClick={async () => {
           const order = await submitOrder(name, author);
 

@@ -35,7 +35,7 @@ const Panel = () => {
     return (
       <tr key={item.id}>
         <td>{item.name}</td>
-        <td>{item.quantity}</td>
+        <td className="text-right">{item.quantity}</td>
       </tr>
     );
   });
@@ -47,19 +47,19 @@ const Panel = () => {
       return (
         <tr key={item.id}>
           <td>{item.name}</td>
-          <td>{item.quantity}</td>
+          <td className="text-right">{item.quantity}</td>
         </tr>
       );
     });
 
     return (
       <div key={slice.id}>
-        <h3>{slice.author}</h3>
-        <table>
+        <h3 className="text-center">{slice.author}</h3>
+        <table className="table-zebra table w-full">
           <thead>
             <tr>
               <th>Item</th>
-              <th>Quantity</th>
+              <th className="text-right">Quantity</th>
             </tr>
           </thead>
           <tbody>{items}</tbody>
@@ -77,14 +77,14 @@ const Panel = () => {
           <thead>
             <tr>
               <th>Item</th>
-              <th>Quantity</th>
+              <th className="text-right">Quantity</th>
             </tr>
           </thead>
           <tbody>
             {renderOrder}
             <tr>
               <td className="font-bold ">Total</td>
-              <td className="font-bold text-yellow-500">
+              <td className="text-right font-bold text-yellow-500">
                 {orderDetails.reduce(
                   (acc, item) => acc + item.price * item.quantity,
                   0
@@ -115,7 +115,7 @@ const Panel = () => {
             <thead>
               <tr>
                 <th>Author</th>
-                <th>Fee</th>
+                <th className="text-right">Fee</th>
               </tr>
             </thead>
             <tbody>
@@ -123,7 +123,7 @@ const Panel = () => {
                 return (
                   <tr key={author}>
                     <td>{author}</td>
-                    <td>{authorList[author]}pln</td>
+                    <td className="text-right">{authorList[author]}pln</td>
                   </tr>
                 );
               })}
@@ -131,6 +131,7 @@ const Panel = () => {
           </table>
         </div>
       </div>
+      <div className="h-px flex-grow bg-gray-200"></div>
       {renderOrderSlices}
     </div>
   );

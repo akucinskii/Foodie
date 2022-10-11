@@ -109,7 +109,9 @@ const Client = () => {
   });
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl ">Warning: Please be sure about your order. There is no edit/delete (yet)</h1>
+      <h1 className="text-xl ">
+        Warning: Please be sure about your order. There is no edit/delete (yet)
+      </h1>
       <div>
         <label className="label">
           <span className="label-text">Enter your name</span>
@@ -157,7 +159,12 @@ const Client = () => {
             Total: <span className="text-yellow-500">{total} pln.</span>
           </div>
           <Button
-            disabled={author.length < 3 || order.length === 0}
+            disabled={
+              author.length < 3 ||
+              author.length > 20 ||
+              order.length === 0 ||
+              total > 500
+            }
             onClick={() => {
               submitOrderSlice(order, orderId, author);
               router.push(`/Driver/${orderId}`);

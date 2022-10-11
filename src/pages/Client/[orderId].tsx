@@ -109,6 +109,7 @@ const Client = () => {
   });
   return (
     <div className="flex flex-col gap-4">
+      <h1 className="text-xl ">Warning: Please be sure about your order there is no edit/delete (yet)</h1>
       <div>
         <label className="label">
           <span className="label-text">Enter your name</span>

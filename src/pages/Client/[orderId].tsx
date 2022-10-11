@@ -123,7 +123,7 @@ const Client = () => {
         />
       </div>
 
-      <div class="h-px flex-grow bg-gray-200"></div>
+      <div className="h-px flex-grow bg-gray-200"></div>
 
       <div className="grid gap-8 sm:grid-cols-2">
         <div className="flex max-w-sm flex-col justify-center gap-2">

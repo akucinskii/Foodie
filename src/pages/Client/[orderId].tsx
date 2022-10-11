@@ -153,7 +153,7 @@ const Client = () => {
           </div>
 
           <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
-            Total: <span className="text-yellow-500">{total} pln</span>
+            Total: <span className="text-yellow-500">{total} pln.</span>
           </div>
           <Button
             disabled={author.length < 3 || order.length === 0}

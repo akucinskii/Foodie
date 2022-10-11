@@ -82,22 +82,25 @@ export const orderRouter = createRouter()
 
         const mergedArray: McListItemType[] = [];
 
-        if (notMergedDetails[0]) {
-          const mergedDetails = notMergedDetails[0].concat(...notMergedDetails);
+        const mergedDetails = ([] as McListType).concat(
+          [],
+          ...notMergedDetails
+        );
 
-          mergedDetails.forEach((item) => {
-            const found = mergedArray.find(
-              (helperItem) => helperItem.id === item.id
-            );
-            if (found) {
-              found.quantity += item.quantity;
-            } else {
-              mergedArray.push(item);
-            }
-          });
+        mergedDetails.forEach((item) => {
+          const found = mergedArray.find(
+            (helperItem) => helperItem.id === item.id
+          );
 
-          return mergedArray;
-        }
+          if (found) {
+            console.log(found, item, "AAAAAAAAAAAAAAA");
+            found.quantity += item.quantity;
+          } else {
+            mergedArray.push(item);
+          }
+        });
+
+        return mergedArray;
       }
     },
   })

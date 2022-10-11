@@ -19,7 +19,7 @@ const Home: NextPage = () => {
           Tutorial
         </h2>
 
-        <h2 className="text-center text-lg font-bold">
+        {/* <h2 className="text-center text-lg font-bold">
           {" "}
           You want Mcdonalds (You have to create the list)
         </h2>
@@ -33,18 +33,18 @@ const Home: NextPage = () => {
             Done, your order has been created.
             <br /> follow next steps to add your products
           </li>
-        </ol>
-        <h2 className="text-center text-lg font-bold">
-          You want your MacDonalds - <br />
+        </ol> */}
+        <h3 className="text-center text-lg font-bold">
+          You want your McDonalds - <br />
           (List has been already created)
-        </h2>
+        </h3>
         <ol className="list-decimal">
           <li>
             Click on <span className="underline">All orders</span> on the navbar
           </li>
-          <li> Select newest Order List</li>
-          <li> Add items you want</li>
-          <li> Click submit and you are done</li>
+          <li> Select newest Order</li>
+          <li> Add items that you want</li>
+          <li> Click submit and you are Done</li>
         </ol>
       </div>
     </>

@@ -65,4 +65,40 @@ export const McList = [
     price: 5,
     quantity: 0,
   },
+  {
+    id: 12,
+    name: "Zestaw BigMac",
+    price: 14,
+    quantity: 0,
+  },
+  {
+    id: 13,
+    name: "Zestaw Mcwrap",
+    price: 14,
+    quantity: 0,
+  },
+  {
+    id: 14,
+    name: "Zestaw McChicken",
+    price: 14,
+    quantity: 0,
+  },
+  {
+    id: 15,
+    name: "Zestaw McNuggets",
+    price: 14,
+    quantity: 0,
+  },
+  {
+    id: 16,
+    name: "Zestaw McRoyal",
+    price: 14,
+    quantity: 0,
+  },
+  {
+    id: 17,
+    name: "Zestaw WieśMac",
+    price: 14,
+    quantity: 0,
+  }
 ];

@@ -93,7 +93,6 @@ export const orderRouter = createRouter()
           );
 
           if (found) {
-            console.log(found, item, "AAAAAAAAAAAAAAA");
             found.quantity += item.quantity;
           } else {
             mergedArray.push(item);

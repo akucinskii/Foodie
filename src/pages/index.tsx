@@ -35,8 +35,7 @@ const Home: NextPage = () => {
           </li>
         </ol> */}
         <h3 className="text-center text-lg font-bold">
-          You want your McDonalds - <br />
-          (List has been already created)
+          You want McDonalds
         </h3>
         <ol className="list-decimal">
           <li>

@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Button from "../../components/Button";
-import { useSubmitOrderSlice } from "../../hooks/useSubmitOrderSlice";
-import { McList } from "../../utils/McList";
+import { trpc } from "../../../utils/trpc";
+import Button from "../../../components/Button";
+
+import { McList } from "../../../utils/McList";
+import { useUpdateOrderSlice } from "../../../hooks/useUpdateOrderSlice";
 
 export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];
@@ -12,9 +14,13 @@ const Client = () => {
   const [order, setOrder] = React.useState<McListItemType[]>([]);
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
-  const orderId = router.query.orderId as string;
+  const orderSliceId = router.query.orderSliceId as string;
 
-  const submitOrderSlice = useSubmitOrderSlice();
+  const submitOrderSlice = useUpdateOrderSlice();
+  const orderDetails = trpc.useQuery([
+    "order.getOrderSliceByOrderSliceId",
+    { id: orderSliceId },
+  ]);
 
   useEffect(() => {
     const initialValue = 0;
@@ -24,6 +30,13 @@ const Client = () => {
     );
     setTotal(value);
   }, [order]);
+
+  useEffect(() => {
+    if (orderDetails.data) {
+      const parsedOrder = JSON.parse(orderDetails.data.details);
+      setOrder(parsedOrder);
+    }
+  }, [orderDetails.data]);
 
   const addToOrder = (item: McListItemType) => {
     const found = order.some((el) => el.name === item.name);
@@ -143,8 +156,8 @@ const Client = () => {
               total > 500
             }
             onClick={() => {
-              submitOrderSlice(order, orderId, author);
-              router.push(`/Driver/${orderId}`);
+              submitOrderSlice(order, orderSliceId);
+              router.push(`/Driver/${orderSliceId}`);
             }}
           >
             Submit

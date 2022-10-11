@@ -32,10 +32,14 @@ const All = () => {
     <div className="flex flex-col gap-2">
       <h1 className="text-center text-xl font-bold">Orders created today</h1>
       <div className="flex flex-col gap-2">
-        {todayOrders.data && todayOrders.data?.length !== 0 ? (
-          linkToTodayOrders
+        {todayOrders.data ? (
+          todayOrders.data?.length !== 0 ? (
+            linkToTodayOrders
+          ) : (
+            <p className="text-center">No orders found :(</p>
+          )
         ) : (
-          <p className="text-center">No orders found :(</p>
+          <h1 className="text-bold text-center text-xl">Loading...</h1>
         )}
       </div>
     </div>

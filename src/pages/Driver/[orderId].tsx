@@ -5,10 +5,6 @@ import { trpc } from "../../utils/trpc";
 import { McListItemType, McListType } from "../Client/[orderId]";
 
 const Panel = () => {
-  const [orderDetails, setOrderDetails] = React.useState<McListType>([]);
-  const [authorList, setAuthorList] = React.useState<{
-    [key: string]: number;
-  }>({});
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
@@ -22,16 +18,7 @@ const Panel = () => {
     { id: orderId },
   ]);
 
-  useEffect(() => {
-    if (order.data) {
-      setOrderDetails(order.data);
-    }
-    if (authors.data) {
-      setAuthorList(authors.data);
-    }
-  }, [order.data, orderId, authors.data]);
-
-  const renderOrder = orderDetails.map((item: McListItemType) => {
+  const renderOrder = order.data?.map((item: McListItemType) => {
     return (
       <tr key={item.id}>
         <td>{item.name}</td>
@@ -68,7 +55,7 @@ const Panel = () => {
     );
   });
 
-  return (
+  return order.data ? (
     <div className="flex flex-col gap-4">
       <h1 className="text-center text-2xl font-bold">Driver panel</h1>
       <h2 className="text-center text-xl font-bold">Order items</h2>
@@ -85,7 +72,7 @@ const Panel = () => {
             <tr>
               <td className="font-bold ">Total</td>
               <td className="text-right font-bold text-yellow-500">
-                {orderDetails.reduce(
+                {order.data?.reduce(
                   (acc, item) => acc + item.price * item.quantity,
                   0
                 )}
@@ -119,20 +106,27 @@ const Panel = () => {
               </tr>
             </thead>
             <tbody>
-              {Object.keys(authorList).map((author) => {
-                return (
-                  <tr key={author}>
-                    <td>{author}</td>
-                    <td className="text-right">{authorList[author]}pln</td>
-                  </tr>
-                );
-              })}
+              {authors.data &&
+                Object.keys(authors.data).map((author) => {
+                  return (
+                    <tr key={author}>
+                      <td>{author}</td>
+                      <td className="text-right">
+                        {authors.data && authors.data[author]}pln
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
       </div>
       <div className="h-px flex-grow bg-gray-200"></div>
       {renderOrderSlices}
+    </div>
+  ) : (
+    <div className="flex flex-col gap-4">
+      <h1 className="text-center text-2xl font-bold">Loading...</h1>
     </div>
   );
 };

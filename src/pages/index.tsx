@@ -34,9 +34,9 @@ const Home: NextPage = () => {
             <br /> follow next steps to add your products
           </li>
         </ol> */}
-        <h3 className="text-center text-lg font-bold">
+        {/* <h3 className="text-center text-lg font-bold">
           You want McDonalds
-        </h3>
+        </h3> */}
         <ol className="list-decimal">
           <li>
             Click on <span className="underline">All orders</span> on the navbar

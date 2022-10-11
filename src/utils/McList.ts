@@ -100,5 +100,11 @@ export const McList = [
     name: "Zestaw WieśMac",
     price: 14,
     quantity: 0,
-  }
+  },
+  {
+    id: 18,
+    name: "fryty",
+    price: 5,
+    quantity: 0,
+  },
 ];

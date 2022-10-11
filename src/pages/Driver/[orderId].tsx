@@ -13,6 +13,10 @@ const Panel = () => {
   const orderId = router.query.orderId as string;
 
   const order = trpc.useQuery(["order.getOrderDetails", { id: orderId }]);
+  const orderSlices = trpc.useQuery([
+    "order.getOrderSlicesByOrderId",
+    { id: orderId },
+  ]);
   const authors = trpc.useQuery([
     "order.getOrderSlicesAuthors",
     { id: orderId },
@@ -33,6 +37,34 @@ const Panel = () => {
         <td>{item.name}</td>
         <td>{item.quantity}</td>
       </tr>
+    );
+  });
+
+  const renderOrderSlices = orderSlices.data?.map((slice) => {
+    const details: McListType = JSON.parse(slice.details);
+
+    const items = details.map((item: McListItemType) => {
+      return (
+        <tr key={item.id}>
+          <td>{item.name}</td>
+          <td>{item.quantity}</td>
+        </tr>
+      );
+    });
+
+    return (
+      <div key={slice.id}>
+        <h3>{slice.author}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>{items}</tbody>
+        </table>
+      </div>
     );
   });
 
@@ -99,6 +131,7 @@ const Panel = () => {
           </table>
         </div>
       </div>
+      {renderOrderSlices}
     </div>
   );
 };

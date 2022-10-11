@@ -42,6 +42,18 @@ export const orderRouter = createRouter()
       return await ctx.prisma.orderSlice.findMany();
     },
   })
+  .query("getOrderSlicesByOrderId", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.orderSlice.findMany({
+        where: {
+          orderId: input.id,
+        },
+      });
+    },
+  })
   .query("getOrderDetails", {
     input: z.object({
       id: z.string(),

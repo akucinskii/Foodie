@@ -162,7 +162,7 @@ const Client = () => {
               router.push(`/Driver/${orderId}`);
             }}
           >
-            Submit <br/> PLEASE BE SURE ABOUT YOUR ORDER THERE IS NO EDIT/DELETE (yet)
+            Submit
           </Button>
         </div>
       </div>

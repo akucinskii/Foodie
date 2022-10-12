@@ -1,64 +1,61 @@
-import { createRouter } from "./context";
 import { z } from "zod";
-import { McListItemType, McListType } from "../../pages/Client/[orderId]";
+import { McListItemType, McListType } from "../../../pages/Client/[orderId]";
 import { OrderSlice } from "@prisma/client";
-import dayjs from "dayjs";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 
-export const orderRouter = createRouter()
-  .query("hello", {
-    input: z
-      .object({
-        text: z.string().nullish(),
-      })
-      .nullish(),
-    resolve({ input }) {
+export const orderRouter = router({
+  hello: publicProcedure
+    .input(
+      z
+        .object({
+          text: z.string().nullish(),
+        })
+        .nullish()
+    )
+    .query(({ input }) => {
       return {
         greeting: `Hello ${input?.text ?? "world"}`,
       };
-    },
-  })
-  .query("getAllOrders", {
-    async resolve({ ctx }) {
-      return await ctx.prisma.order.findMany();
-    },
-  })
-  .query("getAllTodayOrders", {
-    async resolve({ ctx }) {
-      let lastDay: string | number = Date.now() - 24 * 60 * 60 * 1000;
-      lastDay = new Date(lastDay).toISOString();
-
-      const response = await ctx.prisma.order.findMany({
-        where: {
-          createdAt: {
-            gte: lastDay,
-          },
-        },
-      });
-      return response;
-    },
-  })
-  .query("getAllOrderSlices", {
-    async resolve({ ctx }) {
-      return await ctx.prisma.orderSlice.findMany();
-    },
-  })
-  .query("getOrderSlicesByOrderId", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getAllOrders: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.order.findMany();
+  }),
+  getAllTodayOrders: publicProcedure.query(async ({ ctx }) => {
+    let lastDay: string | number = Date.now() - 24 * 60 * 60 * 1000;
+    lastDay = new Date(lastDay).toISOString();
+
+    const response = await ctx.prisma.order.findMany({
+      where: {
+        createdAt: {
+          gte: lastDay,
+        },
+      },
+    });
+    return response;
+  }),
+  getAllOrderSlices: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.orderSlice.findMany();
+  }),
+  getOrderSlicesByOrderId: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       return await ctx.prisma.orderSlice.findMany({
         where: {
           orderId: input.id,
         },
       });
-    },
-  })
-  .query("getOrderDetails", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getOrderDetails: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const response = await ctx.prisma.order.findUnique({
         where: {
           id: input.id,
@@ -101,13 +98,14 @@ export const orderRouter = createRouter()
 
         return mergedArray;
       }
-    },
-  })
-  .query("getOrderSlicesAuthors", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  getOrderSlicesAuthors: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const response = await ctx.prisma.order.findUnique({
         where: {
           id: input.id,
@@ -136,15 +134,19 @@ export const orderRouter = createRouter()
 
         return authors;
       }
-    },
-  })
-  .mutation("createOrderSlice", {
-    input: z.object({
-      details: z.string(),
-      orderId: z.string(),
-      author: z.string(),
+
+      return {};
     }),
-    async resolve({ ctx, input }) {
+
+  createOrderSlice: publicProcedure
+    .input(
+      z.object({
+        details: z.string(),
+        orderId: z.string(),
+        author: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.orderSlice.create({
         data: {
           details: input.details,
@@ -152,14 +154,16 @@ export const orderRouter = createRouter()
           author: input.author,
         },
       });
-    },
-  })
-  .mutation("updateOrderSlice", {
-    input: z.object({
-      id: z.string(),
-      details: z.string(),
     }),
-    async resolve({ ctx, input }) {
+
+  updateOrderSlice: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        details: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.orderSlice.update({
         where: {
           id: input.id,
@@ -168,46 +172,48 @@ export const orderRouter = createRouter()
           details: input.details,
         },
       });
-    },
-  })
-  .mutation("deleteOrderSlice", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  deleteOrderSlice: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.orderSlice.delete({
         where: {
           id: input.id,
         },
       });
-    },
-  })
-  .mutation("createOrder", {
-    input: z.object({
-      name: z.string(),
-      author: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  createOrder: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        author: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const currentDate = new Date();
-
       return await ctx.prisma.order.create({
         data: {
-          author: input.author,
           name: input.name,
+          author: input.author,
           createdAt: currentDate,
         },
       });
-    },
-  })
-  .mutation("removeOrder", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  removeOrder: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.order.delete({
         where: {
           id: input.id,
         },
       });
-    },
-  });
+    }),
+});

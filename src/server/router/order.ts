@@ -54,6 +54,18 @@ export const orderRouter = createRouter()
       });
     },
   })
+  .query("getOrderSliceByOrderSliceId", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.orderSlice.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    },
+  })
   .query("getOrderDetails", {
     input: z.object({
       id: z.string(),

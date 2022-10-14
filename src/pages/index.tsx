@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -46,6 +47,26 @@ const Home: NextPage = () => {
           <li> Click submit and you are Done</li>
         </ol>
       </div>
+      {session ? (
+        <>
+          <h1 className="text-center text-2xl font-bold">
+            Welcome {session?.user?.name}
+          </h1>
+          <button
+            className="rounded bg-yellow-500 py-2 px-4 font-bold text-white"
+            onClick={() => signOut()}
+          >
+            Sign out
+          </button>
+        </>
+      ) : (
+        <button
+          className="rounded bg-yellow-500 py-2 px-4 font-bold text-white"
+          onClick={() => signIn()}
+        >
+          Sign in
+        </button>
+      )}
     </>
   );
 };

@@ -2,6 +2,9 @@
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { withTRPC } from "@trpc/next";
+import type { Session } from "next-auth";
+import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import Navbar from "../components/Navbar";
@@ -9,14 +12,17 @@ import { AppRouter } from "../server/trpc/router";
 
 import "../styles/globals.css";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session: Session }>) => {
   return (
-    <>
+    <SessionProvider session={session}>
       <Navbar />
       <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-20">
         <Component {...pageProps} />
       </main>
-    </>
+    </SessionProvider>
   );
 };
 

@@ -9,15 +9,11 @@ const Panel = () => {
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
-  const order = trpc.useQuery(["order.getOrderDetails", { id: orderId }]);
-  const orderSlices = trpc.useQuery([
-    "order.getOrderSlicesByOrderId",
-    { id: orderId },
-  ]);
-  const authors = trpc.useQuery([
-    "order.getOrderSlicesAuthors",
-    { id: orderId },
-  ]);
+  const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
+  const orderSlices = trpc.order.getOrderSlicesByOrderId.useQuery({
+    id: orderId,
+  });
+  const authors = trpc.order.getOrderSlicesAuthors.useQuery({ id: orderId });
 
   const renderOrder = order.data?.map((item: McListItemType) => {
     return (

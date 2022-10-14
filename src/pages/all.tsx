@@ -7,7 +7,7 @@ import { trpc } from "../utils/trpc";
 
 const All = () => {
   // const allOrders = trpc.useQuery(["order.getAllOrders"]);
-  const todayOrders = trpc.useQuery(["order.getAllTodayOrders"]);
+  const todayOrders = trpc.order.getAllTodayOrders.useQuery();
 
   // const linkToOrders = allOrders.data?.map((order) => (
   //   <Link key={order.id} href={`Driver/${order.id}`}>

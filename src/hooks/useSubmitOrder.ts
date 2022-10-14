@@ -1,7 +1,7 @@
 import { trpc } from "../utils/trpc";
 
 export const useSubmitOrder = () => {
-  const mutation = trpc.useMutation(["order.createOrder"]);
+  const mutation = trpc.order.createOrder.useMutation();
 
   return (name: string, author: string) => {
     try {

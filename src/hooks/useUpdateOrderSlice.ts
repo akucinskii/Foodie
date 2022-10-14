@@ -2,7 +2,7 @@ import { McListType } from "../pages/Client/[orderId]";
 import { trpc } from "../utils/trpc";
 
 export const useUpdateOrderSlice = () => {
-  const mutation = trpc.useMutation(["order.updateOrderSlice"]);
+  const mutation = trpc.order.updateOrderSlice.useMutation();
 
   return (order: McListType, orderId: string) => {
     const orderSliceAsJson = JSON.stringify(order);

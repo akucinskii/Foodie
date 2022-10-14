@@ -1,3 +1,4 @@
+import { OrderSlice } from "@prisma/client";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Button from "../../components/Button";
@@ -27,7 +28,7 @@ const Panel = () => {
     );
   });
 
-  const renderOrderSlices = orderSlices.data?.map((slice) => {
+  const renderOrderSlices = orderSlices.data?.map((slice: OrderSlice) => {
     const details: McListType = JSON.parse(slice.details);
 
     const items = details.map((item: McListItemType) => {
@@ -73,7 +74,8 @@ const Panel = () => {
               <td className="font-bold ">Total</td>
               <td className="text-right font-bold text-yellow-500">
                 {order.data?.reduce(
-                  (acc, item) => acc + item.price * item.quantity,
+                  (acc: number, item: { price: number; quantity: number }) =>
+                    acc + item.price * item.quantity,
                   0
                 )}
                 pln

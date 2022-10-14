@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Button from "../../components/Button";
-import { useSubmitOrderSlice } from "../../hooks/useSubmitOrderSlice";
-import { McList } from "../../utils/McList";
+import Button from "../components/Button";
+import { useSubmitOrderSlice } from "../hooks/useSubmitOrderSlice";
+import { McList } from "../utils/McList";
 
 export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];

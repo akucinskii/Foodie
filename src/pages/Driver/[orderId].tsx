@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { trpc } from "../../utils/trpc";
-import { McListItemType, McListType } from "../Client/[orderId]";
+import { McListItemType, McListType } from "../../Client/[orderId]";
 
 const Panel = () => {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import { McListType } from "../pages/Client/[orderId]";
+import { McListType } from "../Client/[orderId]";
 import { trpc } from "../utils/trpc";
 
 export const useSubmitOrderSlice = () => {

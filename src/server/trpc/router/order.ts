@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { McListItemType, McListType } from "../../../Client/[orderId]";
+
 import { OrderSlice } from "@prisma/client";
 import { router, protectedProcedure, publicProcedure } from "../trpc";
+import { McListItemType, McListType } from "../../../pages/Client/[orderId]";
 
 export const orderRouter = router({
   hello: publicProcedure

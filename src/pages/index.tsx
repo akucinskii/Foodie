@@ -1,9 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useEffect } from "react";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
   return (
     <>
       <Head>
@@ -51,6 +58,14 @@ const Home: NextPage = () => {
         <>
           <h1 className="text-center text-2xl font-bold">
             Welcome {session?.user?.name}
+            {session && session.user && session.user.image && (
+              <Image
+                src={session?.user?.image}
+                alt="text"
+                width={50}
+                height={50}
+              />
+            )}
           </h1>
           <button
             className="rounded bg-yellow-500 py-2 px-4 font-bold text-white"

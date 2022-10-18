@@ -1,11 +1,12 @@
 import { OrderSlice } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { trpc } from "../../utils/trpc";
 import { McListItemType, McListType } from "../Client/[orderId]";
 
 const Panel = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
@@ -81,12 +82,18 @@ const Panel = () => {
         </table>
       </div>
       <Button
+        disabled={!session?.user}
         onClick={() => {
           router.push(`/Client/${orderId}`);
         }}
       >
         Add your products <br /> to this order!
       </Button>
+      {!session?.user && (
+        <p className="text-center text-red-600">
+          You need to be logged in to add your Products
+        </p>
+      )}
 
       <p>
         If you dont see your products, just refresh (I still havent fixed it).

@@ -1,11 +1,17 @@
+import { GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import Button from "../../components/Button";
 import { useSubmitOrder } from "../../hooks/useSubmitOrder";
+import { getServerAuthSession } from "../../server/common/get-server-auth-session";
+import { getBaseUrl } from "../../utils/trpc";
 
 const Driver = () => {
+  const { data: session } = useSession();
+
   const [name, setName] = React.useState<string>("");
-  const [author, setAuthor] = React.useState<string>("");
+  const [author, setAuthor] = React.useState<string>(session?.user?.name || "");
   const router = useRouter();
   const submitOrder = useSubmitOrder();
   return (
@@ -40,7 +46,11 @@ const Driver = () => {
 
       <Button
         disabled={
-          name === "" || author === "" || author.length > 20 || name.length > 20
+          name === "" ||
+          author === "" ||
+          author.length > 20 ||
+          name.length > 20 ||
+          !session?.user
         }
         onClick={async () => {
           const order = await submitOrder(name, author);
@@ -52,8 +62,33 @@ const Driver = () => {
       >
         NEW ORDER LIST
       </Button>
+      {!session?.user && (
+        <p className="text-center text-red-600">
+          You need to be logged in to create new order list
+        </p>
+      )}
     </div>
   );
 };
+
+// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+//   const session = await getServerAuthSession(ctx);
+
+//   if (!session) {
+//     const baseUrl = getBaseUrl();
+//     return {
+//       redirect: {
+//         destination: `/api/auth/signin?callbackUrl=${baseUrl}`,
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: {
+//       session,
+//     },
+//   };
+// };
 
 export default Driver;

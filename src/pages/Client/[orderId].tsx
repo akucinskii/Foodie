@@ -1,14 +1,19 @@
+import { GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { useSubmitOrderSlice } from "../../hooks/useSubmitOrderSlice";
+import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { McList } from "../../utils/McList";
+import { getBaseUrl } from "../../utils/trpc";
 
 export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];
 
 const Client = () => {
-  const [author, setAuthor] = React.useState<string>("");
+  const { data: session } = useSession();
+  const [author, setAuthor] = React.useState(session?.user?.name || "");
   const [order, setOrder] = React.useState<McListItemType[]>([]);
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
@@ -153,6 +158,26 @@ const Client = () => {
       </div>
     </div>
   );
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
+
+  if (!session) {
+    const baseUrl = getBaseUrl();
+    return {
+      redirect: {
+        destination: `/api/auth/signin?callbackUrl=${baseUrl}`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 };
 
 export default Client;

@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { userAgent } from "next/server";
 import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { useSubmitOrderSlice } from "../../hooks/useSubmitOrderSlice";
@@ -24,7 +23,6 @@ const Client = () => {
     if (session && session.user && session.user.name) {
       setAuthor(session.user.id);
     }
-    console.log(author);
   }, [session]);
 
   const submitOrderSlice = useSubmitOrderSlice();

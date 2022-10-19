@@ -1,11 +1,8 @@
-import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { useSubmitOrder } from "../../hooks/useSubmitOrder";
-import { getServerAuthSession } from "../../server/common/get-server-auth-session";
-import { getBaseUrl } from "../../utils/trpc";
 
 const Driver = () => {
   const { data: session } = useSession();
@@ -18,7 +15,6 @@ const Driver = () => {
     if (session && session.user && session.user.name) {
       setAuthor(session.user.id);
     }
-    console.log(author);
   }, [session]);
   const submitOrder = useSubmitOrder();
   return (

@@ -1,9 +1,8 @@
-import { OrderSlice } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "../../components/Button";
 import { trpc } from "../../utils/trpc";
-import { McListItemType, McListType } from "../Client/[orderId]";
+import { McListItemType } from "../Client/[orderId]";
 
 const Panel = () => {
   const { data: session } = useSession();
@@ -14,9 +13,7 @@ const Panel = () => {
   const orderSlicesByAuthors = trpc.order.getOrderSlicesByAuthors.useQuery({
     id: orderId,
   });
-  const orderSlices = trpc.order.getOrderSlicesByOrderId.useQuery({
-    id: orderId,
-  });
+
   const authors = trpc.order.getOrderSlicesAuthors.useQuery({ id: orderId });
 
   const renderOrder = order.data?.map((item: McListItemType) => {

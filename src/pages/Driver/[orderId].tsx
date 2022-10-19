@@ -11,6 +11,9 @@ const Panel = () => {
   const orderId = router.query.orderId as string;
 
   const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
+  const orderSlicesByAuthors = trpc.order.getOrderSlicesByAuthors.useQuery({
+    id: orderId,
+  });
   const orderSlices = trpc.order.getOrderSlicesByOrderId.useQuery({
     id: orderId,
   });
@@ -25,10 +28,8 @@ const Panel = () => {
     );
   });
 
-  const renderOrderSlices = orderSlices.data?.map((slice: OrderSlice) => {
-    const details: McListType = JSON.parse(slice.details);
-
-    const items = details.map((item: McListItemType) => {
+  const renderOrderSlices = orderSlicesByAuthors.data?.map((slice) => {
+    const items = slice.details.map((item: McListItemType) => {
       return (
         <tr key={item.id}>
           <td>{item.name}</td>
@@ -39,7 +40,7 @@ const Panel = () => {
 
     return (
       <div key={slice.id}>
-        <h3 className="text-center">{slice.author}</h3>
+        <h3 className="text-center">{slice.author.name}</h3>
         <table className="table-zebra table w-full">
           <thead>
             <tr>
@@ -94,13 +95,10 @@ const Panel = () => {
           You need to be logged in to add your Products
         </p>
       )}
-
       <p>
         If you dont see your products, just refresh (I still havent fixed it).
       </p>
-
       <h2 className="text-center text-xl font-bold">Who pays how much?</h2>
-
       <div className="flex flex-col gap-4">
         <div className="overflow-x-auto">
           <table className="table-zebra table w-full">

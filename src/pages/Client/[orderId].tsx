@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { userAgent } from "next/server";
 import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { useSubmitOrderSlice } from "../../hooks/useSubmitOrderSlice";
@@ -18,6 +19,13 @@ const Client = () => {
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
   const orderId = router.query.orderId as string;
+
+  useEffect(() => {
+    if (session && session.user && session.user.name) {
+      setAuthor(session.user.id);
+    }
+    console.log(author);
+  }, [session]);
 
   const submitOrderSlice = useSubmitOrderSlice();
 
@@ -94,7 +102,7 @@ const Client = () => {
       <h1 className="text-xl ">
         Warning: Please be sure about your order. There is no edit/delete (yet)
       </h1>
-      <div>
+      {/* <div>
         <label className="label">
           <span className="label-text">Enter your name</span>
         </label>
@@ -106,7 +114,7 @@ const Client = () => {
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <div className="h-px flex-grow bg-gray-200"></div>
 
@@ -141,12 +149,7 @@ const Client = () => {
             Total: <span className="text-yellow-500">{total} pln.</span>
           </div>
           <Button
-            disabled={
-              author.length < 3 ||
-              author.length > 20 ||
-              order.length === 0 ||
-              total > 500
-            }
+            disabled={author.length < 3 || order.length === 0 || total > 500}
             onClick={() => {
               submitOrderSlice(order, orderId, author);
               router.push(`/Driver/${orderId}`);

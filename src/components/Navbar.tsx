@@ -1,26 +1,61 @@
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import Button from "./Button";
 
 const Navbar = () => {
+  const { data: session } = useSession();
+
   return (
-    <div className="align-center fixed z-20 flex w-full flex-col bg-white">
-      <div className="flex justify-center">
-        <h1 className="text-4xl font-bold text-gray-700">
-          Solve<span className="text-yellow-500">M</span>c
-        </h1>
+    <div className="align-center fixed z-20 flex w-full flex-row bg-white">
+      <div className="flex-1">
+        <ul className="menu menu-horizontal gap-4 p-2">
+          <h1 className="text-4xl font-bold text-gray-700">
+            Solve<span className="text-yellow-500">M</span>c
+          </h1>
+
+          <li>
+            <Link href="/">
+              <a className="whitespace-nowrap">Home</a>
+            </Link>
+          </li>
+
+          <li>
+            <Link href="/all">
+              <a className="whitespace-nowrap">All Orders</a>
+            </Link>
+          </li>
+
+          <li className="">
+            <Link href="/Driver/newOrder">
+              <a className="=whitespace-nowrap">New Order</a>
+            </Link>
+          </li>
+        </ul>
       </div>
-      <div className="font-heading mx-auto flex justify-center gap-5 px-4 font-semibold">
-        <Link href="/">
-          <a className="whitespace-nowrap hover:text-yellow-500 ">Home</a>
-        </Link>
-
-        <Link href="/all">
-          <a className="whitespace-nowrap hover:text-yellow-500">All Orders</a>
-        </Link>
-
-        <Link href="/Driver/newOrder">
-          <a className="=whitespace-nowrap hover:text-yellow-500">New Order</a>
-        </Link>
+      <div className="flex-0">
+        <ul className="align-center menu menu-horizontal gap-2 p-2">
+          {session ? (
+            <>
+              <button className="avatar btn btn-ghost btn-circle">
+                {session && session.user && session.user.image && (
+                  <Image
+                    className="rounded-full"
+                    src={session?.user?.image}
+                    alt="text"
+                    width={40}
+                    height={40}
+                  />
+                )}
+              </button>
+              <li>
+                <Button onClick={() => signOut()}>Sign out</Button>
+              </li>
+            </>
+          ) : (
+            <Button onClick={() => signIn()}>Sign in</Button>
+          )}
+        </ul>
       </div>
     </div>
   );

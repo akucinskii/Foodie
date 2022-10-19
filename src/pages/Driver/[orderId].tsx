@@ -1,18 +1,19 @@
-import { OrderSlice } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { trpc } from "../../utils/trpc";
-import { McListItemType, McListType } from "../Client/[orderId]";
+import { McListItemType } from "../Client/[orderId]";
 
 const Panel = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
   const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
-  const orderSlices = trpc.order.getOrderSlicesByOrderId.useQuery({
+  const orderSlicesByAuthors = trpc.order.getOrderSlicesByAuthors.useQuery({
     id: orderId,
   });
+
   const authors = trpc.order.getOrderSlicesAuthors.useQuery({ id: orderId });
 
   const renderOrder = order.data?.map((item: McListItemType) => {
@@ -24,10 +25,8 @@ const Panel = () => {
     );
   });
 
-  const renderOrderSlices = orderSlices.data?.map((slice: OrderSlice) => {
-    const details: McListType = JSON.parse(slice.details);
-
-    const items = details.map((item: McListItemType) => {
+  const renderOrderSlices = orderSlicesByAuthors.data?.map((slice) => {
+    const items = slice.details.map((item: McListItemType) => {
       return (
         <tr key={item.id}>
           <td>{item.name}</td>
@@ -38,7 +37,7 @@ const Panel = () => {
 
     return (
       <div key={slice.id}>
-        <h3 className="text-center">{slice.author}</h3>
+        <h3 className="text-center">{slice.author.name}</h3>
         <table className="table-zebra table w-full">
           <thead>
             <tr>
@@ -81,19 +80,22 @@ const Panel = () => {
         </table>
       </div>
       <Button
+        disabled={!session?.user}
         onClick={() => {
           router.push(`/Client/${orderId}`);
         }}
       >
         Add your products <br /> to this order!
       </Button>
-
+      {!session?.user && (
+        <p className="text-center text-red-600">
+          You need to be logged in to add your Products
+        </p>
+      )}
       <p>
         If you dont see your products, just refresh (I still havent fixed it).
       </p>
-
       <h2 className="text-center text-xl font-bold">Who pays how much?</h2>
-
       <div className="flex flex-col gap-4">
         <div className="overflow-x-auto">
           <table className="table-zebra table w-full">

@@ -1,6 +1,4 @@
 import { z } from "zod";
-
-import { OrderSlice } from "@prisma/client";
 import { router, protectedProcedure, publicProcedure } from "../trpc";
 import { McListItemType, McListType } from "../../../pages/Client/[orderId]";
 
@@ -44,11 +42,17 @@ export const orderRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
-      return await ctx.prisma.orderSlice.findMany({
+      const response = await ctx.prisma.orderSlice.findMany({
         where: {
           orderId: input.id,
         },
+        include: {
+          author: true,
+        },
       });
+
+      console.log("TESTOWE GOWNO", response);
+      return response;
     }),
   getOrderDetails: publicProcedure
     .input(
@@ -62,13 +66,17 @@ export const orderRouter = router({
           id: input.id,
         },
         include: {
-          orderSlices: true,
+          orderSlices: {
+            include: {
+              author: true,
+            },
+          },
         },
       });
 
       if (response) {
         const notMergedDetails: McListType[] = response.orderSlices.map(
-          (orderSlice: OrderSlice) => {
+          (orderSlice) => {
             const parsed = JSON.parse(orderSlice.details) as McListType;
             return parsed;
           }
@@ -77,7 +85,6 @@ export const orderRouter = router({
         if (notMergedDetails.length === 1) {
           return notMergedDetails[0];
         }
-
         const mergedArray: McListItemType[] = [];
 
         const mergedDetails = ([] as McListType).concat(
@@ -100,6 +107,81 @@ export const orderRouter = router({
         return mergedArray;
       }
     }),
+
+  /// TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+  getOrderSlicesByAuthors: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.order.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          orderSlices: {
+            include: {
+              author: true,
+            },
+          },
+        },
+      });
+
+      if (response && response.orderSlices) {
+        const notMergedDetails = response.orderSlices.map((orderSlice) => {
+          const parsed = JSON.parse(orderSlice.details) as McListType;
+          return { ...orderSlice, details: parsed };
+        });
+        console.log("NOT MERGED DETAILS", notMergedDetails);
+
+        const mergedArray = [] as typeof notMergedDetails;
+
+        notMergedDetails.forEach((item) => {
+          const found = mergedArray.find(
+            (helperItem) => helperItem.author.id === item.author.id
+          );
+
+          if (found) {
+            found.details = ([] as McListType).concat(
+              [],
+              found.details,
+              item.details
+            );
+          } else {
+            mergedArray.push(item);
+          }
+        });
+
+        const mergedArrayWithMergedDetails = [] as typeof notMergedDetails;
+        mergedArray.forEach((item) => {
+          const mergedDetails = [] as McListType;
+
+          item.details.forEach((detail) => {
+            const found = mergedDetails.find(
+              (helperItem) => helperItem.id === detail.id
+            );
+
+            if (found) {
+              found.quantity += detail.quantity;
+            } else {
+              mergedDetails.push(detail);
+            }
+          });
+
+          mergedArrayWithMergedDetails.push({
+            ...item,
+            details: mergedDetails,
+          });
+        });
+        console.log("MERGED ARRAY", mergedArrayWithMergedDetails);
+
+        return mergedArrayWithMergedDetails;
+      }
+
+      return [];
+    }),
   getOrderSlicesAuthors: publicProcedure
     .input(
       z.object({
@@ -112,12 +194,17 @@ export const orderRouter = router({
           id: input.id,
         },
         include: {
-          orderSlices: true,
+          orderSlices: {
+            include: {
+              author: true,
+            },
+          },
         },
       });
 
       if (response) {
         const authors: { [key: string]: number } = {};
+
         response.orderSlices.forEach((orderSlice) => {
           const OrderSliceAccumulatedPrice = JSON.parse(
             orderSlice.details
@@ -126,10 +213,10 @@ export const orderRouter = router({
               acc + curr.quantity * curr.price,
             0
           );
-          if (authors[orderSlice.author]) {
-            authors[orderSlice.author] += OrderSliceAccumulatedPrice;
+          if (authors[orderSlice.author.name]) {
+            authors[orderSlice.author.name] += OrderSliceAccumulatedPrice;
           } else {
-            authors[orderSlice.author] = OrderSliceAccumulatedPrice;
+            authors[orderSlice.author.name] = OrderSliceAccumulatedPrice;
           }
         });
 
@@ -152,7 +239,7 @@ export const orderRouter = router({
         data: {
           details: input.details,
           orderId: input.orderId,
-          author: input.author,
+          authorId: input.author,
         },
       });
     }),
@@ -199,7 +286,7 @@ export const orderRouter = router({
       return await ctx.prisma.order.create({
         data: {
           name: input.name,
-          author: input.author,
+          authorId: input.author,
           createdAt: currentDate,
         },
       });

@@ -11,13 +11,15 @@ datasource db {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
+    id            String       @id @default(cuid())
+    name          String
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    Order         Order[]
+    OrderSlice    OrderSlice[]
 }
 
 model Session {
@@ -57,16 +59,18 @@ model VerificationToken {
 
 model Order {
     id          String       @id @default(uuid())
-    author      String
+    author      User         @relation(fields: [authorId], references: [id])
+    authorId    String
     name        String
     createdAt   DateTime     @default(now())
     orderSlices OrderSlice[]
 }
 
 model OrderSlice {
-    id      String @id @default(uuid())
-    author  String
-    details String
-    Order   Order  @relation(fields: [orderId], references: [id])
-    orderId String
+    id       String @id @default(uuid())
+    author   User   @relation(fields: [authorId], references: [id])
+    authorId String
+    details  String
+    Order    Order  @relation(fields: [orderId], references: [id])
+    orderId  String
 }

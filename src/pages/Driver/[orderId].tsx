@@ -92,9 +92,6 @@ const Panel = () => {
           You need to be logged in to add your Products
         </p>
       )}
-      <p>
-        If you dont see your products, just refresh (I still havent fixed it).
-      </p>
       <h2 className="text-center text-xl font-bold">Who pays how much?</h2>
       <div className="flex flex-col gap-4">
         <div className="overflow-x-auto">

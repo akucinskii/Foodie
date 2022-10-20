@@ -19,17 +19,23 @@ export const orderRouter = router({
   getAllOrders: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.order.findMany();
   }),
+
+  /**
+   * Get new date then set the hour to 00:00:00,
+   * Then return all orders from that date
+   */
   getAllTodayOrders: publicProcedure.query(async ({ ctx }) => {
-    let lastDay: string | number = Date.now() - 24 * 60 * 60 * 1000;
-    lastDay = new Date(lastDay).toISOString();
+    const dateAsNumber = new Date().setHours(0, 0, 0, 0);
+    const beginningOfToday = new Date(dateAsNumber);
 
     const response = await ctx.prisma.order.findMany({
       where: {
         createdAt: {
-          gte: lastDay,
+          gte: beginningOfToday,
         },
       },
     });
+
     return response;
   }),
   getAllOrderSlices: publicProcedure.query(async ({ ctx }) => {
@@ -50,8 +56,6 @@ export const orderRouter = router({
           author: true,
         },
       });
-
-      console.log("TESTOWE GOWNO", response);
       return response;
     }),
   getOrderDetails: publicProcedure

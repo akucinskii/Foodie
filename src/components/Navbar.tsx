@@ -1,10 +1,13 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { router } from "../server/trpc/trpc";
 import Button from "./Button";
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <div className="align-center fixed z-20 flex w-full flex-row bg-white">
@@ -37,7 +40,10 @@ const Navbar = () => {
         <ul className="align-center menu menu-horizontal gap-2 p-2">
           {session ? (
             <>
-              <button className="avatar btn btn-ghost btn-circle">
+              <button
+                onClick={() => router.push(`/Profile/${session.user?.id}`)}
+                className="btn btn-ghost btn-circle"
+              >
                 {session && session.user && session.user.image && (
                   <Image
                     className="rounded-full"
@@ -49,11 +55,24 @@ const Navbar = () => {
                 )}
               </button>
               <li>
-                <Button onClick={() => signOut()}>Sign out</Button>
+                <Button
+                  onClick={() => {
+                    router.push("/");
+                    signOut();
+                  }}
+                >
+                  Sign out
+                </Button>
               </li>
             </>
           ) : (
-            <Button onClick={() => signIn()}>Sign in</Button>
+            <Button
+              onClick={() => {
+                signIn();
+              }}
+            >
+              Sign in
+            </Button>
           )}
         </ul>
       </div>

@@ -2,17 +2,22 @@ import { McListType } from "../pages/Client/[orderId]";
 import { trpc } from "../utils/trpc";
 
 export const useUpdateOrderSlice = () => {
-  const mutation = trpc.order.updateOrderSlice.useMutation();
+  const utils = trpc.useContext();
+  const mutation = trpc.order.updateOrderSlice.useMutation({
+    onSuccess: () => {
+      utils.order.invalidate();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   return (order: McListType, orderId: string) => {
     const orderSliceAsJson = JSON.stringify(order);
-    try {
-      mutation.mutateAsync({
-        id: orderId,
-        details: orderSliceAsJson,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+
+    mutation.mutateAsync({
+      id: orderId,
+      details: orderSliceAsJson,
+    });
   };
 };

@@ -1,20 +1,23 @@
 import { trpc } from "../utils/trpc";
 
 export const useSubmitOrder = () => {
-  const mutation = trpc.order.createOrder.useMutation();
+  const utils = trpc.useContext();
+  const mutation = trpc.order.createOrder.useMutation({
+    onSuccess: () => {
+      utils.order.getAllOrders.invalidate();
+      utils.order.getAllTodayOrders.invalidate();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   return (name: string, author: string) => {
-    try {
-      const response = mutation.mutateAsync({
-        name,
-        author,
-      });
+    const response = mutation.mutateAsync({
+      name,
+      author,
+    });
 
-      console.log("order submitted");
-
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
+    return response;
   };
 };

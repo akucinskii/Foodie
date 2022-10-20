@@ -18,14 +18,13 @@ const Client = () => {
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
   const orderId = router.query.orderId as string;
+  const submitOrderSlice = useSubmitOrderSlice();
 
   useEffect(() => {
     if (session && session.user && session.user.name) {
       setAuthor(session.user.id);
     }
   }, [session]);
-
-  const submitOrderSlice = useSubmitOrderSlice();
 
   useEffect(() => {
     const initialValue = 0;

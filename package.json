@@ -4,12 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "test:install": "npm install",
+    "prod:install": "npm install && prisma generate",
     "dev": "next dev",
     "build": "next build && prisma db push",
+    "build-no-prisma": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "postinstall": "prisma generate "
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.4",

@@ -10,7 +10,7 @@ const mockSession: Session = {
     id: "1",
     name: "Test",
     email: "test@test.test",
-    image: "/test",
+    image: "https://testimages.org/img/testimages_screenshot.jpg",
   },
   expires: "1",
 };

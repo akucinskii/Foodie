@@ -33,5 +33,8 @@ describe("Button", () => {
   test("should have children", () => {
     rerender(<Button {...mockProp} />);
     expect(getByTestId("button").textContent).toBe("Test");
+
+    rerender(<Button {...mockProp}>Test2</Button>);
+    expect(getByTestId("button").textContent).toBe("Test2");
   });
 });

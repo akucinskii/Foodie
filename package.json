@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:install": "npm install",
+    "prod:install": "npm install && prisma generate",
     "dev": "next dev",
     "build": "next build && prisma db push",
     "build-no-prisma": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate "
+    "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^4.4.0",

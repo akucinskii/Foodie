@@ -1,0 +1,464 @@
+// Vitest Snapshot v1
+
+exports[`Navbar > should match snapshot > logout 1`] = `
+<div>
+  <div
+    class="flex flex-col gap-4"
+  >
+    <h1
+      class="text-xl "
+    >
+      Warning: Please be sure about your order. There is no edit/delete (yet)
+    </h1>
+    <div
+      class="h-px flex-grow bg-gray-200"
+    />
+    <div
+      class="grid gap-8 sm:grid-cols-2"
+    >
+      <div
+        class="flex max-w-sm flex-col justify-center gap-2"
+      >
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          BigMac
+           
+          8
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McChicken
+           
+          8
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McNuggets
+           
+          8
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Wieśmac
+           
+          8
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McRoyal
+           
+          8
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McWrap
+           
+          8
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McFlurry
+           
+          5
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McShake wanilia
+           
+          5
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McShake truskawka
+           
+          5
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          McShake czekolada
+           
+          5
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          kawa
+           
+          5
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Zestaw BigMac
+           
+          14
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Zestaw Mcwrap
+           
+          14
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Zestaw McChicken
+           
+          14
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Zestaw McNuggets
+           
+          14
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Zestaw McRoyal
+           
+          14
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          Zestaw WieśMac
+           
+          14
+          pln
+        </div>
+        <div
+          class="flex gap-2"
+        >
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            -
+          </button>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            +
+          </button>
+          fryty
+           
+          5
+          pln
+        </div>
+      </div>
+      <div
+        class="flex flex-col gap-4"
+      >
+        <div
+          class="h-full overflow-x-auto"
+        >
+          <table
+            class="table-zebra table w-full"
+          >
+            <thead>
+              <tr>
+                <th>
+                  Item
+                </th>
+                <th>
+                  Quantity
+                </th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+        </div>
+        <div
+          class=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl"
+        >
+          Total: 
+          <span
+            class="text-yellow-500"
+          >
+            0
+             pln.
+          </span>
+        </div>
+        <button
+          class="btn btn-primary text-white"
+          data-testid="button"
+          disabled=""
+          type="button"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

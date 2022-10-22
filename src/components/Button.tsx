@@ -10,6 +10,7 @@ const Button = ({ onClick, children, disabled }: Props) => {
   return (
     <button
       type="button"
+      data-testid="button"
       className={`btn btn-primary text-white`}
       onClick={onClick}
       disabled={disabled}

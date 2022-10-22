@@ -2,7 +2,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { router } from "../server/trpc/trpc";
 import Button from "./Button";
 
 const Navbar = () => {
@@ -41,11 +40,13 @@ const Navbar = () => {
           {session ? (
             <>
               <button
+                data-testid="sign-out-button"
                 onClick={() => router.push(`/Profile/${session.user?.id}`)}
                 className="btn btn-ghost btn-circle"
               >
                 {session && session.user && session.user.image && (
                   <Image
+                    data-testid="profile-image"
                     className="rounded-full"
                     src={session?.user?.image}
                     alt="text"
@@ -57,8 +58,8 @@ const Navbar = () => {
               <li>
                 <Button
                   onClick={() => {
-                    router.push("/");
                     signOut();
+                    router.push("/");
                   }}
                 >
                   Sign out

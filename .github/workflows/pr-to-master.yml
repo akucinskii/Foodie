@@ -1,26 +1,53 @@
 name: pr-to-master
+env: 
+  DATABASE_URL: ${secrets.DATABASE_URL}
+  GITHUB_CLIENT_ID: ${secrets.GH_CLIENT_IT}
+  GITHUB_CLIENT_SECRET: ${{secrets.GH_CLIENT_SECRET}}
+  GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+  GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+  AUTH0_CLIENT_SECRET: ${{secrets.AUTH0_CLIENT_SECRET}}
+  AUTH0_CLIENT_ID: ${{secrets.AUTH0_CLIENT_ID}}
+  AUTH0_ISSUER: ${{secrets.AUTH0_ISSUER}}
+  
 run-name: ${{ github.actor }} wants to merge to main
 on: 
   pull_request:
     branches:
       - master
+      
 jobs:
-    test-lint:
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v2
 
+  lint:
+  
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    runs-on: ubuntu-latest
+    steps:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
+      - run: |
+          npm ci
+          npm run lint
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: lint
-        run: npm run lint
-
-      - name: test
-        run: npm test
+  test:
+  
+    strategy:
+      matrix:
+        node-version: [16.x]
+    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
+      - run: |
+          npm ci
+          npm test
 

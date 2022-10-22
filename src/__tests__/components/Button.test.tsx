@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 import Button from "../../components/Button";
 
 describe("Button", () => {
@@ -8,9 +8,30 @@ describe("Button", () => {
     children: "Test",
     disabled: false,
   };
+  const { container, rerender, getByTestId } = render(<Button {...mockProp} />);
 
-  it("should match snapshot", () => {
-    render(<Button {...mockProp} />);
-    expect(screen.getByRole("button")).toMatchSnapshot();
+  test("should match snapshot", () => {
+    expect(container).toMatchSnapshot();
+  });
+
+  test("should call onClick when clicked", () => {
+    rerender(<Button {...mockProp} />);
+    getByTestId("button").click();
+    expect(mockProp.onClick).toHaveBeenCalled();
+  });
+
+  test("should be disabled when disabled is true", () => {
+    rerender(<Button {...mockProp} disabled={true} />);
+    expect(getByTestId("button").getAttribute("disabled")).toBeDefined();
+  });
+
+  test("should not be disabled when disabled is false", () => {
+    rerender(<Button {...mockProp} disabled={false} />);
+    expect(getByTestId("button").getAttribute("disabled")).toBeNull();
+  });
+
+  test("should have children", () => {
+    rerender(<Button {...mockProp} />);
+    expect(getByTestId("button").textContent).toBe("Test");
   });
 });

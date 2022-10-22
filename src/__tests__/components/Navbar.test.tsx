@@ -1,6 +1,6 @@
 import { fireEvent, render } from "@testing-library/react";
 import { Session } from "next-auth";
-import { describe, expect, it, vi, Mock } from "vitest";
+import { describe, expect, test, vi, Mock, afterAll } from "vitest";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Navbar from "../../components/Navbar";
 import { useRouter } from "next/router";
@@ -40,11 +40,11 @@ describe("Navbar", () => {
 
   const { container, rerender, getByText, getByTestId } = render(<Navbar />);
 
-  it("should match snapshot when logout", () => {
+  test("should match snapshot when logout", () => {
     expect(container).toMatchSnapshot("logout");
   });
 
-  it("should match snapshot when login", () => {
+  test("should match snapshot when login", () => {
     (useSession as Mock).mockReturnValue({
       data: mockSession,
       status: "authenticated",
@@ -53,7 +53,7 @@ describe("Navbar", () => {
     expect(container).toMatchSnapshot("login");
   });
 
-  it("should call signIn when click on login button", async () => {
+  test("should call signIn when click on login button", async () => {
     (useSession as Mock).mockImplementation(() => ({
       data: null,
       status: "unauthenticated",
@@ -66,7 +66,7 @@ describe("Navbar", () => {
     expect(signIn).toHaveBeenCalled();
   });
 
-  it("should call signOut when click on logout button", async () => {
+  test("should call signOut when click on logout button", async () => {
     const mockRouter = {
       push: vi.fn(), // the component uses `router.push` only
     };
@@ -84,7 +84,7 @@ describe("Navbar", () => {
     expect(signOut).toHaveBeenCalled();
     expect(mockRouter.push).toHaveBeenCalledWith("/");
   });
-  it("should call router.push when click on profile button", async () => {
+  test("should call router.push when click on profile button", async () => {
     const mockRouter = {
       push: vi.fn(), // the component uses `router.push` only
     };
@@ -102,5 +102,11 @@ describe("Navbar", () => {
     expect(mockRouter.push).toHaveBeenCalledWith(
       "/Profile/" + mockSession.user?.id
     );
+  });
+
+  afterAll(() => {
+    (signIn as Mock).mockRestore();
+    (signOut as Mock).mockRestore();
+    (useSession as Mock).mockRestore();
   });
 });

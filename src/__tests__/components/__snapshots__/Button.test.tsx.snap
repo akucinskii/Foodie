@@ -1,11 +1,13 @@
 // Vitest Snapshot v1
 
 exports[`Button > should match snapshot 1`] = `
-<button
-  class="btn btn-primary text-white"
-  data-testid="button"
-  type="button"
->
-  Test
-</button>
+<div>
+  <button
+    class="btn btn-primary text-white"
+    data-testid="button"
+    type="button"
+  >
+    Test
+  </button>
+</div>
 `;

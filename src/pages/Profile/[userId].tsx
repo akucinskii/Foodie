@@ -2,20 +2,28 @@ import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button";
 import useUpdateUser from "../../hooks/mutations/useUpdateUser";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { getBaseUrl, trpc } from "../../utils/trpc";
 
 const ProfilePage = () => {
-  const [name, setName] = React.useState("");
+  const [name, setName] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
   const userId = router.query.userId as string;
   const user = trpc.user.getUserById.useQuery({ userId: userId });
 
   const updateUser = useUpdateUser();
+
+  if (!user.data) {
+    return (
+      <div className="flex flex-col gap-2">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center gap-2 text-center ">
@@ -51,7 +59,7 @@ const ProfilePage = () => {
       >
         Change username
       </Button>
-      ;<p>{user.data?.email}</p>
+      <p>{user.data?.email}</p>
     </div>
   );
 };

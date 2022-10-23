@@ -3,6 +3,7 @@
 Tech stack:
 
 - [create-t3-app](https://init.tips) stack, also known as the T3-Stack (react, trpc, tailwind, prisma, nextauth).
+- [vitest](https://vitest.dev) for testing
 
 ## Do you want to run dev server?
 
@@ -17,4 +18,5 @@ Tech stack:
 
 ## Do you want to run tests?
 
-_Please don't_
+- npm i
+- npm test

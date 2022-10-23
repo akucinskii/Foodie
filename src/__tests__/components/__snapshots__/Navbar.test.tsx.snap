@@ -1,0 +1,203 @@
+// Vitest Snapshot v1
+
+exports[`Navbar > should match snapshot when login > login 1`] = `
+<div>
+  <div
+    class="align-center fixed z-20 flex w-full flex-row bg-white"
+  >
+    <div
+      class="flex-1"
+    >
+      <ul
+        class="menu menu-horizontal gap-4 p-2"
+      >
+        <h1
+          class="text-4xl font-bold text-gray-700"
+        >
+          Solve
+          <span
+            class="text-yellow-500"
+          >
+            M
+          </span>
+          c
+        </h1>
+        <li>
+          <a
+            class="whitespace-nowrap"
+            href="/"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            class="whitespace-nowrap"
+            href="/all"
+          >
+            All Orders
+          </a>
+        </li>
+        <li
+          class=""
+        >
+          <a
+            class="=whitespace-nowrap"
+            href="/Driver/newOrder"
+          >
+            New Order
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="flex-0"
+    >
+      <ul
+        class="align-center menu menu-horizontal gap-2 p-2"
+      >
+        <button
+          class="btn btn-ghost btn-circle"
+          data-testid="sign-out-button"
+        >
+          <span
+            style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
+          >
+            <span
+              style="box-sizing: border-box; display: block; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2740%27%20height=%2740%27/%3e"
+                style="display: block; max-width: 100%; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"
+              />
+            </span>
+            <img
+              alt="text"
+              class="rounded-full"
+              data-nimg="intrinsic"
+              data-testid="profile-image"
+              decoding="async"
+              src="/_next/image?url=https%3A%2F%2Ftestimages.org%2Fimg%2Ftestimages_screenshot.jpg&w=96&q=75"
+              srcset="/_next/image?url=https%3A%2F%2Ftestimages.org%2Fimg%2Ftestimages_screenshot.jpg&w=48&q=75 1x, /_next/image?url=https%3A%2F%2Ftestimages.org%2Fimg%2Ftestimages_screenshot.jpg&w=96&q=75 2x"
+              style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+            />
+            <noscript />
+          </span>
+        </button>
+        <li>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            Sign out
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Navbar > should match snapshot when logout > logout 1`] = `
+<div>
+  <div
+    class="align-center fixed z-20 flex w-full flex-row bg-white"
+  >
+    <div
+      class="flex-1"
+    >
+      <ul
+        class="menu menu-horizontal gap-4 p-2"
+      >
+        <h1
+          class="text-4xl font-bold text-gray-700"
+        >
+          Solve
+          <span
+            class="text-yellow-500"
+          >
+            M
+          </span>
+          c
+        </h1>
+        <li>
+          <a
+            class="whitespace-nowrap"
+            href="/"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            class="whitespace-nowrap"
+            href="/all"
+          >
+            All Orders
+          </a>
+        </li>
+        <li
+          class=""
+        >
+          <a
+            class="=whitespace-nowrap"
+            href="/Driver/newOrder"
+          >
+            New Order
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="flex-0"
+    >
+      <ul
+        class="align-center menu menu-horizontal gap-2 p-2"
+      >
+        <button
+          class="btn btn-ghost btn-circle"
+          data-testid="sign-out-button"
+        >
+          <span
+            style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
+          >
+            <span
+              style="box-sizing: border-box; display: block; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2740%27%20height=%2740%27/%3e"
+                style="display: block; max-width: 100%; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"
+              />
+            </span>
+            <img
+              alt="text"
+              class="rounded-full"
+              data-nimg="intrinsic"
+              data-testid="profile-image"
+              decoding="async"
+              src="/_next/image?url=https%3A%2F%2Ftestimages.org%2Fimg%2Ftestimages_screenshot.jpg&w=96&q=75"
+              srcset="/_next/image?url=https%3A%2F%2Ftestimages.org%2Fimg%2Ftestimages_screenshot.jpg&w=48&q=75 1x, /_next/image?url=https%3A%2F%2Ftestimages.org%2Fimg%2Ftestimages_screenshot.jpg&w=96&q=75 2x"
+              style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
+            />
+            <noscript />
+          </span>
+        </button>
+        <li>
+          <button
+            class="btn btn-primary text-white"
+            data-testid="button"
+            type="button"
+          >
+            Sign out
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

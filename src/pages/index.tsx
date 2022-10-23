@@ -13,7 +13,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="absolute top-20 text-xl md:text-3xl">
+      <h1
+        className="absolute top-20 text-xl md:text-3xl"
+        data-testid="title-header"
+      >
         Welcome to solve<span className="text-yellow-500">M</span>c App
       </h1>
       <div>

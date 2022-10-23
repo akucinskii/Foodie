@@ -19,6 +19,10 @@ export default defineNextConfig({
     defaultLocale: "en",
   },
   images: {
-    domains: ["lh3.googleusercontent.com", "s.gravatar.com"],
+    domains: [
+      "lh3.googleusercontent.com",
+      "s.gravatar.com",
+      "avatars.githubusercontent.com",
+    ],
   },
 });

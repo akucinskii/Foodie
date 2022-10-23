@@ -3,7 +3,7 @@ import { trpc } from "../../utils/trpc";
 
 export const useUpdateOrderSlice = () => {
   const utils = trpc.useContext();
-  const mutation = trpc.order.updateOrderSlice.useMutation({
+  const mutation = trpc.orderSlice.updateOrderSlice.useMutation({
     onSuccess: () => {
       utils.order.invalidate();
     },

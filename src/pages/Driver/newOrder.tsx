@@ -70,24 +70,4 @@ const Driver = () => {
   );
 };
 
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-//   const session = await getServerAuthSession(ctx);
-
-//   if (!session) {
-//     const baseUrl = getBaseUrl();
-//     return {
-//       redirect: {
-//         destination: `/api/auth/signin?callbackUrl=${baseUrl}`,
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: {
-//       session,
-//     },
-//   };
-// };
-
 export default Driver;

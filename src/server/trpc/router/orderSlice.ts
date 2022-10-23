@@ -1,12 +1,27 @@
 import { protectedProcedure, router } from "../trpc";
 import { z } from "zod";
-import { McListItemType, McListType } from "../../../pages/Client/[orderId]";
+import { McListType } from "../../../pages/Client/[orderId]";
 
 export const orderSliceRouter = router({
   getAllOrderSlices: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.orderSlice.findMany();
   }),
 
+  /**
+   * Return all order slices from a specific order
+   *
+   * @param orderId
+   *
+   * @returns OrderSlice[]
+   *
+   * @example
+   * ```ts
+   * const orderSlices = await trpc.orderSlice.getOrderSlicesByOrderId({
+   *  orderId: "someOrderId",
+   * })
+   *
+   * ```
+   */
   getOrderSlicesByOrderId: protectedProcedure
     .input(
       z.object({
@@ -25,7 +40,17 @@ export const orderSliceRouter = router({
       return response;
     }),
 
-  getOrderSlicesByAuthors: protectedProcedure
+  /**
+   * Merges order slices with the same author in order.
+   * Then sums all items with the same id.
+   *
+   * @param id
+   * @example
+   * ```ts
+   * const orderSlices = await trpc.orderSlice.getMergedItemsAndAuthorByOrderId({ id: "123" });
+   * ```
+   */
+  getMergedItemsAndAuthorByOrderId: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -50,7 +75,6 @@ export const orderSliceRouter = router({
           const parsed = JSON.parse(orderSlice.details) as McListType;
           return { ...orderSlice, details: parsed };
         });
-        console.log("NOT MERGED DETAILS", notMergedDetails);
 
         const mergedArray = [] as typeof notMergedDetails;
 
@@ -91,7 +115,6 @@ export const orderSliceRouter = router({
             details: mergedDetails,
           });
         });
-        console.log("MERGED ARRAY", mergedArrayWithMergedDetails);
 
         return mergedArrayWithMergedDetails;
       }
@@ -99,50 +122,33 @@ export const orderSliceRouter = router({
       return [];
     }),
 
-  getOrderSlicesAuthors: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.order.findUnique({
-        where: {
-          id: input.id,
-        },
-        include: {
-          orderSlices: {
-            include: {
-              author: true,
-            },
-          },
-        },
-      });
-
-      if (response) {
-        const authors: { [key: string]: number } = {};
-
-        response.orderSlices.forEach((orderSlice) => {
-          const OrderSliceAccumulatedPrice = JSON.parse(
-            orderSlice.details
-          ).reduce(
-            (acc: number, curr: McListItemType) =>
-              acc + curr.quantity * curr.price,
-            0
-          );
-          if (authors[orderSlice.author.name]) {
-            authors[orderSlice.author.name] += OrderSliceAccumulatedPrice;
-          } else {
-            authors[orderSlice.author.name] = OrderSliceAccumulatedPrice;
-          }
-        });
-
-        return authors;
-      }
-
-      return {};
-    }),
-
+  /**
+   * Creates new orderSlice
+   *
+   * details must be  provided as string of json object.
+   *
+   * @param {string} orderId - id of order (the bigger one)
+   * @param {string} details - string of json object
+   * @param {string} author - id of user creating orderSlice
+   *
+   * @example
+   * ```ts
+   * const orderSlice = {
+   *    "id": "1",
+   *    "name": "McChicken",
+   *    "price": 5,
+   *    "quantity": 1
+   * }
+   * const orderSliceAsJson = JSON.stringify(orderSlice);
+   * const mutation = trpc.order.createOrderSlice.useMutation()
+   *
+   * mutation.mutateAsync({
+   *    orderId: "1",
+   *    details: orderSliceAsJson,
+   *    author: "Example author",
+   * });
+   * ```
+   */
   createOrderSlice: protectedProcedure
     .input(
       z.object({
@@ -161,6 +167,26 @@ export const orderSliceRouter = router({
       });
     }),
 
+  /**
+   * Updates orderSlice with details provided as string of json object.
+   * @returns {Promise<Prisma.OrderSlice>}OrderSlice
+   * @param {string} id
+   * @param {string} data
+   *
+   *
+   * @example
+   * ```ts
+   *
+   * const mutation = trpc.order.updateOrderSlice.useMutation()
+   *
+   * mutation.mutateAsync({
+   *    orderId: "1",
+   *    details: orderSliceAsJson,
+   * });
+   * ```
+   *
+   *
+   */
   updateOrderSlice: protectedProcedure
     .input(
       z.object({
@@ -175,6 +201,33 @@ export const orderSliceRouter = router({
         },
         data: {
           details: input.details,
+        },
+      });
+    }),
+
+  /**
+   * Deletes orderSlice
+   * @param {string} id
+   *
+   * @example
+   * ```ts
+   * const mutation = trpc.order.deleteOrderSlice.useMutation()
+   *
+   * mutation.mutateAsync({
+   *  id: "1",
+   * })
+   * ```
+   */
+  deleteOrderSlice: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.orderSlice.delete({
+        where: {
+          id: input.id,
         },
       });
     }),

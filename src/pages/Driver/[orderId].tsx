@@ -10,13 +10,12 @@ const Panel = () => {
   const orderId = router.query.orderId as string;
 
   const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
-  const orderSlicesByAuthors = trpc.orderSlice.getOrderSlicesByAuthors.useQuery(
-    {
+  const orderSlicesByAuthors =
+    trpc.orderSlice.getMergedItemsAndAuthorByOrderId.useQuery({
       id: orderId,
-    }
-  );
+    });
 
-  const authors = trpc.orderSlice.getOrderSlicesAuthors.useQuery({
+  const authors = trpc.order.getAccumulatedPriceByAuthor.useQuery({
     id: orderId,
   });
 

@@ -18,10 +18,7 @@ const mockSession: Session = {
 vi.mock("next-auth/react", () => ({
   signIn: vi.fn(),
   signOut: vi.fn(),
-  useSession: vi.fn(() => ({
-    data: mockSession,
-    status: "unauthenticated",
-  })),
+  useSession: vi.fn(),
 }));
 
 vi.mock("next/router", () => ({
@@ -38,13 +35,26 @@ describe("Navbar", () => {
   (signIn as Mock).mockImplementation(() => vi.fn());
   (signOut as Mock).mockImplementation(() => vi.fn());
 
+  (useSession as Mock).mockReturnValue({
+    data: mockSession,
+    status: "authenticated",
+  });
+
   const { container, rerender, getByText, getByTestId } = render(<Navbar />);
 
   test("should match snapshot when logout", () => {
+    (useSession as Mock).mockReturnValue({
+      data: mockSession,
+      status: "authenticated",
+    });
+
+    rerender(<Navbar />);
     expect(container).toMatchSnapshot("logout");
   });
 
   test("should match snapshot when login", () => {
+    rerender(<Navbar />);
+
     (useSession as Mock).mockReturnValue({
       data: mockSession,
       status: "authenticated",

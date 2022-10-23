@@ -2,11 +2,19 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 
 const Navbar = () => {
+  const [image, setImage] = useState<string>("");
   const { data: session } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (session && session.user) {
+      setImage(session.user.image || "");
+    }
+  }, [session]);
 
   return (
     <div className="align-center fixed z-20 flex w-full flex-row bg-white">
@@ -48,7 +56,7 @@ const Navbar = () => {
                   <Image
                     data-testid="profile-image"
                     className="rounded-full"
-                    src={session?.user?.image}
+                    src={image}
                     alt="text"
                     width={40}
                     height={40}

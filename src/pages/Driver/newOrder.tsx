@@ -34,17 +34,6 @@ const Driver = () => {
           onChange={(e) => setName(e.target.value)}
         />
 
-        {/* <label className="label">
-          <span className="label-text">Enter your order name</span>
-        </label>
-        <input
-          className="input input-bordered w-full"
-          type="text"
-          required
-          placeholder="Author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        /> */}
       </div>
 
       <Button

@@ -46,17 +46,24 @@ const Panel = () => {
       );
     });
 
+    console.log(slice)
     return (
       <div
         onClick={() => {
+          if (slice.authorId === session?.user?.id)
           deleteOrderSlice.mutateAsync({ id: slice.id });
         }}
         key={slice.id}
       >
         <h3 className="text-center">{slice.author.name}</h3>
+          {slice.authorId === session?.user?.id && (
+              <p className="text-center text-yellow-500 font-bold">Click to delete</p> 
+              ) 
+            }
         <table className="table-zebra table w-full">
           <thead>
             <tr>
+            
               <th>Item</th>
               <th className="text-right">Quantity</th>
             </tr>

@@ -50,18 +50,20 @@ const Navbar = () => {
               <Link
                 data-testid="sign-out-button"
                 href={`/Profile/${session.user?.id}`}
-                className="btn btn-ghost btn-circle inline-flex"
+                
               >
+                <button className="btn btn-ghost btn-circle">
                 {session && session.user && session.user.image && (
                   <Image
                     data-testid="profile-image"
                     className="rounded-full"
                     src={image}
                     alt="text"
-                    width={48}
-                    height={48}
+                    width={40}
+                    height={40}
                   />
                 )}
+                </button>
               </Link>
               <li>
                 <Button

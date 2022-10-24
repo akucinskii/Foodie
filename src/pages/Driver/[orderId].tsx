@@ -68,7 +68,7 @@ const Panel = () => {
   });
 
   return order.data ? (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 md:min-w-[50%] min-w-full">
       <h1 className="text-center text-2xl font-bold">Driver panel</h1>
       <h2 className="text-center text-xl font-bold">Order items</h2>
       <div className="overflow-x-auto">

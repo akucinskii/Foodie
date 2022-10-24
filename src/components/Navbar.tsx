@@ -47,10 +47,10 @@ const Navbar = () => {
         <ul className="align-center menu menu-horizontal gap-2 p-2">
           {session ? (
             <>
-              <button
+              <Link
                 data-testid="sign-out-button"
-                onClick={() => router.push(`/Profile/${session.user?.id}`)}
-                className="btn btn-ghost btn-circle"
+                href={`/Profile/${session.user?.id}`}
+                className="btn btn-ghost btn-circle inline-flex"
               >
                 {session && session.user && session.user.image && (
                   <Image
@@ -58,11 +58,11 @@ const Navbar = () => {
                     className="rounded-full"
                     src={image}
                     alt="text"
-                    width={40}
-                    height={40}
+                    width={48}
+                    height={48}
                   />
                 )}
-              </button>
+              </Link>
               <li>
                 <Button
                   onClick={() => {

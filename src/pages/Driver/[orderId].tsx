@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import Button from "../../components/Button";
 import { trpc } from "../../utils/trpc";
@@ -6,11 +7,18 @@ import { McListItemType } from "../Client/[orderId]";
 
 const Panel = () => {
   const { data: session } = useSession();
+  const utils = trpc.useContext();
   const router = useRouter();
   const orderId = router.query.orderId as string;
 
+  const deleteOrderSlice = trpc.orderSlice.deleteOrderSlice.useMutation({
+    onSuccess: () => {
+      utils.order.invalidate();
+      utils.orderSlice.invalidate();
+    },
+  });
   const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
-  const orderSlicesByAuthors =
+  const MergedItemsAndAuthorByOrderId =
     trpc.orderSlice.getMergedItemsAndAuthorByOrderId.useQuery({
       id: orderId,
     });
@@ -28,7 +36,7 @@ const Panel = () => {
     );
   });
 
-  const renderOrderSlices = orderSlicesByAuthors.data?.map((slice) => {
+  const renderOrderSlices = MergedItemsAndAuthorByOrderId.data?.map((slice) => {
     const items = slice.details.map((item: McListItemType) => {
       return (
         <tr key={item.id}>
@@ -39,7 +47,12 @@ const Panel = () => {
     });
 
     return (
-      <div key={slice.id}>
+      <div
+        onClick={() => {
+          deleteOrderSlice.mutateAsync({ id: slice.id });
+        }}
+        key={slice.id}
+      >
         <h3 className="text-center">{slice.author.name}</h3>
         <table className="table-zebra table w-full">
           <thead>
@@ -82,14 +95,11 @@ const Panel = () => {
           </tbody>
         </table>
       </div>
-      <Button
-        disabled={!session?.user}
-        onClick={() => {
-          router.push(`/Client/${orderId}`);
-        }}
-      >
-        Add your products <br /> to this order!
-      </Button>
+      <Link href={`/Client/${orderId}`}>
+        <Button disabled={!session?.user}>
+          Add your products <br /> to this order!
+        </Button>
+      </Link>
       {!session?.user && (
         <p className="text-center text-red-600">
           You need to be logged in to add your Products

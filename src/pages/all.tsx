@@ -1,29 +1,17 @@
 import { Order } from "@prisma/client";
-import moment from "moment";
 import Link from "next/link";
-import React from "react";
 import Button from "../components/Button";
 import { trpc } from "../utils/trpc";
 
 const All = () => {
-  // const allOrders = trpc.useQuery(["order.getAllOrders"]);
   const todayOrders = trpc.order.getAllTodayOrders.useQuery();
-
-  // const linkToOrders = allOrders.data?.map((order) => (
-  //   <Link key={order.id} href={`Driver/${order.id}`}>
-  //     <Button disabled>
-  //       <a>
-  //         {order.name} {moment(order.createdAt).format("DD/MM/YYYY")}
-  //       </a>
-  //     </Button>
-  //   </Link>
-  // ));
 
   const linkToTodayOrders = todayOrders.data?.map((order: Order) => (
     <Link key={order.id} href={`Driver/${order.id}`}>
       <Button>
         <a>
-          {order.name} {moment(order.createdAt).format("DD/MM/YYYY")}
+          {order.name}{" "}
+          {new Intl.DateTimeFormat("en-GB").format(order.createdAt)}
         </a>
       </Button>
     </Link>

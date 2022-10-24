@@ -94,26 +94,7 @@ describe("Navbar", () => {
     expect(signOut).toHaveBeenCalled();
     expect(mockRouter.push).toHaveBeenCalledWith("/");
   });
-  test("should call router.push when click on profile button", async () => {
-    const mockRouter = {
-      push: vi.fn(), // the component uses `router.push` only
-    };
-    (useRouter as Mock).mockReturnValue(mockRouter);
-
-    (useSession as Mock).mockReturnValue({
-      data: mockSession,
-      status: "authenticated",
-    });
-
-    rerender(<Navbar />);
-
-    fireEvent.click(getByTestId("profile-image"));
-
-    expect(mockRouter.push).toHaveBeenCalledWith(
-      "/Profile/" + mockSession.user?.id
-    );
-  });
-
+  
   afterAll(() => {
     (signIn as Mock).mockRestore();
     (signOut as Mock).mockRestore();

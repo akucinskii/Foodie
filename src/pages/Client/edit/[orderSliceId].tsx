@@ -24,7 +24,13 @@ const OrderSliceEdit = () => {
   const orderId = router.query.orderSliceId as string;
   const updateOrderSlice = useUpdateOrderSlice();
 
-  const deleteOrderSlice = trpc.orderSlice.deleteOrderSlice.useMutation();
+  const utils = trpc.useContext();
+  const deleteOrderSlice = trpc.orderSlice.deleteOrderSlice.useMutation({
+    onSuccess: () => {
+      utils.orderSlice.invalidate();
+      utils.order.invalidate();
+    },
+  });
   useEffect(() => {
     if (orderSlice.data) {
       setOrder(orderSlice.data.details);

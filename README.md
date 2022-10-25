@@ -30,16 +30,22 @@ AUTH0_ISSUER=YourDomain
 
 ### Do you want to run dev server?
 
-- npm i
-- npm run dev
+```bash
+npm i
+npm run dev
+```
 
 ### Do you want to run production server?
 
-- npm i
-- npm run build
-- npm run start
+```bash
+npm i
+npm run build
+npm run start
+```
 
 ### Do you want to run tests?
 
-- npm i
-- npm test
+```bash
+npm i
+npm test
+```

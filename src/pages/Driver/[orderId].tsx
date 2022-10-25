@@ -22,6 +22,19 @@ const Panel = () => {
     id: orderId,
   });
 
+  if (
+    order.isFetching ||
+    orderSlices.isFetching ||
+    authors.isFetching ||
+    orderSlices.isRefetching
+  ) {
+    return (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-center text-2xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
+
   const renderOrder = order.data?.map((item: McListItemType) => {
     return (
       <tr key={item.id}>
@@ -71,7 +84,7 @@ const Panel = () => {
     );
   });
 
-  return !order.isFetching || !orderSlices.isFetching || !authors.isFetching ? (
+  return (
     <div className="flex min-w-full flex-col gap-4 md:min-w-[50%]">
       <h1 className="text-center text-2xl font-bold">Driver panel</h1>
       <h2 className="text-center text-xl font-bold">Order items</h2>
@@ -142,10 +155,6 @@ const Panel = () => {
       </div>
       <div className="h-px flex-grow bg-gray-200"></div>
       {renderOrderSlices}
-    </div>
-  ) : (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-center text-2xl font-bold">Loading...</h1>
     </div>
   );
 };

@@ -17,7 +17,7 @@ const ProfilePage = () => {
 
   const updateUser = useUpdateUser();
 
-  if (user.isLoading) {
+  if (user.isFetching) {
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-center text-2xl font-bold">Loading...</h1>

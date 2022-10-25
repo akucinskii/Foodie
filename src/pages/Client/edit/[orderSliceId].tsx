@@ -46,7 +46,7 @@ const OrderSliceEdit = () => {
     setTotal(value);
   }, [order]);
 
-  if (orderSlice.isLoading) {
+  if (orderSlice.isFetching) {
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-center text-2xl font-bold">Loading...</h1>

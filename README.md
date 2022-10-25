@@ -14,6 +14,13 @@ Provide its url in a `.env.local` file in the root of the project.
 DATABASE_URL=Your://Postgres://Url
 ```
 
+Then run the following commands:
+
+```bash
+npm i
+npx prisma migrate dev
+```
+
 Also provide a secret for nextauth in the same file.
 
 ```bash

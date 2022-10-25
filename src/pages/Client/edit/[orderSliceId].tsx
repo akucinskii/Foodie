@@ -46,6 +46,14 @@ const OrderSliceEdit = () => {
     setTotal(value);
   }, [order]);
 
+  if (orderSlice.isLoading) {
+    return (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-center text-2xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
+
   const addToOrder = (item: McListItemType) => {
     const found = order.some((el) => el.name === item.name);
 

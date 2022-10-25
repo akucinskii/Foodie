@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Button from "../../components/Button";
 import { getBaseUrl, trpc } from "../../utils/trpc";
+import OrderSliceEdit from "../Client/edit/[orderSliceId]";
 import { McListItemType } from "../Client/[orderId]";
 
 const Panel = () => {
@@ -70,7 +71,7 @@ const Panel = () => {
     );
   });
 
-  return order.data ? (
+  return !order.isLoading || !orderSlices.isLoading || !authors.isLoading ? (
     <div className="flex min-w-full flex-col gap-4 md:min-w-[50%]">
       <h1 className="text-center text-2xl font-bold">Driver panel</h1>
       <h2 className="text-center text-xl font-bold">Order items</h2>

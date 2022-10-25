@@ -6,7 +6,7 @@ import Button from "../../components/Button";
 import { useSubmitOrderSlice } from "../../hooks/mutations/useSubmitOrderSlice";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { McList } from "../../utils/McList";
-import { getBaseUrl, trpc } from "../../utils/trpc";
+import { getBaseUrl } from "../../utils/trpc";
 
 export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];

@@ -2,16 +2,13 @@ import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Button from "../../components/Button";
 import { getBaseUrl, trpc } from "../../utils/trpc";
-import OrderSliceEdit from "../Client/edit/[orderSliceId]";
 import { McListItemType } from "../Client/[orderId]";
 
 const Panel = () => {
   const { data: session } = useSession();
-  const utils = trpc.useContext();
   const router = useRouter();
   const orderId = router.query.orderId as string;
   const order = trpc.order.getOrderDetails.useQuery({ id: orderId });

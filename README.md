@@ -1,22 +1,45 @@
 # Simple app made to make ordering food easier :tf:
 
-Tech stack:
+## Tech stack:
 
 - [create-t3-app](https://init.tips) stack, also known as the T3-Stack (react, trpc, tailwind, prisma, nextauth).
 - [vitest](https://vitest.dev) for testing
 
-## Do you want to run dev server?
+## Getting started
+
+You need to have a postgres database running to run this on your pc.
+Provide its url in a `.env.local` file in the root of the project.
+
+```bash
+DATABASE_URL=Your://Postgres://Url
+```
+
+Also provide a secret for nextauth in the same file.
+
+```bash
+NEXTAUTH_SECRET=YourSecret
+```
+
+Auth0 is used for authentication, so you need to provide your auth0 credentials in the `.env.local` file as well.
+
+```bash
+AUTH0_CLIENT_ID=YourClientId
+AUTH0_CLIENT_SECRET=YourClientSecret
+AUTH0_ISSUER=YourDomain
+```
+
+### Do you want to run dev server?
 
 - npm i
 - npm run dev
 
-## Do you want to run production server?
+### Do you want to run production server?
 
 - npm i
 - npm run build
 - npm run start
 
-## Do you want to run tests?
+### Do you want to run tests?
 
 - npm i
 - npm test

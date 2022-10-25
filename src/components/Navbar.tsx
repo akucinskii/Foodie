@@ -47,11 +47,12 @@ const Navbar = () => {
         <ul className="align-center menu menu-horizontal gap-2 p-2">
           {session ? (
             <>
-              <button
+              <Link
                 data-testid="sign-out-button"
-                onClick={() => router.push(`/Profile/${session.user?.id}`)}
-                className="btn btn-ghost btn-circle"
+                href={`/Profile/${session.user?.id}`}
+                
               >
+                <button className="btn btn-ghost btn-circle">
                 {session && session.user && session.user.image && (
                   <Image
                     data-testid="profile-image"
@@ -62,7 +63,8 @@ const Navbar = () => {
                     height={40}
                   />
                 )}
-              </button>
+                </button>
+              </Link>
               <li>
                 <Button
                   onClick={() => {

@@ -2,24 +2,34 @@ import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Button from "../../components/Button";
-import { useSubmitOrderSlice } from "../../hooks/mutations/useSubmitOrderSlice";
-import { getServerAuthSession } from "../../server/common/get-server-auth-session";
-import { McList } from "../../utils/McList";
-import { getBaseUrl, trpc } from "../../utils/trpc";
+import { useUpdateOrderSlice } from "src/hooks/mutations/useUpdateOrderSlice";
+import Button from "../../../components/Button";
+import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
+import { McList } from "../../../utils/McList";
+import { getBaseUrl, trpc } from "../../../utils/trpc";
 
 export type McListType = typeof McList;
 export type McListItemType = typeof McList[number];
 
-const Client = () => {
+const OrderSliceEdit = () => {
   const { data: session } = useSession();
   const [author, setAuthor] = React.useState(session?.user?.name || "");
-  const [order, setOrder] = React.useState<McListItemType[]>([]);
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
-  const orderId = router.query.orderId as string;
+  const orderSliceId = router.query.orderSliceId as string;
+  const orderSlice = trpc.orderSlice.getOrderSliceById.useQuery({
+    id: orderSliceId,
+  });
+  const [order, setOrder] = React.useState<McListItemType[]>([]);
+  const orderId = router.query.orderSliceId as string;
+  const updateOrderSlice = useUpdateOrderSlice();
 
-  const submitOrderSlice = useSubmitOrderSlice();
+  const deleteOrderSlice = trpc.orderSlice.deleteOrderSlice.useMutation();
+  useEffect(() => {
+    if (orderSlice.data) {
+      setOrder(orderSlice.data.details);
+    }
+  }, [orderSlice.data]);
 
   useEffect(() => {
     if (session && session.user && session.user.name) {
@@ -46,7 +56,6 @@ const Client = () => {
         }
         return el;
       });
-
       setOrder(newOrder);
     } else {
       setOrder([...order, { ...item, quantity: 1 }]);
@@ -143,13 +152,17 @@ const Client = () => {
             Total: <span className="text-yellow-500">{total} pln.</span>
           </div>
           <Button
-            disabled={author.length < 3 || order.length === 0 || total > 500}
+            disabled={author.length < 3 || total > 500}
             onClick={() => {
-              submitOrderSlice(order, orderId, author);
-              router.push(`/Driver/${orderId}`);
+              if (order.length > 0) {
+                updateOrderSlice(order, orderId);
+              } else {
+                deleteOrderSlice.mutateAsync({ id: orderId });
+              }
+              router.push(`/Driver/${orderSlice.data?.orderId}`);
             }}
           >
-            Submit
+            {order.length > 0 ? "Edit your Order" : "Delete your Order"}
           </Button>
         </div>
       </div>
@@ -177,4 +190,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   };
 };
 
-export default Client;
+export default OrderSliceEdit;

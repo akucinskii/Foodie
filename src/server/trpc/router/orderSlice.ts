@@ -1,11 +1,48 @@
 import { protectedProcedure, router } from "../trpc";
 import { z } from "zod";
-import { McListType } from "../../../pages/Client/[orderId]";
 
 export const orderSliceRouter = router({
   getAllOrderSlices: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.orderSlice.findMany();
   }),
+
+  /**
+   * Get a single order slice by id
+   *
+   * @param id The id of the order slice to get
+   *
+   * @returns The order slice
+   *
+   * @throws 404 if the order slice is not found
+   *
+   * @example
+   * ```ts
+   * const orderSlice = await trpc.orderSlice.getOrderSlice({ id: "1" });
+   * ```
+   */
+  getOrderSliceById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.orderSlice.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!response) {
+        throw new Error("OrderSlice not found");
+      }
+
+      const formattedDetails = {
+        ...response,
+        details: JSON.parse(response.details || "{}"),
+      };
+      return formattedDetails;
+    }),
 
   /**
    * Return all order slices from a specific order
@@ -37,89 +74,15 @@ export const orderSliceRouter = router({
           author: true,
         },
       });
-      return response;
-    }),
 
-  /**
-   * Merges order slices with the same author in order.
-   * Then sums all items with the same id.
-   *
-   * @param id
-   * @example
-   * ```ts
-   * const orderSlices = await trpc.orderSlice.getMergedItemsAndAuthorByOrderId({ id: "123" });
-   * ```
-   */
-  getMergedItemsAndAuthorByOrderId: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.order.findUnique({
-        where: {
-          id: input.id,
-        },
-        include: {
-          orderSlices: {
-            include: {
-              author: true,
-            },
-          },
-        },
-      });
+      const formattedDetails = response.map(
+        (item: typeof response[number]) => ({
+          ...item,
+          details: JSON.parse(item.details),
+        })
+      );
 
-      if (response && response.orderSlices) {
-        const notMergedDetails = response.orderSlices.map((orderSlice) => {
-          const parsed = JSON.parse(orderSlice.details) as McListType;
-          return { ...orderSlice, details: parsed };
-        });
-
-        const mergedArray = [] as typeof notMergedDetails;
-
-        notMergedDetails.forEach((item) => {
-          const found = mergedArray.find(
-            (helperItem) => helperItem.author.id === item.author.id
-          );
-
-          if (found) {
-            found.details = ([] as McListType).concat(
-              [],
-              found.details,
-              item.details
-            );
-          } else {
-            mergedArray.push(item);
-          }
-        });
-
-        const mergedArrayWithMergedDetails = [] as typeof notMergedDetails;
-        mergedArray.forEach((item) => {
-          const mergedDetails = [] as McListType;
-
-          item.details.forEach((detail) => {
-            const found = mergedDetails.find(
-              (helperItem) => helperItem.id === detail.id
-            );
-
-            if (found) {
-              found.quantity += detail.quantity;
-            } else {
-              mergedDetails.push(detail);
-            }
-          });
-
-          mergedArrayWithMergedDetails.push({
-            ...item,
-            details: mergedDetails,
-          });
-        });
-
-        return mergedArrayWithMergedDetails;
-      }
-
-      return [];
+      return formattedDetails;
     }),
 
   /**

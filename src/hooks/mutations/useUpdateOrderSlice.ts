@@ -6,6 +6,7 @@ export const useUpdateOrderSlice = () => {
   const mutation = trpc.orderSlice.updateOrderSlice.useMutation({
     onSuccess: () => {
       utils.order.invalidate();
+      utils.orderSlice.invalidate();
     },
     onError: (error) => {
       console.error(error);

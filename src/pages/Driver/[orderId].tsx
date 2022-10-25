@@ -10,19 +10,10 @@ const Panel = () => {
   const utils = trpc.useContext();
   const router = useRouter();
   const orderId = router.query.orderId as string;
-
-  const deleteOrderSlice = trpc.orderSlice.deleteOrderSlice.useMutation({
-    onSuccess: () => {
-      utils.order.invalidate();
-      utils.orderSlice.invalidate();
-    },
-  });
   const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
-  const MergedItemsAndAuthorByOrderId =
-    trpc.orderSlice.getMergedItemsAndAuthorByOrderId.useQuery({
-      id: orderId,
-    });
-
+  const orderSlices = trpc.orderSlice.getOrderSlicesByOrderId.useQuery({
+    id: orderId,
+  });
   const authors = trpc.order.getAccumulatedPriceByAuthor.useQuery({
     id: orderId,
   });
@@ -36,7 +27,7 @@ const Panel = () => {
     );
   });
 
-  const renderOrderSlices = MergedItemsAndAuthorByOrderId.data?.map((slice) => {
+  const renderOrderSlices = orderSlices.data?.map((slice) => {
     const items = slice.details.map((item: McListItemType) => {
       return (
         <tr key={item.id}>
@@ -46,36 +37,38 @@ const Panel = () => {
       );
     });
 
-    console.log(slice)
     return (
-      <div
-        onClick={() => {
-          if (slice.authorId === session?.user?.id)
-          deleteOrderSlice.mutateAsync({ id: slice.id });
-        }}
+      <Link
         key={slice.id}
+        href={
+          slice.authorId === session?.user?.id
+            ? `/Client/edit/${slice.id}`
+            : `#`
+        }
       >
-        <h3 className="text-center">{slice.author.name}</h3>
+        <div>
+          <h3 className="text-center">{slice.author.name}</h3>
           {slice.authorId === session?.user?.id && (
-              <p className="text-center text-yellow-500 font-bold">Click to delete</p> 
-              ) 
-            }
-        <table className="table-zebra table w-full">
-          <thead>
-            <tr>
-            
-              <th>Item</th>
-              <th className="text-right">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>{items}</tbody>
-        </table>
-      </div>
+            <p className="text-center font-bold text-yellow-500">
+              Click to edit
+            </p>
+          )}
+          <table className="table-zebra table w-full">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th className="text-right">Quantity</th>
+              </tr>
+            </thead>
+            <tbody>{items}</tbody>
+          </table>
+        </div>
+      </Link>
     );
   });
 
   return order.data ? (
-    <div className="flex flex-col gap-4 md:min-w-[50%] min-w-full">
+    <div className="flex min-w-full flex-col gap-4 md:min-w-[50%]">
       <h1 className="text-center text-2xl font-bold">Driver panel</h1>
       <h2 className="text-center text-xl font-bold">Order items</h2>
       <div className="overflow-x-auto">
@@ -103,7 +96,12 @@ const Panel = () => {
         </table>
       </div>
       <Link href={`/Client/${orderId}`}>
-        <Button disabled={!session?.user}>
+        <Button
+          disabled={
+            !session?.user ||
+            !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
+          }
+        >
           Add your products <br /> to this order!
         </Button>
       </Link>

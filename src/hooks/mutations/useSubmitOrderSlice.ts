@@ -7,6 +7,7 @@ export const useSubmitOrderSlice = () => {
   const mutation = trpc.orderSlice.createOrderSlice.useMutation({
     onSuccess: () => {
       utils.order.invalidate();
+      utils.orderSlice.invalidate();
     },
     onError: (error) => {
       console.error(error);

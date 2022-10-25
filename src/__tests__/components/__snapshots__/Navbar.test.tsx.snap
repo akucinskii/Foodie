@@ -58,7 +58,6 @@ exports[`Navbar > should match snapshot when login > login 1`] = `
       >
         <button
           class="btn btn-ghost btn-circle"
-          data-testid="sign-out-button"
         >
           <span
             style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
@@ -159,7 +158,6 @@ exports[`Navbar > should match snapshot when logout > logout 1`] = `
       >
         <button
           class="btn btn-ghost btn-circle"
-          data-testid="sign-out-button"
         >
           <span
             style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"

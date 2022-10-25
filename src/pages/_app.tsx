@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar";
 import { AppRouter } from "../server/trpc/router";
 
 import "../styles/globals.css";
+import Loading from "src/components/Loading/Loading";
 
 const MyApp = ({
   Component,
@@ -17,10 +18,12 @@ const MyApp = ({
 }: AppProps<{ session: Session }>) => {
   return (
     <SessionProvider session={session}>
-      <Navbar />
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-20">
-        <Component {...pageProps} />
-      </main>
+      <Loading>
+        <Navbar />
+        <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-20">
+          <Component {...pageProps} />
+        </main>
+      </Loading>
     </SessionProvider>
   );
 };

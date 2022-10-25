@@ -1,8 +1,11 @@
+import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Button from "../../components/Button";
-import { trpc } from "../../utils/trpc";
+import { getBaseUrl, trpc } from "../../utils/trpc";
 import { McListItemType } from "../Client/[orderId]";
 
 const Panel = () => {
@@ -147,3 +150,23 @@ const Panel = () => {
 };
 
 export default Panel;
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
+
+  if (!session) {
+    const baseUrl = getBaseUrl();
+    return {
+      redirect: {
+        destination: `/api/auth/signin?callbackUrl=${baseUrl}`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+};

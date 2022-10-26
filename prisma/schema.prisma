@@ -74,3 +74,10 @@ model OrderSlice {
     Order    Order  @relation(fields: [orderId], references: [id])
     orderId  String
 }
+
+model randomNumber {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    number    Int
+    author    String
+}

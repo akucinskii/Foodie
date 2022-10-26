@@ -41,6 +41,11 @@ const Navbar = () => {
               <a className="=whitespace-nowrap">New Order</a>
             </Link>
           </li>
+          <li className="">
+            <Link href="/random/">
+              <a className="=whitespace-nowrap">Randomize</a>
+            </Link>
+          </li>
         </ul>
       </div>
       <div className="flex-0">
@@ -50,19 +55,18 @@ const Navbar = () => {
               <Link
                 data-testid="sign-out-button"
                 href={`/Profile/${session.user?.id}`}
-                
               >
                 <button className="btn btn-ghost btn-circle">
-                {session && session.user && session.user.image && (
-                  <Image
-                    data-testid="profile-image"
-                    className="rounded-full"
-                    src={image}
-                    alt="text"
-                    width={40}
-                    height={40}
-                  />
-                )}
+                  {session && session.user && session.user.image && (
+                    <Image
+                      data-testid="profile-image"
+                      className="rounded-full"
+                      src={image}
+                      alt="text"
+                      width={40}
+                      height={40}
+                    />
+                  )}
                 </button>
               </Link>
               <li>

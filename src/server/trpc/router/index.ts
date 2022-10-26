@@ -6,6 +6,7 @@ import { router } from "../trpc";
 import { userRouter } from "./user";
 import { healthcheckRouter } from "./healthcheck";
 import { orderSliceRouter } from "./orderSlice";
+import { randomNumberRouter } from "./randomNumber";
 
 export const appRouter = router({
   auth: authRouter,
@@ -13,6 +14,7 @@ export const appRouter = router({
   user: userRouter,
   orderSlice: orderSliceRouter,
   healthcheck: healthcheckRouter,
+  randomNumber: randomNumberRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

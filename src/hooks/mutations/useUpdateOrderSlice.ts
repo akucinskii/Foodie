@@ -14,11 +14,9 @@ export const useUpdateOrderSlice = () => {
   });
 
   return (order: McListType, orderId: string) => {
-    const orderSliceAsJson = JSON.stringify(order);
-
     mutation.mutateAsync({
       id: orderId,
-      details: orderSliceAsJson,
+      details: order,
     });
   };
 };

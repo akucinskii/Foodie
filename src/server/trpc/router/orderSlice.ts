@@ -75,7 +75,17 @@ export const orderSliceRouter = router({
         },
       });
 
-      const formattedDetails = response.map(
+      interface FormattedDetails
+        extends Omit<typeof response[number], "details"> {
+        details: {
+          id: string;
+          name: string;
+          quantity: number;
+          price: number;
+        }[];
+      }
+
+      const formattedDetails: FormattedDetails[] = response.map(
         (item: typeof response[number]) => ({
           ...item,
           details: JSON.parse(item.details),
@@ -88,46 +98,74 @@ export const orderSliceRouter = router({
   /**
    * Creates new orderSlice
    *
-   * details must be  provided as string of json object.
    *
-   * @param {string} orderId - id of order (the bigger one)
-   * @param {string} details - string of json object
-   * @param {string} author - id of user creating orderSlice
+   *
+   * @param {string} orderId - uuid of order (the bigger one)
+   * @param {object
+   *  {
+   *   name: string,
+   *  quantity: number,
+   * price: number,
+   * }[]} details - details of orderSlice
+   *
+   * @param {string} author - uuid of user creating orderSlice
    *
    * @example
    * ```ts
    * const orderSlice = {
-   *    "id": "1",
-   *    "name": "McChicken",
-   *    "price": 5,
-   *    "quantity": 1
+   *    id: "1",
+   *    name: "McChicken",
+   *    price: 5,
+   *    quantity: 1
    * }
-   * const orderSliceAsJson = JSON.stringify(orderSlice);
+   *
    * const mutation = trpc.order.createOrderSlice.useMutation()
    *
    * mutation.mutateAsync({
-   *    orderId: "1",
-   *    details: orderSliceAsJson,
-   *    author: "Example author",
+   *    orderId: "123-123-123",
+   *    details: orderSlice,
+   *    author: "123-123-123",
    * });
    * ```
    */
   createOrderSlice: protectedProcedure
     .input(
       z.object({
-        details: z.string(),
+        details: z
+          .object({
+            id: z.string(),
+            name: z.string().max(100),
+            price: z.number().min(1),
+            quantity: z.number().min(1),
+          })
+          .array(),
         orderId: z.string(),
         author: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.orderSlice.create({
-        data: {
-          details: input.details,
+      const check = await ctx.prisma.orderSlice.findFirst({
+        where: {
           orderId: input.orderId,
           authorId: input.author,
         },
       });
+
+      if (check) {
+        throw new Error("You have already created order slice for this order");
+      }
+
+      const details = JSON.stringify(input.details);
+
+      const response = await ctx.prisma.orderSlice.create({
+        data: {
+          details,
+          orderId: input.orderId,
+          authorId: input.author,
+        },
+      });
+
+      return response;
     }),
 
   /**
@@ -154,16 +192,25 @@ export const orderSliceRouter = router({
     .input(
       z.object({
         id: z.string(),
-        details: z.string(),
+        details: z
+          .object({
+            id: z.string(),
+            name: z.string().max(100),
+            price: z.number().min(1),
+            quantity: z.number().min(1),
+          })
+          .array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const details = JSON.stringify(input.details);
+
       return await ctx.prisma.orderSlice.update({
         where: {
           id: input.id,
         },
         data: {
-          details: input.details,
+          details,
         },
       });
     }),

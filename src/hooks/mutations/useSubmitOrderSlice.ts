@@ -15,11 +15,9 @@ export const useSubmitOrderSlice = () => {
   });
 
   return (order: McListType, orderId: string, author: string) => {
-    const orderSliceAsJson = JSON.stringify(order);
-
     mutation.mutateAsync({
       orderId,
-      details: orderSliceAsJson,
+      details: order,
       author,
     });
   };

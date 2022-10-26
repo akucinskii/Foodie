@@ -197,7 +197,7 @@ export const orderRouter = router({
   createOrder: publicProcedure
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().max(50),
         author: z.string(),
       })
     )

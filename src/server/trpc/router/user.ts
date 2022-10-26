@@ -89,8 +89,8 @@ export const userRouter = router({
       z.object({
         userId: z.string(),
         user: z.object({
-          name: z.string(),
-          email: z.string(),
+          name: z.string().max(50),
+          email: z.string().max(50),
           image: z.string().nullable(),
         }),
       })

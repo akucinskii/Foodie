@@ -49,6 +49,7 @@ const ProfilePage = () => {
         onChange={(e) => setName(e.target.value)}
       />
       <Button
+       disabled={name.length > 50}
         onClick={() => {
           updateUser(userId, {
             image: session?.user?.image as string | null,

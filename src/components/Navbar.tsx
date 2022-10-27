@@ -25,25 +25,25 @@ const Navbar = () => {
           </h1>
 
           <li>
-            <Link href="/">
-              <a className="whitespace-nowrap">Home</a>
+            <Link href="/" className="whitespace-nowrap">
+              Home
             </Link>
           </li>
 
           <li>
-            <Link href="/all">
-              <a className="whitespace-nowrap">All Orders</a>
+            <Link href="/all" className="whitespace-nowrap">
+              All Orders
             </Link>
           </li>
 
           <li className="">
-            <Link href="/Driver/newOrder">
-              <a className="=whitespace-nowrap">New Order</a>
+            <Link href="/Driver/newOrder" className="=whitespace-nowrap">
+              New Order
             </Link>
           </li>
           <li className="">
-            <Link href="/random/">
-              <a className="=whitespace-nowrap">Randomize</a>
+            <Link href="/random/" className="=whitespace-nowrap">
+              Randomize
             </Link>
           </li>
         </ul>
@@ -55,7 +55,7 @@ const Navbar = () => {
               <Link
                 data-testid="sign-out-button"
                 href={`/Profile/${session.user?.id}`}
-              >
+                legacyBehavior>
                 <button className="btn btn-ghost btn-circle">
                   {session && session.user && session.user.image && (
                     <Image

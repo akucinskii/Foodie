@@ -59,7 +59,7 @@ const Panel = () => {
             ? `/Client/edit/${slice.id}`
             : `#`
         }
-      >
+        legacyBehavior>
         <div>
           <h3 className="text-center">{slice.author.name}</h3>
           {slice.authorId === session?.user?.id && (
@@ -109,7 +109,7 @@ const Panel = () => {
           </tbody>
         </table>
       </div>
-      <Link href={`/Client/${orderId}`}>
+      <Link href={`/Client/${orderId}`} legacyBehavior>
         <Button
           disabled={
             !session?.user ||

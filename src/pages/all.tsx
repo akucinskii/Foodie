@@ -7,7 +7,7 @@ const All = () => {
   const todayOrders = trpc.order.getAllTodayOrders.useQuery();
 
   const linkToTodayOrders = todayOrders.data?.map((order: Order) => (
-    <Link key={order.id} href={`Driver/${order.id}`}>
+    <Link key={order.id} href={`Driver/${order.id}`} legacyBehavior>
       <Button>
         <a>
           {order.name}{" "}

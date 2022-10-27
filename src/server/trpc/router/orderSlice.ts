@@ -135,8 +135,8 @@ export const orderSliceRouter = router({
           .object({
             id: z.string(),
             name: z.string().max(100),
-            price: z.number().min(1).max(1000),
-            quantity: z.number().min(1).max(1000),
+            price: z.number().min(1).max(50),
+            quantity: z.number().min(1).max(20),
           })
           .array(),
         orderId: z.string(),
@@ -196,8 +196,8 @@ export const orderSliceRouter = router({
           .object({
             id: z.string(),
             name: z.string().max(100),
-            price: z.number().min(1),
-            quantity: z.number().min(1),
+            price: z.number().min(1).max(50),
+            quantity: z.number().min(1).max(20),
           })
           .array(),
       })

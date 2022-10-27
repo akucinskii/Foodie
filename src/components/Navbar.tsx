@@ -1,5 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -65,7 +65,10 @@ const Navbar = () => {
                       alt="text"
                       width={40}
                       height={40}
-                    />
+                      style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                      }} />
                   )}
                 </button>
               </Link>

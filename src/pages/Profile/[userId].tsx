@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Button from "../../components/Button";
@@ -33,8 +33,8 @@ const ProfilePage = () => {
           alt="avatar"
           className="rounded-full"
           src={user.data?.image as string}
-          layout="fill"
-        />
+          fill
+          sizes="100vw" />
       </div>
       <label className="label">
         <span className="label-text">Update your name</span>

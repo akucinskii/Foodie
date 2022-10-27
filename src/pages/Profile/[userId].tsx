@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Button from "../../components/Button";

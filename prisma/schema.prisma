@@ -20,6 +20,7 @@ model User {
     sessions      Session[]
     Order         Order[]
     OrderSlice    OrderSlice[]
+    isAdmin       Boolean      @default(false)
 }
 
 model Session {
@@ -80,4 +81,22 @@ model randomNumber {
     createdAt DateTime @default(now())
     number    Int
     author    String
+}
+
+model Restaurant {
+    id             String           @id @default(uuid())
+    createdAt      DateTime         @default(now())
+    name           String
+    address        String
+    author         String
+    RestaurantItem RestaurantItem[]
+}
+
+model RestaurantItem {
+    id           String     @id @default(uuid())
+    createdAt    DateTime   @default(now())
+    name         String
+    price        Int
+    Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+    restaurantId String
 }

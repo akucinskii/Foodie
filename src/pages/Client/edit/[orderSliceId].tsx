@@ -1,3 +1,4 @@
+import { RestaurantMenuItem } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -5,11 +6,17 @@ import React, { useEffect } from "react";
 import { useUpdateOrderSlice } from "src/hooks/mutations/useUpdateOrderSlice";
 import Button from "../../../components/Button";
 import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
-import { McList } from "../../../utils/McList";
 import { getBaseUrl, trpc } from "../../../utils/trpc";
 
-export type McListType = typeof McList;
-export type McListItemType = typeof McList[number];
+export interface restaurantMenuItemInterface {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export interface OrderI extends RestaurantMenuItem {
+  quantity: number;
+}
 
 const OrderSliceEdit = () => {
   const { data: session } = useSession();
@@ -20,9 +27,13 @@ const OrderSliceEdit = () => {
   const orderSlice = trpc.orderSlice.getOrderSliceById.useQuery({
     id: orderSliceId,
   });
-  const [order, setOrder] = React.useState<McListItemType[]>([]);
+  const [order, setOrder] = React.useState<OrderI[]>([]);
   const orderId = router.query.orderSliceId as string;
   const updateOrderSlice = useUpdateOrderSlice();
+  const itemList =
+    trpc.restaurantMenuItem.getRestaurantMenuItemsByRestaurantName.useQuery({
+      restaurantName: "McDonalds",
+    });
 
   const utils = trpc.useContext();
   const deleteOrderSlice = trpc.orderSlice.deleteOrderSlice.useMutation({
@@ -38,7 +49,7 @@ const OrderSliceEdit = () => {
   }, [orderSlice.data]);
 
   useEffect(() => {
-    if (session && session.user && session.user.name) {
+    if (session && session.user) {
       setAuthor(session.user.id);
     }
   }, [session]);
@@ -60,7 +71,7 @@ const OrderSliceEdit = () => {
     );
   }
 
-  const addToOrder = (item: McListItemType) => {
+  const addToOrder = (item: RestaurantMenuItem) => {
     const found = order.some((el) => el.name === item.name);
 
     if (found) {
@@ -76,7 +87,7 @@ const OrderSliceEdit = () => {
     }
   };
 
-  const removeFromOrder = (item: McListItemType) => {
+  const removeFromOrder = (item: RestaurantMenuItem) => {
     const found = order.some((el) => el.name === item.name);
 
     if (found) {
@@ -93,7 +104,7 @@ const OrderSliceEdit = () => {
     }
   };
 
-  const Form = McList.map((item) => {
+  const Form = itemList.data?.map((item) => {
     return (
       <div className="flex gap-2" key={item.id}>
         <Button

@@ -7,6 +7,8 @@ import { userRouter } from "./user";
 import { healthcheckRouter } from "./healthcheck";
 import { orderSliceRouter } from "./orderSlice";
 import { randomNumberRouter } from "./randomNumber";
+import { restaurantRouter } from "./restaurant";
+import { restaurantMenuItemRouter } from "./restaurantMenuItem";
 
 export const appRouter = router({
   auth: authRouter,
@@ -15,6 +17,8 @@ export const appRouter = router({
   orderSlice: orderSliceRouter,
   healthcheck: healthcheckRouter,
   randomNumber: randomNumberRouter,
+  restaurant: restaurantRouter,
+  restaurantMenuItem: restaurantMenuItemRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

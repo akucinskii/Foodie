@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Button from "../../components/Button";
 import { getBaseUrl, trpc } from "../../utils/trpc";
-import { McListItemType } from "../Client/[orderId]";
+import { itemInterface } from "../Client/[orderId]";
 
 const Panel = () => {
   const { data: session } = useSession();
@@ -32,7 +32,7 @@ const Panel = () => {
     );
   }
 
-  const renderOrder = order.data?.map((item: McListItemType) => {
+  const renderOrder = order.data?.map((item: itemInterface) => {
     return (
       <tr key={item.id}>
         <td>{item.name}</td>
@@ -42,7 +42,7 @@ const Panel = () => {
   });
 
   const renderOrderSlices = orderSlices.data?.map((slice) => {
-    const items = slice.details.map((item: McListItemType) => {
+    const items = slice.details.map((item) => {
       return (
         <tr key={item.id}>
           <td>{item.name}</td>
@@ -59,7 +59,8 @@ const Panel = () => {
             ? `/Client/edit/${slice.id}`
             : `#`
         }
-        legacyBehavior>
+        legacyBehavior
+      >
         <div>
           <h3 className="text-center">{slice.author.name}</h3>
           {slice.authorId === session?.user?.id && (

@@ -5,19 +5,29 @@ import React, { useEffect } from "react";
 import Button from "../../components/Button";
 import { useSubmitOrderSlice } from "../../hooks/mutations/useSubmitOrderSlice";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
-import { McList } from "../../utils/McList";
-import { getBaseUrl } from "../../utils/trpc";
+import { getBaseUrl, trpc } from "../../utils/trpc";
 
-export type McListType = typeof McList;
-export type McListItemType = typeof McList[number];
+export interface restaurantItemInterface {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export interface itemInterface extends restaurantItemInterface {
+  quantity: number;
+}
 
 const Client = () => {
   const { data: session } = useSession();
   const [author, setAuthor] = React.useState(session?.user?.name || "");
-  const [order, setOrder] = React.useState<McListItemType[]>([]);
+  const [order, setOrder] = React.useState<itemInterface[]>([]);
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
   const orderId = router.query.orderId as string;
+  const itemList =
+    trpc.restaurantItem.getRestaurantItemsByRestaurantName.useQuery({
+      restaurantName: "McDonalds",
+    });
 
   const submitOrderSlice = useSubmitOrderSlice();
 
@@ -36,7 +46,7 @@ const Client = () => {
     setTotal(value);
   }, [order]);
 
-  const addToOrder = (item: McListItemType) => {
+  const addToOrder = (item: itemInterface) => {
     const found = order.some((el) => el.name === item.name);
 
     if (found) {
@@ -53,7 +63,7 @@ const Client = () => {
     }
   };
 
-  const removeFromOrder = (item: McListItemType) => {
+  const removeFromOrder = (item: itemInterface) => {
     const found = order.some((el) => el.name === item.name);
 
     if (found) {
@@ -70,19 +80,19 @@ const Client = () => {
     }
   };
 
-  const Form = McList.map((item) => {
+  const Form = itemList.data?.map((item: restaurantItemInterface) => {
     return (
       <div className="flex gap-2" key={item.id}>
         <Button
           onClick={() => {
-            removeFromOrder(item);
+            removeFromOrder(item as itemInterface);
           }}
         >
           -
         </Button>
         <Button
           onClick={() => {
-            addToOrder(item);
+            addToOrder(item as itemInterface);
           }}
         >
           +

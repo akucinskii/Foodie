@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { trpc } from "src/utils/trpc";
 import Button from "../../components/Button";
 import { useSubmitOrder } from "../../hooks/mutations/useSubmitOrder";
 
@@ -8,7 +9,11 @@ const Driver = () => {
   const { data: session } = useSession();
 
   const [name, setName] = React.useState<string>("");
+  const [restaurantId, setRestaurantId] = React.useState<string>(
+    "Please select restaurant"
+  );
   const [author, setAuthor] = React.useState<string>(session?.user?.name || "");
+  const restaurantsQuery = trpc.restaurant.getAllRestaurants.useQuery();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +38,23 @@ const Driver = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-
+        <label className="label">
+          <span className="label-text">Enter your order name</span>
+        </label>
+        <select
+          className="select select-bordered w-full max-w-xs "
+          id="name"
+          required
+          placeholder="Restaurant"
+          value={restaurantId}
+          onChange={(e) => setRestaurantId(e.target.value)}
+        >
+          {restaurantsQuery.data?.map((restaurant) => (
+            <option key={restaurant.id} value={restaurant.id}>
+              {restaurant.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <Button
@@ -41,7 +62,7 @@ const Driver = () => {
           name === "" || author === "" || name.length > 20 || !session?.user
         }
         onClick={async () => {
-          const order = await submitOrder(name, author);
+          const order = await submitOrder(name, author, restaurantId);
 
           if (order) {
             router.push(`/Client/${order.id}`);

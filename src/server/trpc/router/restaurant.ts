@@ -20,6 +20,14 @@ export const restaurantRouter = router({
       });
       return response;
     }),
+  getAllRestaurants: protectedProcedure.query(async ({ ctx }) => {
+    const response = await ctx.prisma.restaurant.findMany({
+      include: {
+        RestaurantMenuItem: true,
+      },
+    });
+    return response;
+  }),
 
   getRestaurantById: protectedProcedure
     .input(
@@ -31,6 +39,9 @@ export const restaurantRouter = router({
       const response = await ctx.prisma.restaurant.findUnique({
         where: {
           id: input.id,
+        },
+        include: {
+          RestaurantMenuItem: true,
         },
       });
       return response;

@@ -2,101 +2,117 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id            String       @id @default(cuid())
-    name          String
-    email         String?      @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    Order         Order[]
-    OrderSlice    OrderSlice[]
-    isAdmin       Boolean      @default(false)
+  id            String       @id @default(cuid())
+  name          String
+  email         String?      @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  Order         Order[]
+  OrderSlice    OrderSlice[]
+  isAdmin       Boolean      @default(false)
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
-    id                       String  @id @default(cuid())
-    userId                   String
-    type                     String
-    provider                 String
-    providerAccountId        String
-    refresh_token            String? // @db.Text
-    refresh_token_expires_in Int?
-    access_token             String? // @db.Text
-    expires_at               Int?
-    token_type               String?
-    scope                    String?
-    id_token                 String? // @db.Text
-    session_state            String?
-    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? // @db.Text
+  refresh_token_expires_in Int?
+  access_token             String? // @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? // @db.Text
+  session_state            String?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }
 
 model Order {
-    id          String       @id @default(uuid())
-    author      User         @relation(fields: [authorId], references: [id])
-    authorId    String
-    name        String
-    createdAt   DateTime     @default(now())
-    orderSlices OrderSlice[]
+  id           String       @id @default(uuid())
+  author       User         @relation(fields: [authorId], references: [id])
+  authorId     String
+  name         String
+  createdAt    DateTime     @default(now())
+  orderSlices  OrderSlice[]
+  Restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  OrderItem    OrderItem[]
 }
 
 model OrderSlice {
-    id       String @id @default(uuid())
-    author   User   @relation(fields: [authorId], references: [id])
-    authorId String
-    details  String
-    Order    Order  @relation(fields: [orderId], references: [id])
-    orderId  String
+  id        String      @id @default(uuid())
+  author    User        @relation(fields: [authorId], references: [id])
+  authorId  String
+  OrderItem OrderItem[]
+  Order     Order       @relation(fields: [orderId], references: [id])
+  orderId   String
+}
+
+model OrderItem {
+  id                   String             @id @default(uuid())
+  quantity             Int
+  Order                Order              @relation(fields: [orderId], references: [id])
+  orderId              String
+  RestaurantMenuItem   RestaurantMenuItem @relation(fields: [restaurantMenuItemId], references: [id])
+  restaurantMenuItemId String
+  OrderSlice           OrderSlice?        @relation(fields: [orderSliceId], references: [id])
+  orderSliceId         String?
 }
 
 model randomNumber {
-    id        String   @id @default(uuid())
-    createdAt DateTime @default(now())
-    number    Int
-    author    String
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  number    Int
+  author    String
 }
 
 model Restaurant {
-    id             String           @id @default(uuid())
-    createdAt      DateTime         @default(now())
-    name           String
-    address        String
-    author         String
-    RestaurantItem RestaurantItem[]
+  id                 String               @id @default(uuid())
+  createdAt          DateTime             @default(now())
+  name               String
+  address            String
+  author             String
+  RestaurantMenuItem RestaurantMenuItem[]
+  Order              Order[]
 }
 
-model RestaurantItem {
-    id           String     @id @default(uuid())
-    createdAt    DateTime   @default(now())
-    name         String
-    price        Int
-    Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-    restaurantId String
+model RestaurantMenuItem {
+  id           String      @id @default(uuid())
+  createdAt    DateTime    @default(now())
+  name         String
+  price        Int
+  Restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  OrderItem    OrderItem[]
 }

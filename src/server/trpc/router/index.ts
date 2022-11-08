@@ -9,12 +9,14 @@ import { orderSliceRouter } from "./orderSlice";
 import { randomNumberRouter } from "./randomNumber";
 import { restaurantRouter } from "./restaurant";
 import { restaurantMenuItemRouter } from "./restaurantMenuItem";
+import { orderItemRouter } from "./orderItem";
 
 export const appRouter = router({
   auth: authRouter,
   order: orderRouter,
   user: userRouter,
   orderSlice: orderSliceRouter,
+  orderItem: orderItemRouter,
   healthcheck: healthcheckRouter,
   randomNumber: randomNumberRouter,
   restaurant: restaurantRouter,

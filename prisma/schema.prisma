@@ -67,7 +67,6 @@ model Order {
   orderSlices  OrderSlice[]
   Restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
   restaurantId String
-  OrderItem    OrderItem[]
 }
 
 model OrderSlice {
@@ -82,8 +81,6 @@ model OrderSlice {
 model OrderItem {
   id                   String             @id @default(uuid())
   quantity             Int
-  Order                Order              @relation(fields: [orderId], references: [id])
-  orderId              String
   RestaurantMenuItem   RestaurantMenuItem @relation(fields: [restaurantMenuItemId], references: [id])
   restaurantMenuItemId String
   OrderSlice           OrderSlice?        @relation(fields: [orderSliceId], references: [id])

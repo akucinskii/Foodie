@@ -39,4 +39,19 @@ export const orderItemRouter = router({
       });
       return response;
     }),
+
+  removeOrderItem: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.prisma.orderItem.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return response;
+    }),
 });

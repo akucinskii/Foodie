@@ -2,27 +2,25 @@ import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSubmitOrderSlice } from "src/hooks/mutations/useSubmitOrderSlice";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Button from "../../components/Button";
 import { getBaseUrl, trpc } from "../../utils/trpc";
-import { itemInterface } from "../Client/[orderId]";
 
 const Panel = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const submitNewOrderSlice = useSubmitOrderSlice();
   const orderId = router.query.orderId as string;
-  const order = trpc.order.getOrderDetails.useQuery({ id: orderId });
+  const order = trpc.order.getOrderById.useQuery({ id: orderId });
   const orderSlices = trpc.orderSlice.getOrderSlicesByOrderId.useQuery({
-    id: orderId,
-  });
-  const authors = trpc.order.getAccumulatedPriceByAuthor.useQuery({
     id: orderId,
   });
 
   if (
-    order.isFetching ||
+    // order.isFetching ||
     orderSlices.isFetching ||
-    authors.isFetching ||
+    // authors.isFetching ||
     orderSlices.isRefetching
   ) {
     return (
@@ -32,20 +30,57 @@ const Panel = () => {
     );
   }
 
-  const renderOrder = order.data?.map((item: itemInterface) => {
-    return (
-      <tr key={item.id}>
-        <td>{item.name}</td>
-        <td className="text-right">{item.quantity}</td>
-      </tr>
-    );
-  });
+  const renderOrder = () => {
+    const combinedOrders = order.data?.orderSlices.map((slice) => {
+      return slice.OrderItem.map((item) => {
+        return {
+          ...item,
+          RestaurantMenuItem: item.RestaurantMenuItem,
+          OrderSlice: slice,
+        };
+      });
+    });
 
-  const renderOrderSlices = orderSlices.data?.map((slice) => {
-    const items = slice.details.map((item) => {
+    const mergedOrders = combinedOrders?.flat();
+
+    const helperArray: any[] = [];
+    mergedOrders?.forEach((item) => {
+      const restaurantMenuItemId = item.restaurantMenuItemId;
+
+      if (
+        helperArray.find(
+          (item2) => item2.restaurantMenuItemId === restaurantMenuItemId
+        )
+      ) {
+        const index = helperArray.findIndex(
+          (item2) => item2.restaurantMenuItemId === restaurantMenuItemId
+        );
+        helperArray[index].quantity += item.quantity;
+        return;
+      } else {
+        helperArray.push(item);
+      }
+    });
+
+    console.log(helperArray);
+
+    const map = helperArray.map((item) => {
       return (
         <tr key={item.id}>
-          <td>{item.name}</td>
+          <td>{item.RestaurantMenuItem.name}</td>
+          <td className="text-right">{item.quantity}</td>
+        </tr>
+      );
+    });
+
+    return map;
+  };
+
+  const renderOrderSlices = order.data?.orderSlices.map((slice) => {
+    const items = slice.OrderItem.map((item) => {
+      return (
+        <tr key={item.id}>
+          <td>{item.RestaurantMenuItem.name}</td>
           <td className="text-right">{item.quantity}</td>
         </tr>
       );
@@ -56,7 +91,7 @@ const Panel = () => {
         key={slice.id}
         href={
           slice.authorId === session?.user?.id
-            ? `/Client/edit/${slice.id}`
+            ? `/Client/${orderId}/${slice.id}`
             : `#`
         }
         legacyBehavior
@@ -95,31 +130,40 @@ const Panel = () => {
             </tr>
           </thead>
           <tbody>
-            {renderOrder}
-            <tr>
-              <td className="font-bold ">Total</td>
-              <td className="text-right font-bold text-yellow-500">
-                {order.data?.reduce(
+            <>
+              {renderOrder()}
+              <tr>
+                <td className="font-bold ">Total</td>
+                <td className="text-right font-bold text-yellow-500">
+                  {/* {order.data?.OrderSlicereduce(
                   (acc: number, item: { price: number; quantity: number }) =>
-                    acc + item.price * item.quantity,
+                  acc + item.price * item.quantity,
                   0
-                )}
-                pln
-              </td>
-            </tr>
+                )} */}
+                  pln
+                </td>
+              </tr>
+            </>
           </tbody>
         </table>
       </div>
-      <Link href={`/Client/${orderId}`} legacyBehavior>
-        <Button
-          disabled={
-            !session?.user ||
-            !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
-          }
-        >
-          Add your products <br /> to this order!
-        </Button>
-      </Link>
+
+      <Button
+        disabled={
+          !session?.user
+          // || !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
+        }
+        onClick={async () => {
+          const { id } = await submitNewOrderSlice(
+            orderId,
+            session?.user?.id as string
+          );
+          router.push(`/Client/${orderId}/${id}`);
+        }}
+      >
+        Add your products <br /> to this order!
+      </Button>
+
       {!session?.user && (
         <p className="text-center text-red-600">
           You need to be logged in to add your Products
@@ -136,7 +180,7 @@ const Panel = () => {
               </tr>
             </thead>
             <tbody>
-              {authors.data &&
+              {/* {authors.data &&
                 Object.keys(authors.data).map((author) => {
                   return (
                     <tr key={author}>
@@ -146,7 +190,7 @@ const Panel = () => {
                       </td>
                     </tr>
                   );
-                })}
+                })} */}
             </tbody>
           </table>
         </div>

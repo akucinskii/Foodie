@@ -9,9 +9,7 @@ const Driver = () => {
   const { data: session } = useSession();
 
   const [name, setName] = React.useState<string>("");
-  const [restaurantId, setRestaurantId] = React.useState<string>(
-    "Please select restaurant"
-  );
+  const [restaurantId, setRestaurantId] = React.useState<string>("");
   const [author, setAuthor] = React.useState<string>(session?.user?.name || "");
   const restaurantsQuery = trpc.restaurant.getAllRestaurants.useQuery();
   const router = useRouter();
@@ -47,8 +45,14 @@ const Driver = () => {
           required
           placeholder="Restaurant"
           value={restaurantId}
-          onChange={(e) => setRestaurantId(e.target.value)}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setRestaurantId(e.target.value);
+          }}
         >
+          <option value="" disabled>
+            Choose restaurant
+          </option>
           {restaurantsQuery.data?.map((restaurant) => (
             <option key={restaurant.id} value={restaurant.id}>
               {restaurant.name}
@@ -59,7 +63,11 @@ const Driver = () => {
 
       <Button
         disabled={
-          name === "" || author === "" || name.length > 20 || !session?.user
+          name === "" ||
+          author === "" ||
+          name.length > 20 ||
+          !session?.user ||
+          !(restaurantId.length > 0)
         }
         onClick={async () => {
           const order = await submitOrder(name, author, restaurantId);

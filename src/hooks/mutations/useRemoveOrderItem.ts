@@ -1,11 +1,13 @@
 import { trpc } from "../../utils/trpc";
 
-export const useSubmitOrderSlice = () => {
-  const utils = trpc.useContext();
+type IProps = {
+  orderItemId: string;
+};
 
-  const mutation = trpc.orderSlice.createOrderSlice.useMutation({
+export const useRemoveOrderItem = () => {
+  const utils = trpc.useContext();
+  const mutation = trpc.orderItem.removeOrderItem.useMutation({
     onSuccess: () => {
-      utils.order.invalidate();
       utils.orderSlice.invalidate();
     },
     onError: (error) => {
@@ -13,12 +15,10 @@ export const useSubmitOrderSlice = () => {
     },
   });
 
-  return (orderId: string, author: string) => {
+  return ({ orderItemId }: IProps) => {
     const response = mutation.mutateAsync({
-      orderId,
-      author,
+      id: orderItemId,
     });
-
     return response;
   };
 };

@@ -1,98 +1,106 @@
+import { OrderItem, RestaurantMenuItem } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Button from "../../components/Button";
-import { useSubmitOrderSlice } from "../../hooks/mutations/useSubmitOrderSlice";
-import { getServerAuthSession } from "../../server/common/get-server-auth-session";
-import { getBaseUrl, trpc } from "../../utils/trpc";
-
-export interface restaurantItemInterface {
-  id: string;
-  name: string;
-  price: number;
-}
-
-export interface itemInterface extends restaurantItemInterface {
-  quantity: number;
-}
+import { useRemoveOrderItem } from "src/hooks/mutations/useRemoveOrderItem";
+import { useSubmitOrderItem } from "src/hooks/mutations/useSubmitOrderItem";
+import { useUpdateOrderItem } from "src/hooks/mutations/useUpdateOrderItem";
+import { useUpdateOrderSlice } from "src/hooks/mutations/useUpdateOrderSlice";
+import Button from "../../../components/Button";
+import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
+import { getBaseUrl, trpc } from "../../../utils/trpc";
 
 const Client = () => {
   const { data: session } = useSession();
   const [author, setAuthor] = React.useState(session?.user?.name || "");
-  const [order, setOrder] = React.useState<itemInterface[]>([]);
+  const [order, setOrder] = React.useState<
+    (OrderItem & {
+      RestaurantMenuItem: RestaurantMenuItem;
+    })[]
+  >([]);
   const [total, setTotal] = React.useState<number>(0);
   const router = useRouter();
   const orderId = router.query.orderId as string;
-  const itemList =
-    trpc.restaurantItem.getRestaurantItemsByRestaurantName.useQuery({
-      restaurantName: "McDonalds",
-    });
+  const orderSliceId = router.query.orderSliceId as string;
+  const Order = trpc.order.getOrderById.useQuery({ id: orderId });
 
-  const submitOrderSlice = useSubmitOrderSlice();
+  // const updateOrderSlice = useUpdateOrderSlice();
+  const removeOrderItem = useRemoveOrderItem();
+  const updateOrderItem = useUpdateOrderItem();
+  const submitOrderItem = useSubmitOrderItem();
+
+  // useEffect(() => {
+  //   if (session && session.user && session.user.name) {
+  //     setAuthor(session.user.id);
+  //   }
+  // }, [session]);
 
   useEffect(() => {
-    if (session && session.user && session.user.name) {
-      setAuthor(session.user.id);
+    if (Order.data) {
+      setOrder(
+        Order.data.orderSlices.find((slice) => slice.id === orderSliceId)
+          ?.OrderItem || []
+      );
     }
-  }, [session]);
+  }, [Order.data, orderSliceId]);
 
   useEffect(() => {
     const initialValue = 0;
-    const value = order.reduce(
-      (prev, curr) => prev + curr.price * curr.quantity,
-      initialValue
-    );
-    setTotal(value);
-  }, [order]);
+    const orderFromQuery = Order.data;
+    const orderSliceById =
+      orderFromQuery?.orderSlices.find((slice) => slice.id === orderSliceId)
+        ?.OrderItem || [];
 
-  const addToOrder = (item: itemInterface) => {
-    const found = order.some((el) => el.name === item.name);
+    const total = orderSliceById.reduce((acc: number, item) => {
+      return acc + item.RestaurantMenuItem.price * item.quantity;
+    }, initialValue);
+    setTotal(total);
+  }, [Order.data, orderSliceId]);
 
+  const addToOrder = async (item: RestaurantMenuItem) => {
+    const found = order.find((el) => el.restaurantMenuItemId === item.id);
     if (found) {
-      const newOrder = order.map((el) => {
-        if (el.name === item.name) {
-          return { ...el, quantity: el.quantity + 1 };
-        }
-        return el;
+      updateOrderItem({
+        quantity: found.quantity + 1,
+        orderItemId: found.id,
       });
-
-      setOrder(newOrder);
     } else {
-      setOrder([...order, { ...item, quantity: 1 }]);
-    }
-  };
-
-  const removeFromOrder = (item: itemInterface) => {
-    const found = order.some((el) => el.name === item.name);
-
-    if (found) {
-      const newOrder = order.map((el) => {
-        if (el.name === item.name) {
-          return { ...el, quantity: el.quantity - 1 };
-        }
-        return el;
+      await submitOrderItem({
+        quantity: 1,
+        restaurantMenuItemId: item.id,
+        orderSliceId: orderSliceId,
       });
-
-      const filteredOrder = newOrder.filter((el) => el.quantity > 0);
-
-      setOrder(filteredOrder);
     }
   };
 
-  const Form = itemList.data?.map((item: restaurantItemInterface) => {
+  const removeFromOrder = (item: RestaurantMenuItem) => {
+    const found = order.find((el) => el.restaurantMenuItemId === item.id);
+    if (found) {
+      if (found.quantity > 1) {
+        updateOrderItem({
+          quantity: found.quantity - 1,
+          orderItemId: found.id,
+        });
+      } else {
+        removeOrderItem({ orderItemId: found.id });
+      }
+    }
+  };
+
+  const Form = Order.data?.Restaurant.RestaurantMenuItem.map((item) => {
     return (
       <div className="flex gap-2" key={item.id}>
         <Button
           onClick={() => {
-            removeFromOrder(item as itemInterface);
+            removeFromOrder(item);
           }}
         >
           -
         </Button>
         <Button
           onClick={() => {
-            addToOrder(item as itemInterface);
+            addToOrder(item);
           }}
         >
           +
@@ -101,6 +109,7 @@ const Client = () => {
       </div>
     );
   });
+
   return (
     <div className="flex flex-col gap-4">
       {/* <div>
@@ -120,9 +129,7 @@ const Client = () => {
       <div className="h-px flex-grow bg-gray-200"></div>
 
       <div className="grid gap-8 sm:grid-cols-2">
-        <div className="flex max-w-sm flex-col justify-center gap-2">
-          {Form}
-        </div>
+        <div className="flex max-w-sm flex-col gap-2">{Form}</div>
 
         <div className="flex flex-col gap-4">
           <div className="h-full overflow-x-auto">
@@ -137,7 +144,9 @@ const Client = () => {
                 {order.map((item) => {
                   return (
                     <tr key={item.id}>
-                      <td className="flex gap-2">{item.name}</td>
+                      <td className="flex gap-2">
+                        {item.RestaurantMenuItem.name}
+                      </td>
                       <td> {item.quantity}</td>
                     </tr>
                   );
@@ -152,7 +161,8 @@ const Client = () => {
           <Button
             disabled={author.length < 3 || order.length === 0 || total > 500}
             onClick={() => {
-              submitOrderSlice(order, orderId, author);
+              // not needed to update orderSlice since we create and update orderItems that connect to the orderSlice at the time of their creation/deletion.
+              // updateOrderSlice(orderId, order);
               router.push(`/Driver/${orderId}`);
             }}
           >

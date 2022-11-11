@@ -1,4 +1,4 @@
-import { McListType } from "../../pages/Client/[orderId]";
+import { OrderItem } from "@prisma/client";
 import { trpc } from "../../utils/trpc";
 
 export const useUpdateOrderSlice = () => {
@@ -13,10 +13,10 @@ export const useUpdateOrderSlice = () => {
     },
   });
 
-  return (order: McListType, orderId: string) => {
+  return (orderSliceId: string, orderItemsArray: OrderItem[]) => {
     mutation.mutateAsync({
-      id: orderId,
-      details: order,
+      id: orderSliceId,
+      orderItemsArray,
     });
   };
 };

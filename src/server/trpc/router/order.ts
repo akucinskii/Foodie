@@ -56,6 +56,39 @@ export const orderRouter = router({
     return response;
   }),
 
+  getOrderById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.order.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          orderSlices: {
+            include: {
+              author: true,
+              OrderItem: {
+                include: {
+                  RestaurantMenuItem: true,
+                },
+              },
+            },
+          },
+          Restaurant: {
+            include: {
+              RestaurantMenuItem: true,
+            },
+          },
+        },
+      });
+
+      return response;
+    }),
+
   /**
    * Creates a new order
    * Author should be taken from next-auth session user

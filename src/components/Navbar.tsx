@@ -42,6 +42,14 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="">
+            <Link
+              href="/restaurant/newRestaurant"
+              className="=whitespace-nowrap"
+            >
+              Restaurants
+            </Link>
+          </li>
+          <li className="">
             <Link href="/random/" className="=whitespace-nowrap">
               Randomize
             </Link>
@@ -55,7 +63,8 @@ const Navbar = () => {
               <Link
                 data-testid="sign-out-button"
                 href={`/Profile/${session.user?.id}`}
-                legacyBehavior>
+                legacyBehavior
+              >
                 <button className="btn btn-ghost btn-circle">
                   {session && session.user && session.user.image && (
                     <Image
@@ -67,8 +76,9 @@ const Navbar = () => {
                       height={40}
                       style={{
                         maxWidth: "100%",
-                        height: "auto"
-                      }} />
+                        height: "auto",
+                      }}
+                    />
                   )}
                 </button>
               </Link>

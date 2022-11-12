@@ -1,4 +1,3 @@
-import { McListType } from "../../pages/Client/[orderId]";
 import { trpc } from "../../utils/trpc";
 
 export const useSubmitOrderSlice = () => {
@@ -14,11 +13,12 @@ export const useSubmitOrderSlice = () => {
     },
   });
 
-  return (order: McListType, orderId: string, author: string) => {
-    mutation.mutateAsync({
+  return (orderId: string, author: string) => {
+    const response = mutation.mutateAsync({
       orderId,
-      details: order,
       author,
     });
+
+    return response;
   };
 };

@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { router, protectedProcedure, publicProcedure } from "../trpc";
-import { McListItemType, McListType } from "../../../pages/Client/[orderId]";
 
 export const orderRouter = router({
   /**
@@ -57,20 +56,7 @@ export const orderRouter = router({
     return response;
   }),
 
-  /**
-   * Get order details also return its author object
-   *
-   * @param id
-   *
-   *
-   * @example
-   * ```ts
-   * const order = await trpc.order.getOrderDetails({ id: "someOrderId" });
-   * ```
-   *
-   *
-   */
-  getOrderDetails: publicProcedure
+  getOrderById: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -85,99 +71,22 @@ export const orderRouter = router({
           orderSlices: {
             include: {
               author: true,
+              OrderItem: {
+                include: {
+                  RestaurantMenuItem: true,
+                },
+              },
             },
           },
-        },
-      });
-
-      if (response) {
-        const notMergedDetails: McListType[] = response.orderSlices.map(
-          (orderSlice) => {
-            const parsed = JSON.parse(orderSlice.details) as McListType;
-            return parsed;
-          }
-        );
-
-        if (notMergedDetails.length === 1) {
-          return notMergedDetails[0];
-        }
-        const mergedArray: McListItemType[] = [];
-
-        const mergedDetails = ([] as McListType).concat(
-          [],
-          ...notMergedDetails
-        );
-
-        mergedDetails.forEach((item) => {
-          const found = mergedArray.find(
-            (helperItem) => helperItem.id === item.id
-          );
-
-          if (found) {
-            found.quantity += item.quantity;
-          } else {
-            mergedArray.push(item);
-          }
-        });
-
-        return mergedArray;
-      }
-    }),
-
-  /**
-   * Returns object with author as key and accumulated price of all items in all slices as value
-   *
-   * @params id - order id
-   *
-   * @example
-   * ```ts
-   * const response = await trpc.order.getAccumulatedPriceByAuthor({
-   *   id: "someId"
-   * });
-   * ```
-   */
-  getAccumulatedPriceByAuthor: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.order.findUnique({
-        where: {
-          id: input.id,
-        },
-        include: {
-          orderSlices: {
+          Restaurant: {
             include: {
-              author: true,
+              RestaurantMenuItem: true,
             },
           },
         },
       });
 
-      if (response) {
-        const authors: { [key: string]: number } = {};
-
-        response.orderSlices.forEach((orderSlice) => {
-          const OrderSliceAccumulatedPrice = JSON.parse(
-            orderSlice.details
-          ).reduce(
-            (acc: number, curr: McListItemType) =>
-              acc + curr.quantity * curr.price,
-            0
-          );
-          if (authors[orderSlice.author.name]) {
-            authors[orderSlice.author.name] += OrderSliceAccumulatedPrice;
-          } else {
-            authors[orderSlice.author.name] = OrderSliceAccumulatedPrice;
-          }
-        });
-
-        return authors;
-      }
-
-      return {};
+      return response;
     }),
 
   /**
@@ -199,12 +108,14 @@ export const orderRouter = router({
       z.object({
         name: z.string().max(50),
         author: z.string(),
+        restaurantId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const currentDate = new Date();
       return await ctx.prisma.order.create({
         data: {
+          restaurantId: input.restaurantId,
           name: input.name,
           authorId: input.author,
           createdAt: currentDate,

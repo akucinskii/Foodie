@@ -12,10 +12,11 @@ export const useSubmitOrder = () => {
     },
   });
 
-  return (name: string, author: string) => {
+  return (name: string, author: string, restaurantId: string) => {
     const response = mutation.mutateAsync({
       name,
       author,
+      restaurantId,
     });
 
     return response;

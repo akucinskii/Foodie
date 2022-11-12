@@ -49,6 +49,15 @@ exports[`Navbar > should match snapshot when login > login 1`] = `
           class=""
         >
           <a
+            href="/restaurant/newRestaurant"
+          >
+            Create new restaurant
+          </a>
+        </li>
+        <li
+          class=""
+        >
+          <a
             href="/random"
           >
             Randomize
@@ -137,6 +146,15 @@ exports[`Navbar > should match snapshot when logout > logout 1`] = `
             href="/Driver/newOrder"
           >
             New Order
+          </a>
+        </li>
+        <li
+          class=""
+        >
+          <a
+            href="/restaurant/newRestaurant"
+          >
+            Create new restaurant
           </a>
         </li>
         <li

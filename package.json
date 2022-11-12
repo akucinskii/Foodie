@@ -21,7 +21,6 @@
     "@trpc/next": "10.0.0-proxy-beta.17",
     "@trpc/react": "10.0.0-proxy-beta.17",
     "@trpc/server": "10.0.0-proxy-beta.17",
-    "@vercel/analytics": "^0.1.3",
     "daisyui": "^2.31.0",
     "dayjs": "^1.11.5",
     "moment": "^2.29.4",

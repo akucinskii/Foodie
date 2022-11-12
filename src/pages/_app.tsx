@@ -8,7 +8,6 @@ import { SessionProvider } from "next-auth/react";
 import superjson from "superjson";
 import Navbar from "../components/Navbar";
 import { AppRouter } from "../server/trpc/router";
-import { Analytics } from "@vercel/analytics/react";
 
 import "../styles/globals.css";
 import Loading from "src/components/Loading/Loading";
@@ -25,7 +24,6 @@ const MyApp = ({
           <Component {...pageProps} />
         </main>
       </Loading>
-      <Analytics />
     </SessionProvider>
   );
 };

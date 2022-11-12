@@ -72,7 +72,7 @@ const Driver = () => {
           const order = await submitOrder(name, author, restaurantId);
 
           if (order) {
-            router.push(`/Client/${order.id}`);
+            router.push(`/Driver/${order.id}`);
           }
         }}
       >

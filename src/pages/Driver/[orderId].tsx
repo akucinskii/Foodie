@@ -153,8 +153,8 @@ const Panel = () => {
 
       <Button
         disabled={
-          !session?.user
-          // || !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
+          !session?.user ||
+          !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
         }
         onClick={async () => {
           const { id } = await submitNewOrderSlice(
@@ -183,17 +183,21 @@ const Panel = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {authors.data &&
-                Object.keys(authors.data).map((author) => {
-                  return (
-                    <tr key={author}>
-                      <td>{author}</td>
-                      <td className="text-right">
-                        {authors.data && authors.data[author]}pln
-                      </td>
-                    </tr>
-                  );
-                })} */}
+              {orderSlices.data?.map((slice) => {
+                return (
+                  <tr key={slice.id}>
+                    <td>{slice.author.name}</td>
+                    <td className="text-right">
+                      {slice.OrderItem.reduce(
+                        (acc, item) =>
+                          acc + item.quantity * item.RestaurantMenuItem.price,
+                        0
+                      )}
+                      pln
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

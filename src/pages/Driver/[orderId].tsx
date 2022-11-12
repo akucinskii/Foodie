@@ -1,3 +1,4 @@
+import { OrderItem, RestaurantMenuItem } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -43,7 +44,9 @@ const Panel = () => {
 
     const mergedOrders = combinedOrders?.flat();
 
-    const helperArray: any[] = [];
+    const helperArray: (OrderItem & {
+      RestaurantMenuItem: RestaurantMenuItem;
+    })[] = [];
     mergedOrders?.forEach((item) => {
       const restaurantMenuItemId = item.restaurantMenuItemId;
 
@@ -55,7 +58,9 @@ const Panel = () => {
         const index = helperArray.findIndex(
           (item2) => item2.restaurantMenuItemId === restaurantMenuItemId
         );
-        helperArray[index].quantity += item.quantity;
+        if (helperArray[index] !== undefined) {
+          (helperArray[index] as OrderItem).quantity += item.quantity;
+        }
         return;
       } else {
         helperArray.push(item);

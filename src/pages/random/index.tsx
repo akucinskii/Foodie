@@ -1,4 +1,3 @@
-import { TRPCClientError } from "@trpc/client";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import Button from "src/components/Button";
@@ -17,8 +16,6 @@ const RandomNumber = () => {
       const clickedDate = new Date(
         parseInt(localStorage.getItem("clicked") || "0")
       );
-      console.log(clickedDate.getDate(), today.getDate());
-      console.log(clickedDate, today);
       if (clickedDate.getDate() !== today.getDate()) {
         setClicked(false);
       } else {

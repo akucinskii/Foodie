@@ -1,19 +1,15 @@
 import { OrderItem, RestaurantMenuItem } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useRemoveOrderItem } from "src/hooks/mutations/useRemoveOrderItem";
 import { useSubmitOrderItem } from "src/hooks/mutations/useSubmitOrderItem";
 import { useUpdateOrderItem } from "src/hooks/mutations/useUpdateOrderItem";
-import { useUpdateOrderSlice } from "src/hooks/mutations/useUpdateOrderSlice";
 import Button from "../../../components/Button";
 import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
 import { getBaseUrl, trpc } from "../../../utils/trpc";
 
 const Client = () => {
-  const { data: session } = useSession();
-  const [author, setAuthor] = React.useState(session?.user?.name || "");
   const [order, setOrder] = React.useState<
     (OrderItem & {
       RestaurantMenuItem: RestaurantMenuItem;
@@ -29,12 +25,6 @@ const Client = () => {
   const removeOrderItem = useRemoveOrderItem();
   const updateOrderItem = useUpdateOrderItem();
   const submitOrderItem = useSubmitOrderItem();
-
-  // useEffect(() => {
-  //   if (session && session.user && session.user.name) {
-  //     setAuthor(session.user.id);
-  //   }
-  // }, [session]);
 
   useEffect(() => {
     if (Order.data) {
@@ -112,20 +102,6 @@ const Client = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <div>
-        <label className="label">
-          <span className="label-text">Enter your name</span>
-        </label>
-        <input
-          className="input input-bordered w-full"
-          type="text"
-          required
-          placeholder="Author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-      </div> */}
-
       <div className="h-px flex-grow bg-gray-200"></div>
 
       <div className="grid gap-8 sm:grid-cols-2">
@@ -159,7 +135,7 @@ const Client = () => {
             Total: <span className="text-yellow-500">{total} pln.</span>
           </div>
           <Button
-            disabled={author.length < 3 || order.length === 0 || total > 500}
+            disabled={order.length === 0 || total > 500}
             onClick={() => {
               // not needed to update orderSlice since we create and update orderItems that connect to the orderSlice at the time of their creation/deletion.
               // updateOrderSlice(orderId, order);

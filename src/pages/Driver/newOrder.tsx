@@ -46,7 +46,6 @@ const Driver = () => {
           placeholder="Restaurant"
           value={restaurantId}
           onChange={(e) => {
-            console.log(e.target.value);
             setRestaurantId(e.target.value);
           }}
         >

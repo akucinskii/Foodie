@@ -40,7 +40,7 @@ describe("Navbar", () => {
     status: "authenticated",
   });
 
-  const { container, rerender, getByText, getByTestId } = render(<Navbar />);
+  const { container, rerender, getByText } = render(<Navbar />);
 
   test("should match snapshot when logout", () => {
     (useSession as Mock).mockReturnValue({
@@ -94,7 +94,7 @@ describe("Navbar", () => {
     expect(signOut).toHaveBeenCalled();
     expect(mockRouter.push).toHaveBeenCalledWith("/");
   });
-  
+
   afterAll(() => {
     (signIn as Mock).mockRestore();
     (signOut as Mock).mockRestore();

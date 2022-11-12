@@ -62,8 +62,6 @@ const Panel = () => {
       }
     });
 
-    console.log(helperArray);
-
     const map = helperArray.map((item) => {
       return (
         <tr key={item.id}>
@@ -135,11 +133,16 @@ const Panel = () => {
               <tr>
                 <td className="font-bold ">Total</td>
                 <td className="text-right font-bold text-yellow-500">
-                  {/* {order.data?.OrderSlicereduce(
-                  (acc: number, item: { price: number; quantity: number }) =>
-                  acc + item.price * item.quantity,
-                  0
-                )} */}
+                  {order.data?.orderSlices.reduce(
+                    (acc, slice) =>
+                      acc +
+                      slice.OrderItem.reduce(
+                        (acc2, item) =>
+                          acc2 + item.quantity * item.RestaurantMenuItem.price,
+                        0
+                      ),
+                    0
+                  )}
                   pln
                 </td>
               </tr>

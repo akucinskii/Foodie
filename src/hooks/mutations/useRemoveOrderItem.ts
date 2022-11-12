@@ -8,7 +8,7 @@ export const useRemoveOrderItem = () => {
   const utils = trpc.useContext();
   const mutation = trpc.orderItem.removeOrderItem.useMutation({
     onSuccess: () => {
-      utils.orderSlice.invalidate();
+      utils.order.invalidate();
     },
     onError: (error) => {
       console.error(error);

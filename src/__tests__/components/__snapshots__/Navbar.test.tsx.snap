@@ -51,7 +51,7 @@ exports[`Navbar > should match snapshot when login > login 1`] = `
           <a
             href="/restaurant/newRestaurant"
           >
-            Create new restaurant
+            Restaurants
           </a>
         </li>
         <li
@@ -154,7 +154,7 @@ exports[`Navbar > should match snapshot when logout > logout 1`] = `
           <a
             href="/restaurant/newRestaurant"
           >
-            Create new restaurant
+            Restaurants
           </a>
         </li>
         <li

@@ -46,7 +46,7 @@ const Navbar = () => {
               href="/restaurant/newRestaurant"
               className="=whitespace-nowrap"
             >
-              Create new restaurant
+              Restaurants
             </Link>
           </li>
           <li className="">

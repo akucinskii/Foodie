@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const restaurantRouter = router({
   createNewRestaurant: protectedProcedure
@@ -20,11 +20,21 @@ export const restaurantRouter = router({
       });
       return response;
     }),
-  getAllRestaurants: protectedProcedure.query(async ({ ctx }) => {
+  getAllRestaurants: publicProcedure.query(async ({ ctx }) => {
     const response = await ctx.prisma.restaurant.findMany({
       include: {
         RestaurantMenuItem: true,
       },
+    });
+    return response;
+  }),
+
+  getPreviewRestaurants: publicProcedure.query(async ({ ctx }) => {
+    const response = await ctx.prisma.restaurant.findMany({
+      include: {
+        RestaurantMenuItem: true,
+      },
+      take: 3,
     });
     return response;
   }),

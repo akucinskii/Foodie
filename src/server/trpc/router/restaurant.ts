@@ -56,4 +56,24 @@ export const restaurantRouter = router({
       });
       return response;
     }),
+
+  getMostPopularRestaurants: publicProcedure.query(async ({ ctx }) => {
+    const response = await ctx.prisma.restaurant.findMany({
+      include: {
+        _count: {
+          select: {
+            Order: true,
+          },
+        },
+      },
+    });
+
+    const sorted = response.sort((a, b) => {
+      return b._count.Order - a._count.Order;
+    });
+
+    const topThree = sorted.slice(0, 3);
+
+    return topThree;
+  }),
 });

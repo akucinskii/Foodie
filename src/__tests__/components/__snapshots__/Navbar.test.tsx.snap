@@ -3,7 +3,7 @@
 exports[`Navbar > should match snapshot when login > login 1`] = `
 <div>
   <div
-    class="align-center fixed z-20 flex w-full flex-row bg-white"
+    class="align-center fixed z-20 flex w-full flex-row bg-base-100"
   >
     <div
       class="flex-1"
@@ -12,7 +12,7 @@ exports[`Navbar > should match snapshot when login > login 1`] = `
         class="menu menu-horizontal gap-4 p-2"
       >
         <h1
-          class="text-4xl font-bold text-gray-700"
+          class="text-4xl font-bold text-base-content"
         >
           Solve
           <span
@@ -106,7 +106,7 @@ exports[`Navbar > should match snapshot when login > login 1`] = `
 exports[`Navbar > should match snapshot when logout > logout 1`] = `
 <div>
   <div
-    class="align-center fixed z-20 flex w-full flex-row bg-white"
+    class="align-center fixed z-20 flex w-full flex-row bg-base-100"
   >
     <div
       class="flex-1"
@@ -115,7 +115,7 @@ exports[`Navbar > should match snapshot when logout > logout 1`] = `
         class="menu menu-horizontal gap-4 p-2"
       >
         <h1
-          class="text-4xl font-bold text-gray-700"
+          class="text-4xl font-bold text-base-content"
         >
           Solve
           <span

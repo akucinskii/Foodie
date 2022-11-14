@@ -17,7 +17,7 @@ const Navbar = () => {
   }, [session]);
 
   return (
-    <div className="align-center sticky z-20 flex w-full flex-row bg-base-100">
+    <div className="align-center fixed z-20 flex w-full flex-row bg-base-100">
       <div className="flex-1">
         <ul className="menu menu-horizontal gap-4 p-2">
           <h1 className="text-4xl font-bold text-base-content">

@@ -11,20 +11,33 @@ import { AppRouter } from "../server/trpc/router";
 
 import "../styles/globals.css";
 import Loading from "src/components/Loading/Loading";
+import Head from "next/head";
 
 const MyApp = ({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) => {
   return (
-    <SessionProvider session={session}>
-      <Loading>
-        <Navbar />
-        <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-20">
-          <Component {...pageProps} />
-        </main>
-      </Loading>
-    </SessionProvider>
+    <>
+      <Head>
+        <title>SolveMc App</title>
+        <meta
+          name="description"
+          content="App made to make ordering food easier :tf:"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <SessionProvider session={session}>
+        <div className="">
+          <Loading>
+            <Navbar />
+            <main className="mx-auto flex h-full min-h-screen w-full bg-base-100 text-base-content">
+              <Component {...pageProps} />
+            </main>
+          </Loading>
+        </div>
+      </SessionProvider>
+    </>
   );
 };
 

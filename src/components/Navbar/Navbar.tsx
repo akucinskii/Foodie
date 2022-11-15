@@ -44,7 +44,7 @@ const Navbar = () => {
             </li>
             <li className="">
               <Link
-                href="/restaurant/newRestaurant"
+                href="/restaurant/restaurants"
                 className="=whitespace-nowrap"
               >
                 Restaurants

@@ -102,6 +102,7 @@ model Restaurant {
   author             String
   RestaurantMenuItem RestaurantMenuItem[]
   Order              Order[]
+  image              String?
 }
 
 model RestaurantMenuItem {
@@ -112,4 +113,5 @@ model RestaurantMenuItem {
   Restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
   restaurantId String
   OrderItem    OrderItem[]
+  image        String?
 }

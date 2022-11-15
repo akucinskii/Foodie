@@ -44,10 +44,20 @@ npm run dev
 
 ### Do you want to run production server?
 
+Add environment variables
+
 ```bash
 npm i
 npm run build
 npm run start
+```
+
+if deploying to an service add more env variables
+
+```bash
+NEXTAUTH_SECRET=yourSecret
+VERCEL_URL=yourAppUrl
+NEXTAUTH_URL=https://yourAppUrl
 ```
 
 ### Do you want to run tests?

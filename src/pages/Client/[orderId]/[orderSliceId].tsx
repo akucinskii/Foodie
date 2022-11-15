@@ -2,6 +2,7 @@ import { OrderItem, RestaurantMenuItem } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import Wrapper from "src/components/Wrapper/Wrapper";
 import { useRemoveOrderItem } from "src/hooks/mutations/useRemoveOrderItem";
 import { useSubmitOrderItem } from "src/hooks/mutations/useSubmitOrderItem";
 import { useUpdateOrderItem } from "src/hooks/mutations/useUpdateOrderItem";
@@ -101,52 +102,54 @@ const Client = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="h-px flex-grow bg-gray-200"></div>
+    <Wrapper>
+      <div className="flex flex-col gap-4">
+        <div className="h-px flex-grow bg-gray-200"></div>
 
-      <div className="grid gap-8 sm:grid-cols-2">
-        <div className="flex max-w-sm flex-col gap-2">{Form}</div>
+        <div className="grid gap-8 sm:grid-cols-2">
+          <div className="flex max-w-sm flex-col gap-2">{Form}</div>
 
-        <div className="flex flex-col gap-4">
-          <div className="h-full overflow-x-auto">
-            <table className="table-zebra table w-full">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {order.map((item) => {
-                  return (
-                    <tr key={item.id}>
-                      <td className="flex gap-2">
-                        {item.RestaurantMenuItem.name}
-                      </td>
-                      <td> {item.quantity}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="flex flex-col gap-4">
+            <div className="h-full overflow-x-auto">
+              <table className="table-zebra table w-full">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.map((item) => {
+                    return (
+                      <tr key={item.id}>
+                        <td className="flex gap-2">
+                          {item.RestaurantMenuItem.name}
+                        </td>
+                        <td> {item.quantity}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
+              Total: <span className="text-yellow-500">{total} pln.</span>
+            </div>
+            <Button
+              disabled={order.length === 0 || total > 500}
+              onClick={() => {
+                // not needed to update orderSlice since we create and update orderItems that connect to the orderSlice at the time of their creation/deletion.
+                // updateOrderSlice(orderId, order);
+                router.push(`/Driver/${orderId}`);
+              }}
+            >
+              Submit
+            </Button>
           </div>
-
-          <div className=" sm:text:sm inline-block content-center items-center justify-center rounded px-6 py-2 text-center align-middle text-xs font-medium uppercase leading-tight text-black md:text-xl">
-            Total: <span className="text-yellow-500">{total} pln.</span>
-          </div>
-          <Button
-            disabled={order.length === 0 || total > 500}
-            onClick={() => {
-              // not needed to update orderSlice since we create and update orderItems that connect to the orderSlice at the time of their creation/deletion.
-              // updateOrderSlice(orderId, order);
-              router.push(`/Driver/${orderId}`);
-            }}
-          >
-            Submit
-          </Button>
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

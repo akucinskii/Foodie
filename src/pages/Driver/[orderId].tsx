@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Wrapper from "src/components/Wrapper/Wrapper";
 import { useSubmitOrderSlice } from "src/hooks/mutations/useSubmitOrderSlice";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
 import Button from "../../components/Button";
@@ -121,95 +122,98 @@ const Panel = () => {
   });
 
   return (
-    <div className="flex min-w-full flex-col gap-4 md:min-w-[50%]">
-      <h1 className="text-center text-2xl font-bold">Driver panel</h1>
-      <h2 className="text-center text-xl font-bold">Order items</h2>
-      <div className="overflow-x-auto">
-        <table className="table-zebra table w-full">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th className="text-right">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <>
-              {renderOrder()}
-              <tr>
-                <td className="font-bold ">Total</td>
-                <td className="text-right font-bold text-yellow-500">
-                  {order.data?.orderSlices.reduce(
-                    (acc, slice) =>
-                      acc +
-                      slice.OrderItem.reduce(
-                        (acc2, item) =>
-                          acc2 + item.quantity * item.RestaurantMenuItem.price,
-                        0
-                      ),
-                    0
-                  )}
-                  pln
-                </td>
-              </tr>
-            </>
-          </tbody>
-        </table>
-      </div>
-
-      <Button
-        disabled={
-          !session?.user ||
-          !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
-        }
-        onClick={async () => {
-          const { id } = await submitNewOrderSlice(
-            orderId,
-            session?.user?.id as string
-          );
-          router.push(`/Client/${orderId}/${id}`);
-        }}
-      >
-        Add your products <br /> to this order!
-      </Button>
-
-      {!session?.user && (
-        <p className="text-center text-red-600">
-          You need to be logged in to add your Products
-        </p>
-      )}
-      <h2 className="text-center text-xl font-bold">Who pays how much?</h2>
-      <div className="flex flex-col gap-4">
+    <Wrapper>
+      <div className="flex min-w-full flex-col gap-4 md:min-w-[50%]">
+        <h1 className="text-center text-2xl font-bold">Driver panel</h1>
+        <h2 className="text-center text-xl font-bold">Order items</h2>
         <div className="overflow-x-auto">
           <table className="table-zebra table w-full">
             <thead>
               <tr>
-                <th>Author</th>
-                <th className="text-right">Fee</th>
+                <th>Item</th>
+                <th className="text-right">Quantity</th>
               </tr>
             </thead>
             <tbody>
-              {orderSlices.data?.map((slice) => {
-                return (
-                  <tr key={slice.id}>
-                    <td>{slice.author.name}</td>
-                    <td className="text-right">
-                      {slice.OrderItem.reduce(
-                        (acc, item) =>
-                          acc + item.quantity * item.RestaurantMenuItem.price,
-                        0
-                      )}
-                      pln
-                    </td>
-                  </tr>
-                );
-              })}
+              <>
+                {renderOrder()}
+                <tr>
+                  <td className="font-bold ">Total</td>
+                  <td className="text-right font-bold text-yellow-500">
+                    {order.data?.orderSlices.reduce(
+                      (acc, slice) =>
+                        acc +
+                        slice.OrderItem.reduce(
+                          (acc2, item) =>
+                            acc2 +
+                            item.quantity * item.RestaurantMenuItem.price,
+                          0
+                        ),
+                      0
+                    )}
+                    pln
+                  </td>
+                </tr>
+              </>
             </tbody>
           </table>
         </div>
+
+        <Button
+          disabled={
+            !session?.user ||
+            !!orderSlices.data?.find((el) => el.authorId == session.user?.id)
+          }
+          onClick={async () => {
+            const { id } = await submitNewOrderSlice(
+              orderId,
+              session?.user?.id as string
+            );
+            router.push(`/Client/${orderId}/${id}`);
+          }}
+        >
+          Add your products <br /> to this order!
+        </Button>
+
+        {!session?.user && (
+          <p className="text-center text-red-600">
+            You need to be logged in to add your Products
+          </p>
+        )}
+        <h2 className="text-center text-xl font-bold">Who pays how much?</h2>
+        <div className="flex flex-col gap-4">
+          <div className="overflow-x-auto">
+            <table className="table-zebra table w-full">
+              <thead>
+                <tr>
+                  <th>Author</th>
+                  <th className="text-right">Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orderSlices.data?.map((slice) => {
+                  return (
+                    <tr key={slice.id}>
+                      <td>{slice.author.name}</td>
+                      <td className="text-right">
+                        {slice.OrderItem.reduce(
+                          (acc, item) =>
+                            acc + item.quantity * item.RestaurantMenuItem.price,
+                          0
+                        )}
+                        pln
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="h-px flex-grow bg-gray-200"></div>
+        {renderOrderSlices}
       </div>
-      <div className="h-px flex-grow bg-gray-200"></div>
-      {renderOrderSlices}
-    </div>
+    </Wrapper>
   );
 };
 

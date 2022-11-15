@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
-import Button from "src/components/Button";
+import Button from "src/components/Button/Button";
 import Wrapper from "src/components/Wrapper/Wrapper";
 import { trpc } from "src/utils/trpc";
 

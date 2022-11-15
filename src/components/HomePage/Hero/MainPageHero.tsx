@@ -1,7 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
-import Button from "../../Button";
+import Button from "../../Button/Button";
 
 const MainPageHero = () => {
   const { data: session } = useSession();

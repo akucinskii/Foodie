@@ -1,7 +1,7 @@
 import { Order } from "@prisma/client";
 import Link from "next/link";
 import Wrapper from "src/components/Wrapper/Wrapper";
-import Button from "../components/Button";
+import Button from "../components/Button/Button";
 import { trpc } from "../utils/trpc";
 
 const All = () => {

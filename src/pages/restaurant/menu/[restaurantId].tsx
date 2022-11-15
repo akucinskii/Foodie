@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
-import Button from "src/components/Button";
+import Button from "src/components/Button/Button";
 import Wrapper from "src/components/Wrapper/Wrapper";
 import { trpc } from "src/utils/trpc";
 

@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Wrapper from "src/components/Wrapper/Wrapper";
 import { useSubmitOrderSlice } from "src/hooks/mutations/useSubmitOrderSlice";
 import { getServerAuthSession } from "src/server/common/get-server-auth-session";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import { getBaseUrl, trpc } from "../../utils/trpc";
 
 const Panel = () => {

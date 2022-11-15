@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Wrapper from "src/components/Wrapper/Wrapper";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 import useUpdateUser from "../../hooks/mutations/useUpdateUser";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { getBaseUrl, trpc } from "../../utils/trpc";

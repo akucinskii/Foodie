@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
-import Button from "../../components/Button";
+import Button from "./Button";
 
 describe("Button", () => {
   const mockProp = {

@@ -6,7 +6,7 @@ import type { Session } from "next-auth";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import superjson from "superjson";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import { AppRouter } from "../server/trpc/router";
 
 import "../styles/globals.css";

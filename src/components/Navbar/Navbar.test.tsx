@@ -2,7 +2,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { Session } from "next-auth";
 import { describe, expect, test, vi, Mock, afterAll } from "vitest";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Navbar from "../../components/Navbar";
+import Navbar from "./Navbar";
 import { useRouter } from "next/router";
 
 const mockSession: Session = {

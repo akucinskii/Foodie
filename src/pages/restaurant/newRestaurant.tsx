@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Wrapper from "src/components/Wrapper/Wrapper";
 import { trpc } from "src/utils/trpc";
-import Button from "../../components/Button";
+import Button from "../../components/Button/Button";
 
 const useSubmitRestaurant = () => {
   const utils = trpc.useContext();

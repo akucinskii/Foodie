@@ -6,7 +6,7 @@ import Wrapper from "src/components/Wrapper/Wrapper";
 import { useRemoveOrderItem } from "src/hooks/mutations/useRemoveOrderItem";
 import { useSubmitOrderItem } from "src/hooks/mutations/useSubmitOrderItem";
 import { useUpdateOrderItem } from "src/hooks/mutations/useUpdateOrderItem";
-import Button from "../../../components/Button";
+import Button from "../../../components/Button/Button";
 import { getServerAuthSession } from "../../../server/common/get-server-auth-session";
 import { getBaseUrl, trpc } from "../../../utils/trpc";
 

@@ -52,7 +52,7 @@ npm run build
 npm run start
 ```
 
-if deploying to an service add more env variables
+if deploying to an service, add more env variables
 
 ```bash
 NEXTAUTH_SECRET=yourSecret

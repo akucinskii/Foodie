@@ -38,11 +38,6 @@ const Navbar = () => {
             </li>
 
             <li className="">
-              <Link href="/Driver/newOrder" className="=whitespace-nowrap">
-                New Order
-              </Link>
-            </li>
-            <li className="">
               <Link
                 href="/restaurant/restaurants"
                 className="=whitespace-nowrap"

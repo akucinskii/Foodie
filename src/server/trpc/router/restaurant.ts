@@ -20,14 +20,21 @@ export const restaurantRouter = router({
       });
       return response;
     }),
-  getAllRestaurants: publicProcedure.query(async ({ ctx }) => {
-    const response = await ctx.prisma.restaurant.findMany({
-      include: {
-        RestaurantMenuItem: true,
-      },
-    });
-    return response;
-  }),
+  getAllRestaurants: publicProcedure
+    .input(
+      z.object({
+        page: z.number().min(1),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.restaurant.findMany({
+        include: {
+          RestaurantMenuItem: true,
+        },
+        skip: (input.page - 1) * 10,
+      });
+      return response;
+    }),
 
   getPreviewRestaurants: publicProcedure.query(async ({ ctx }) => {
     const response = await ctx.prisma.restaurant.findMany({

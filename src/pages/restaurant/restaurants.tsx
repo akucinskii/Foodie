@@ -5,7 +5,7 @@ import Wrapper from "src/components/Wrapper/Wrapper";
 import { trpc } from "src/utils/trpc";
 
 const restaurants = () => {
-  const restaurants = trpc.restaurant.getAllRestaurants.useQuery();
+  const restaurants = trpc.restaurant.getAllRestaurants.useQuery({ page: 1 });
   return (
     <Wrapper>
       <h1 className="text-4xl font-bold text-base-content">Restaurants</h1>
@@ -39,6 +39,11 @@ const restaurants = () => {
             </Link>
           ))}
         </div>
+      </div>
+      <div className="flex w-full justify-center">
+        <Link href="/restaurant/newRestaurant">
+          <button className="btn btn-primary btn-lg">Add new Restaurant</button>
+        </Link>
       </div>
     </Wrapper>
   );

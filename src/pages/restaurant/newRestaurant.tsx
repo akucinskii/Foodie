@@ -1,5 +1,4 @@
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Wrapper from "src/components/Wrapper/Wrapper";
@@ -43,8 +42,6 @@ const NewRestaurant = () => {
     }
   }, [session]);
   const submitRestaurant = useSubmitRestaurant();
-  const restaurantsQuery = trpc.restaurant.getAllRestaurants.useQuery();
-
   return (
     <Wrapper>
       <div className="flex flex-col gap-4">
@@ -97,31 +94,6 @@ const NewRestaurant = () => {
             You need to be logged in to create new restaurant
           </p>
         )}
-
-        <div className="flex flex-col gap-4">
-          <h1 className="text-center text-xl font-bold">Restaurants</h1>
-          <div className="flex flex-col gap-4">
-            {restaurantsQuery.data?.map((restaurant) => (
-              <Link
-                key={restaurant.id}
-                href={`/restaurant/menu/${restaurant.id}`}
-              >
-                <div className="flex flex-col gap-4 rounded-md border border-gray-200 p-4">
-                  <h1 className="text-xl font-bold">{restaurant.name}</h1>
-                  <p>Address: {restaurant.address}</p>
-                </div>
-              </Link>
-            ))}
-
-            {restaurantsQuery.isLoading && <p>Loading...</p>}
-
-            {restaurantsQuery.isError && (
-              <p className="text-red-600">
-                Error: {restaurantsQuery.error.message}
-              </p>
-            )}
-          </div>
-        </div>
       </div>
     </Wrapper>
   );

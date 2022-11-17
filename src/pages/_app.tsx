@@ -12,11 +12,13 @@ import { AppRouter } from "../server/trpc/router";
 import "../styles/globals.css";
 import Loading from "src/components/Loading/Loading";
 import Head from "next/head";
+import ReactModal from "react-modal";
 
 const MyApp = ({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) => {
+  ReactModal.setAppElement("#main");
   return (
     <>
       <Head>
@@ -28,7 +30,7 @@ const MyApp = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SessionProvider session={session}>
-        <div className="">
+        <div className="main" id="main">
           <Loading>
             <Navbar />
             <main className="mx-auto flex h-full min-h-screen w-full bg-base-100 text-base-content">

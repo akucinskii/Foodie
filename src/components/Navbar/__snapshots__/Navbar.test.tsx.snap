@@ -43,15 +43,6 @@ exports[`Navbar > should match snapshot when login > login 1`] = `
             class=""
           >
             <a
-              href="/Driver/newOrder"
-            >
-              New Order
-            </a>
-          </li>
-          <li
-            class=""
-          >
-            <a
               href="/restaurant/restaurants"
             >
               Restaurants
@@ -144,15 +135,6 @@ exports[`Navbar > should match snapshot when logout > logout 1`] = `
               href="/all"
             >
               All Orders
-            </a>
-          </li>
-          <li
-            class=""
-          >
-            <a
-              href="/Driver/newOrder"
-            >
-              New Order
             </a>
           </li>
           <li

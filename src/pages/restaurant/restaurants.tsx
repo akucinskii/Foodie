@@ -17,7 +17,7 @@ const restaurants = () => {
               className="group"
               key={restaurant.id}
             >
-              <div className="xl:aspect-w-7 xl:aspect-h-8 aspect-square w-full overflow-hidden rounded-lg bg-gray-200">
+              <div className="xl:aspect-w-7 xl:aspect-h-8 aspect-square w-full overflow-hidden rounded-lg border-primary-focus bg-gray-200 transition-all group-hover:border-4">
                 <Image
                   src={
                     restaurant.image
@@ -27,7 +27,7 @@ const restaurants = () => {
                   width="300"
                   height="300"
                   alt={restaurant.name}
-                  className="h-full w-full object-cover object-center group-hover:opacity-75"
+                  className="h-full w-full object-cover object-center"
                 />
               </div>
               <h3 className="mt-4 text-lg font-medium text-base-content">
@@ -38,13 +38,25 @@ const restaurants = () => {
               </p>
             </Link>
           ))}
+          <Link href="/restaurant/newRestaurant" className="group">
+            <div className="xl:aspect-w-7 xl:aspect-h-8 relative aspect-square w-full overflow-hidden rounded-lg border-primary-focus bg-black transition-all group-hover:border-4">
+              <Image
+                src={"/restaurantPlaceholder.jpg"}
+                width="300"
+                height="300"
+                alt={"Add new restaurant"}
+                className="h-full w-full object-cover object-center opacity-50 transition-all group-hover:opacity-25"
+              />
+              <div className="absolute inset-0">
+                <div className="flex h-full flex-col items-center justify-center text-xl font-bold">
+                  Add new restaurant
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
-      <div className="flex w-full justify-center">
-        <Link href="/restaurant/newRestaurant">
-          <button className="btn btn-primary btn-lg">Add new Restaurant</button>
-        </Link>
-      </div>
+      <div className="flex w-full justify-center"></div>
     </Wrapper>
   );
 };

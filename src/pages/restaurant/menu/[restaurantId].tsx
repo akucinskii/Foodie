@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
-import Button from "src/components/Button/Button";
 import Wrapper from "src/components/Wrapper/Wrapper";
 import { useSubmitOrder } from "src/hooks/mutations/useSubmitOrder";
 import { trpc } from "src/utils/trpc";

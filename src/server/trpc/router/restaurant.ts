@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const restaurantRouter = router({
   createNewRestaurant: protectedProcedure
@@ -20,11 +20,28 @@ export const restaurantRouter = router({
       });
       return response;
     }),
-  getAllRestaurants: protectedProcedure.query(async ({ ctx }) => {
+  getAllRestaurants: publicProcedure
+    .input(
+      z.object({
+        page: z.number().min(1),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.restaurant.findMany({
+        include: {
+          RestaurantMenuItem: true,
+        },
+        skip: (input.page - 1) * 10,
+      });
+      return response;
+    }),
+
+  getPreviewRestaurants: publicProcedure.query(async ({ ctx }) => {
     const response = await ctx.prisma.restaurant.findMany({
       include: {
         RestaurantMenuItem: true,
       },
+      take: 3,
     });
     return response;
   }),
@@ -46,4 +63,24 @@ export const restaurantRouter = router({
       });
       return response;
     }),
+
+  getMostPopularRestaurants: publicProcedure.query(async ({ ctx }) => {
+    const response = await ctx.prisma.restaurant.findMany({
+      include: {
+        _count: {
+          select: {
+            Order: true,
+          },
+        },
+      },
+    });
+
+    const sorted = response.sort((a, b) => {
+      return b._count.Order - a._count.Order;
+    });
+
+    const topThree = sorted.slice(0, 3);
+
+    return topThree;
+  }),
 });

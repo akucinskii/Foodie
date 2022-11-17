@@ -11,7 +11,20 @@ const Loading = ({ children }: Props) => {
   return !(session.status === "loading") ? (
     <>{children}</>
   ) : (
-    <div>Loading...</div>
+    <div
+      className="
+    flex
+    h-full
+    w-full
+    flex-col
+    items-center
+    justify-center
+    pt-20
+    text-2xl
+    "
+    >
+      Loading...
+    </div>
   );
 };
 

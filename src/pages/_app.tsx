@@ -6,25 +6,40 @@ import type { Session } from "next-auth";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import superjson from "superjson";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import { AppRouter } from "../server/trpc/router";
 
 import "../styles/globals.css";
 import Loading from "src/components/Loading/Loading";
+import Head from "next/head";
+import ReactModal from "react-modal";
 
 const MyApp = ({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) => {
+  ReactModal.setAppElement("#main");
   return (
-    <SessionProvider session={session}>
-      <Loading>
-        <Navbar />
-        <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4 pt-20">
-          <Component {...pageProps} />
-        </main>
-      </Loading>
-    </SessionProvider>
+    <>
+      <Head>
+        <title>SolveMc App</title>
+        <meta
+          name="description"
+          content="App made to make ordering food easier :tf:"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <SessionProvider session={session}>
+        <div className="main" id="main">
+          <Loading>
+            <Navbar />
+            <main className="mx-auto flex h-full min-h-screen w-full bg-base-100 text-base-content">
+              <Component {...pageProps} />
+            </main>
+          </Loading>
+        </div>
+      </SessionProvider>
+    </>
   );
 };
 

@@ -3,7 +3,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import Button from "../../components/Button";
+import Wrapper from "src/components/Wrapper/Wrapper";
+import Button from "../../components/Button/Button";
 import useUpdateUser from "../../hooks/mutations/useUpdateUser";
 import { getServerAuthSession } from "../../server/common/get-server-auth-session";
 import { getBaseUrl, trpc } from "../../utils/trpc";
@@ -26,42 +27,45 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-2 text-center ">
-      <h1 className="text-2xl">{user.data?.name}</h1>
-      <div className="relative h-24 w-24">
-        <Image
-          alt="avatar"
-          className="rounded-full"
-          src={user.data?.image as string}
-          fill
-          sizes="100vw" />
+    <Wrapper>
+      <div className="flex flex-col items-center gap-2 text-center ">
+        <h1 className="text-2xl">{user.data?.name}</h1>
+        <div className="relative h-24 w-24">
+          <Image
+            alt="avatar"
+            className="rounded-full"
+            src={user.data?.image as string}
+            fill
+            sizes="100vw"
+          />
+        </div>
+        <label className="label">
+          <span className="label-text">Update your name</span>
+        </label>
+        <input
+          className="input input-bordered w-full"
+          type="text"
+          id="name"
+          required
+          placeholder="New name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Button
+          disabled={name.length > 50}
+          onClick={() => {
+            updateUser(userId, {
+              image: session?.user?.image as string | null,
+              email: session?.user?.email as string,
+              name: name as string,
+            });
+          }}
+        >
+          Change username
+        </Button>
+        <p>{user.data?.email}</p>
       </div>
-      <label className="label">
-        <span className="label-text">Update your name</span>
-      </label>
-      <input
-        className="input input-bordered w-full"
-        type="text"
-        id="name"
-        required
-        placeholder="New name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Button
-       disabled={name.length > 50}
-        onClick={() => {
-          updateUser(userId, {
-            image: session?.user?.image as string | null,
-            email: session?.user?.email as string,
-            name: name as string,
-          });
-        }}
-      >
-        Change username
-      </Button>
-      <p>{user.data?.email}</p>
-    </div>
+    </Wrapper>
   );
 };
 

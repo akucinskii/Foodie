@@ -75,6 +75,9 @@ export const orderRouter = router({
                 include: {
                   RestaurantMenuItem: true,
                 },
+                orderBy: {
+                  quantity: "desc",
+                },
               },
             },
           },

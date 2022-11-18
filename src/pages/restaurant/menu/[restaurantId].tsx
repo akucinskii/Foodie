@@ -35,16 +35,17 @@ const useSubmitRestaurantMenuItem = () => {
 
 const RestaurantMenu = () => {
   const [name, setName] = React.useState<string>("");
+  const [orderName, setOrderName] = React.useState<string>("");
   const [price, setPrice] = React.useState<string>("");
   const [newOrderTabOpened, setNewOrderTabOpened] =
     React.useState<boolean>(false);
-  const [] = React.useState<string>("");
   const router = useRouter();
   const id = router.query.restaurantId as string;
   const ref = useRef(null);
   useClickAway(ref, () => {
     if (newOrderTabOpened) {
       setNewOrderTabOpened(false);
+      setOrderName("");
     }
   });
   const { data: session } = useSession();
@@ -89,7 +90,7 @@ const RestaurantMenu = () => {
                 required
                 placeholder="Order name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setOrderName(e.target.value)}
               />
             </div>
 
@@ -103,7 +104,7 @@ const RestaurantMenu = () => {
               }
               onClick={async () => {
                 const order = await submitOrder(
-                  name,
+                  orderName,
                   session?.user?.id as string,
                   id as string
                 );

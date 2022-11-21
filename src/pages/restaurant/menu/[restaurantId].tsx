@@ -89,7 +89,7 @@ const RestaurantMenu = () => {
                 id="name"
                 required
                 placeholder="Order name"
-                value={name}
+                value={orderName}
                 onChange={(e) => setOrderName(e.target.value)}
               />
             </div>

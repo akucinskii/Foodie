@@ -8,6 +8,7 @@ export const restaurantRouter = router({
         name: z.string().max(50),
         address: z.string().max(100),
         author: z.string().max(50),
+        image: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -16,6 +17,7 @@ export const restaurantRouter = router({
           name: input.name,
           address: input.address,
           author: input.author,
+          image: input.image,
         },
       });
       return response;

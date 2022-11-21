@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import ImageUpload from "src/components/ImageUpload/ImageUpload";
 import Wrapper from "src/components/Wrapper/Wrapper";
 import { trpc } from "src/utils/trpc";
 import Button from "../../components/Button/Button";
@@ -16,11 +17,17 @@ const useSubmitRestaurant = () => {
     },
   });
 
-  return (name: string, author: string, address: string) => {
+  return (
+    name: string,
+    author: string,
+    address: string,
+    image: string | undefined
+  ) => {
     const response = mutation.mutateAsync({
       name,
       address,
       author,
+      image,
     });
 
     return response;
@@ -32,6 +39,7 @@ const NewRestaurant = () => {
 
   const [name, setName] = React.useState<string>("");
   const [address, setAddress] = React.useState<string>("");
+  const [image, setImage] = React.useState<string | undefined>(undefined);
   const [author, setAuthor] = React.useState<string>(session?.user?.name || "");
 
   const router = useRouter();
@@ -74,13 +82,20 @@ const NewRestaurant = () => {
             onChange={(e) => setAddress(e.target.value)}
           />
         </div>
+        <div>
+          <label className="label">
+            <span className="label-text">Submit Image</span>
+          </label>
+          <ImageUpload setImage={setImage} image={image} />
+        </div>
 
         <Button
           disabled={
             name === "" || author === "" || name.length > 20 || !session?.user
           }
           onClick={async () => {
-            const order = await submitRestaurant(name, author, address);
+            const order = await submitRestaurant(name, author, address, image);
+            setImage(undefined);
 
             if (order) {
               router.push(`/restaurant/menu/${order.id}`);

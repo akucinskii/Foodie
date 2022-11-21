@@ -8,6 +8,7 @@ import { useSubmitOrder } from "src/hooks/mutations/useSubmitOrder";
 import { trpc } from "src/utils/trpc";
 import Modal from "react-modal";
 import { useClickAway } from "react-use";
+import ImageUpload from "src/components/ImageUpload/ImageUpload";
 
 const useSubmitRestaurantMenuItem = () => {
   const utils = trpc.useContext();
@@ -22,11 +23,17 @@ const useSubmitRestaurantMenuItem = () => {
       },
     });
 
-  return (name: string, price: number, restaurantId: string) => {
+  return (
+    name: string,
+    price: number,
+    restaurantId: string,
+    image: string | undefined
+  ) => {
     const response = mutation.mutateAsync({
       name,
       price,
       restaurantId,
+      image,
     });
 
     return response;
@@ -37,6 +44,9 @@ const RestaurantMenu = () => {
   const [name, setName] = React.useState<string>("");
   const [orderName, setOrderName] = React.useState<string>("");
   const [price, setPrice] = React.useState<string>("");
+  const [newMenuItemImage, setNewMenuItemImage] = React.useState<
+    string | undefined
+  >(undefined);
   const [newOrderTabOpened, setNewOrderTabOpened] =
     React.useState<boolean>(false);
   const router = useRouter();
@@ -205,6 +215,16 @@ const RestaurantMenu = () => {
                 />
               </div>
 
+              <div className="mb-2">
+                <label className="label">
+                  <span className="label-text ">Enter {"item"} Image</span>
+                </label>
+                <ImageUpload
+                  setImage={setNewMenuItemImage}
+                  image={newMenuItemImage}
+                />
+              </div>
+
               <button
                 className="btn btn-primary "
                 disabled={
@@ -217,10 +237,12 @@ const RestaurantMenu = () => {
                   await submitRestaurantMenuItem(
                     name,
                     Number(price),
-                    id as string
+                    id as string,
+                    newMenuItemImage
                   );
                   setName("");
                   setPrice("");
+                  setNewMenuItemImage("");
                 }}
               >
                 ADD NEW ITEM TO MENU

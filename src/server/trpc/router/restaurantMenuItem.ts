@@ -8,6 +8,7 @@ export const restaurantMenuItemRouter = router({
         name: z.string().max(50),
         price: z.number().min(1).max(50),
         restaurantId: z.string(),
+        image: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -16,6 +17,7 @@ export const restaurantMenuItemRouter = router({
           name: input.name,
           price: input.price,
           restaurantId: input.restaurantId,
+          image: input.image,
         },
       });
       return response;

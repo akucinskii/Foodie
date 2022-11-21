@@ -97,8 +97,8 @@ const RestaurantMenu = () => {
             <button
               className="btn btn-primary w-full"
               disabled={
-                name === "" ||
-                name.length > 20 ||
+                orderName === "" ||
+                orderName.length > 20 ||
                 !session?.user ||
                 !(id.length > 0)
               }

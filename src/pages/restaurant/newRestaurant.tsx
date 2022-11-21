@@ -55,7 +55,7 @@ const NewRestaurant = () => {
             type="text"
             id="name"
             required
-            placeholder="Order name"
+            placeholder="Restaurant name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -69,7 +69,7 @@ const NewRestaurant = () => {
             type="text"
             id="name"
             required
-            placeholder="Adress"
+            placeholder="Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />

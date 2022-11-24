@@ -1,27 +1,11 @@
 import Img from "next/image";
 import React from "react";
+import { isBase64UrlImage } from "src/utils/helpers/isBase64UrlImage";
 
 type Props = {
   setImage: (value: string) => void;
   image?: string;
 };
-
-async function isBase64UrlImage(base64String: string) {
-  const image = new Image();
-  image.src = base64String;
-  return await new Promise((resolve) => {
-    image.onload = function () {
-      if (image.height === 0 || image.width === 0) {
-        resolve(false);
-        return;
-      }
-      resolve(true);
-    };
-    image.onerror = () => {
-      resolve(false);
-    };
-  });
-}
 
 const ImageUpload = ({ setImage, image }: Props) => {
   const sendFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,16 +15,17 @@ const ImageUpload = ({ setImage, image }: Props) => {
       // convert image to base64
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         const base64 = reader.result;
         if (base64) {
-          isBase64UrlImage(base64.toString()).then((isImage) => {
-            if (isImage) {
-              setImage(base64.toString());
-            } else {
-              alert("Please upload an image");
-            }
-          });
+          const isImage = await isBase64UrlImage(base64.toString());
+          if (isImage) {
+            setImage(base64.toString());
+          } else {
+            setImage("");
+
+            alert("Please upload an image file");
+          }
         }
       };
     }
@@ -53,7 +38,12 @@ const ImageUpload = ({ setImage, image }: Props) => {
           <Img src={image} alt="uploaded image" className="object-cover" fill />
         )}
       </div>
-      <input type="file" accept="image/*" onChange={sendFile} />
+      <input
+        type="file"
+        data-testid="image-upload-input"
+        accept="image/*"
+        onChange={sendFile}
+      />
     </div>
   );
 };

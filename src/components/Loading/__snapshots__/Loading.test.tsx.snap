@@ -1,0 +1,23 @@
+// Vitest Snapshot v1
+
+exports[`Loading > Should match snapshot > Children 1`] = `
+<div>
+  Children
+</div>
+`;
+
+exports[`Loading > Should match snapshot 1`] = `
+<div>
+  Children
+</div>
+`;
+
+exports[`Loading > Should match snapshot when loading > loading 1`] = `
+<div>
+  <div
+    class=" flex h-full w-full flex-col items-center justify-center pt-20 text-2xl "
+  >
+    Loading...
+  </div>
+</div>
+`;

@@ -1,0 +1,53 @@
+// Vitest Snapshot v1
+
+exports[`ImageUpload > should match snapshot 1`] = `
+<div>
+  <div
+    class="flex flex-col p-2"
+  >
+    <div
+      class="relative aspect-square h-full w-full"
+    >
+      <img
+        alt="uploaded image"
+        class="object-cover"
+        data-nimg="fill"
+        decoding="async"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII="
+        style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+      />
+    </div>
+    <input
+      accept="image/*"
+      data-testid="image-upload-input"
+      type="file"
+    />
+  </div>
+</div>
+`;
+
+exports[`ImageUpload > should match snapshot when image is set > image 1`] = `
+<div>
+  <div
+    class="flex flex-col p-2"
+  >
+    <div
+      class="relative aspect-square h-full w-full"
+    >
+      <img
+        alt="uploaded image"
+        class="object-cover"
+        data-nimg="fill"
+        decoding="async"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII="
+        style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+      />
+    </div>
+    <input
+      accept="image/*"
+      data-testid="image-upload-input"
+      type="file"
+    />
+  </div>
+</div>
+`;

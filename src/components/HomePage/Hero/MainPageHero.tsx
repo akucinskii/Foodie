@@ -21,8 +21,9 @@ const MainPageHero = () => {
             We make ordering food with friends easier, faster and more fun!
           </p>
           <div className="mt-5 flex justify-center gap-2">
-            <Link href="/all">
+            <Link href="/restaurant/restaurants">
               <button
+                data-testid="link-to-all"
                 className="
                 btn
               btn-active
@@ -31,11 +32,12 @@ const MainPageHero = () => {
               lg:btn-lg
               "
               >
-                Get started
+                See all restaurants
               </button>
             </Link>
             {!session && (
               <Button
+                data-testid="signin-button"
                 className="
             btn
             btn-primary

@@ -105,6 +105,13 @@ model Restaurant {
   image              String?
 }
 
+model Category {
+  id                 String               @id @default(uuid())
+  createdAt          DateTime             @default(now())
+  name               String
+  RestaurantMenuItem RestaurantMenuItem[]
+}
+
 model RestaurantMenuItem {
   id           String      @id @default(uuid())
   createdAt    DateTime    @default(now())
@@ -113,5 +120,6 @@ model RestaurantMenuItem {
   Restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
   restaurantId String
   OrderItem    OrderItem[]
+  Category     Category[]
   image        String?
 }

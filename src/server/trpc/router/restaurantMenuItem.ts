@@ -1,4 +1,3 @@
-import { connect } from "http2";
 import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
@@ -96,6 +95,32 @@ export const restaurantMenuItemRouter = router({
       return response;
     }),
 
+  getRestaurantMenuItemsByRestaurantIdAndCategoryId: protectedProcedure
+    .input(
+      z.object({
+        restaurantId: z.string(),
+        categoryId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.restaurantMenuItem.findMany({
+        where: {
+          restaurantId: input.restaurantId,
+          Category: {
+            some: {
+              name: {
+                equals: input.categoryId,
+              },
+            },
+          },
+        },
+        include: {
+          Category: true,
+        },
+      });
+      return response;
+    }),
+
   getRestaurantMenuItemsByRestaurantName: protectedProcedure
     .input(
       z.object({
@@ -111,6 +136,21 @@ export const restaurantMenuItemRouter = router({
         },
         include: {
           Category: true,
+        },
+      });
+      return response;
+    }),
+
+  deleteRestaurantMenuItem: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.prisma.restaurantMenuItem.delete({
+        where: {
+          id: input.id,
         },
       });
       return response;

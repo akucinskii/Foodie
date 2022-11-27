@@ -60,7 +60,11 @@ export const restaurantRouter = router({
           id: input.id,
         },
         include: {
-          RestaurantMenuItem: true,
+          RestaurantMenuItem: {
+            include: {
+              Category: true,
+            },
+          },
         },
       });
       return response;

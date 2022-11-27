@@ -1,3 +1,4 @@
+import { connect } from "http2";
 import { z } from "zod";
 import { protectedProcedure, router } from "../trpc";
 
@@ -9,6 +10,7 @@ export const restaurantMenuItemRouter = router({
         price: z.number().min(1).max(50),
         restaurantId: z.string(),
         image: z.string().optional(),
+        categoryId: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -18,26 +20,41 @@ export const restaurantMenuItemRouter = router({
           price: input.price,
           restaurantId: input.restaurantId,
           image: input.image,
+          Category: {
+            connect: {
+              id: input.categoryId,
+            },
+          },
         },
       });
       return response;
     }),
 
-  createMultipleRestaurantMenuItems: protectedProcedure
+  updateRestaurantMenuItem: protectedProcedure
     .input(
       z.object({
-        items: z
-          .object({
-            name: z.string().max(50),
-            price: z.number().min(1).max(50),
-            restaurantId: z.string(),
-          })
-          .array(),
+        id: z.string(),
+        name: z.string().max(50).optional(),
+        price: z.number().min(1).max(50).optional(),
+        image: z.string().optional(),
+        category: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.prisma.restaurantMenuItem.createMany({
-        data: input.items,
+      const response = await ctx.prisma.restaurantMenuItem.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          price: input.price,
+          image: input.image,
+          Category: {
+            connect: {
+              id: input.category,
+            },
+          },
+        },
       });
       return response;
     }),
@@ -53,7 +70,11 @@ export const restaurantMenuItemRouter = router({
         where: {
           id: input.id,
         },
+        include: {
+          Category: true,
+        },
       });
+
       return response;
     }),
 
@@ -67,6 +88,9 @@ export const restaurantMenuItemRouter = router({
       const response = await ctx.prisma.restaurantMenuItem.findMany({
         where: {
           restaurantId: input.restaurantId,
+        },
+        include: {
+          Category: true,
         },
       });
       return response;
@@ -84,6 +108,9 @@ export const restaurantMenuItemRouter = router({
           Restaurant: {
             name: input.restaurantName,
           },
+        },
+        include: {
+          Category: true,
         },
       });
       return response;

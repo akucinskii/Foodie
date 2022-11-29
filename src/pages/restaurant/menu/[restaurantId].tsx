@@ -49,22 +49,25 @@ const RestaurantMenu = () => {
   >(undefined);
   const [newOrderTabOpened, setNewOrderTabOpened] =
     React.useState<boolean>(false);
+
+  const submitRestaurantMenuItem = useSubmitRestaurantMenuItem();
+  const { data: session } = useSession();
   const router = useRouter();
-  const id = router.query.restaurantId as string;
   const ref = useRef(null);
+  const submitOrder = useSubmitOrder();
+
+  const id = router.query.restaurantId as string;
+
   useClickAway(ref, () => {
     if (newOrderTabOpened) {
       setNewOrderTabOpened(false);
       setOrderName("");
     }
   });
-  const { data: session } = useSession();
-  const submitRestaurantMenuItem = useSubmitRestaurantMenuItem();
 
   const restaurantMenuData = trpc.restaurant.getRestaurantById.useQuery({
     id: id as string,
   });
-  const submitOrder = useSubmitOrder();
 
   const bg = {
     overlay: {

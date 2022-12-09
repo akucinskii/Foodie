@@ -1,4 +1,4 @@
-# Simple app made to make ordering food easier :tf:
+# Simple app made to make ordering food as group easier :tf:
 
 ## Tech stack:
 

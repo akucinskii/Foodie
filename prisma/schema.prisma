@@ -60,30 +60,30 @@ model VerificationToken {
 
 model Order {
   id           String       @id @default(uuid())
-  author       User         @relation(fields: [authorId], references: [id])
+  author       User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId     String
   name         String
   createdAt    DateTime     @default(now())
   orderSlices  OrderSlice[]
-  Restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String
 }
 
 model OrderSlice {
   id        String      @id @default(uuid())
-  author    User        @relation(fields: [authorId], references: [id])
+  author    User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   OrderItem OrderItem[]
-  Order     Order       @relation(fields: [orderId], references: [id])
+  Order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId   String
 }
 
 model OrderItem {
   id                   String             @id @default(uuid())
   quantity             Int
-  RestaurantMenuItem   RestaurantMenuItem @relation(fields: [restaurantMenuItemId], references: [id])
+  RestaurantMenuItem   RestaurantMenuItem @relation(fields: [restaurantMenuItemId], references: [id], onDelete: Cascade)
   restaurantMenuItemId String
-  OrderSlice           OrderSlice?        @relation(fields: [orderSliceId], references: [id])
+  OrderSlice           OrderSlice?        @relation(fields: [orderSliceId], references: [id], onDelete: Cascade)
   orderSliceId         String?
 }
 
@@ -110,7 +110,7 @@ model RestaurantMenuItem {
   createdAt    DateTime    @default(now())
   name         String
   price        Int
-  Restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  Restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String
   OrderItem    OrderItem[]
   image        String?

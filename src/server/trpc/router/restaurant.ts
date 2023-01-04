@@ -85,4 +85,19 @@ export const restaurantRouter = router({
 
     return topThree;
   }),
+
+  removeRestaurantById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.prisma.restaurant.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return response;
+    }),
 });

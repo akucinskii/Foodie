@@ -9,6 +9,7 @@ import { trpc } from "src/utils/trpc";
 import Modal from "react-modal";
 import { useClickAway } from "react-use";
 import ImageUpload from "src/components/ImageUpload/ImageUpload";
+import { useRemoveRestaurant } from "src/hooks/mutations/useRemoveRestaurant";
 
 const useSubmitRestaurantMenuItem = () => {
   const utils = trpc.useContext();
@@ -47,6 +48,8 @@ const RestaurantMenu = () => {
   const [newMenuItemImage, setNewMenuItemImage] = React.useState<
     string | undefined
   >(undefined);
+  const [removeRestaurantTabOpened, setRemoveRestaurantTabOpened] =
+    React.useState<boolean>(false);
   const [newOrderTabOpened, setNewOrderTabOpened] =
     React.useState<boolean>(false);
   const router = useRouter();
@@ -71,6 +74,8 @@ const RestaurantMenu = () => {
       background: "rgba(0, 0, 0, 0.5)",
     },
   };
+
+  const removeRestaurant = useRemoveRestaurant();
 
   return (
     <Wrapper>
@@ -257,6 +262,27 @@ const RestaurantMenu = () => {
           </p>
         )}
       </div>
+
+      {session?.user?.id === restaurantMenuData.data?.author && (
+        <div className="flex flex-col items-center justify-center gap-4">
+          <button
+            className="btn btn-primary w-fit"
+            onClick={() => {
+              if (!removeRestaurantTabOpened) {
+                setRemoveRestaurantTabOpened(true);
+                return;
+              } else {
+                removeRestaurant({
+                  restaurantId: restaurantMenuData.data?.id as string,
+                });
+                router.push("/");
+              }
+            }}
+          >
+            {removeRestaurantTabOpened ? "Are you sure?" : "Remove restaurant"}
+          </button>
+        </div>
+      )}
     </Wrapper>
   );
 };

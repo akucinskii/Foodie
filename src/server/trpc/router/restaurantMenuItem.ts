@@ -88,4 +88,19 @@ export const restaurantMenuItemRouter = router({
       });
       return response;
     }),
+
+  deleteRestaurantMenuItemById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const response = await ctx.prisma.restaurantMenuItem.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return response;
+    }),
 });
